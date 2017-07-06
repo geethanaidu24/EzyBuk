@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:All4One="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <!--<item android:id="@+id/home"
+        android:visible="true"
+        android:title="Home"
+        android:icon="@drawable/location"
+        app:showAsAction="always">
+        </item>
+-->
+
+    <item android:id="@+id/h1"
+        android:icon="@mipmap/search"
+
+        android:title="Search"
+        android:visible="true"
+        All4One:showAsAction="always"/>
+
+    <item android:id="@+id/h2"
+        android:icon="@mipmap/location"
+
+        android:title="City"
+        android:visible="true"
+        All4One:showAsAction="always"/>
+
+
+</menu>

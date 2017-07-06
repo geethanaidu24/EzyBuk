@@ -8,6 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:windowSoftInputMode="stateVisible|adjustResize"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -16,6 +19,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Search" />
+        <activity android:name=".SelectCity" />
+        <activity android:name=".NowShowing" />
+        <activity android:name=".ComingSoon" />
+        <activity android:name=".MovieBooking" />
+        <activity android:name=".FullTrailer" />
+        <activity android:name=".SeatReservation" />
+        <activity android:name=".Payment" />
+        <activity android:name=".LoginMain" />
+        <activity android:name=".RegistrationLogin" />
+        <activity android:name=".LogIn" />
+        <activity android:name=".Registration"
+            ></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+
+    android:layout_height="match_parent"  tools:context=".MainActivity">
+    <include layout="@layout/activity_toolbar"
+        ></include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rsearch1"
+        android:layout_below="@+id/toolbar">
+        <EditText
+
+            android:layout_width="match_parent"
+
+            android:layout_height="30dp"
+
+            android:id="@+id/editText2"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:hint="Search City......"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@mipmap/search"
+            android:layout_marginBottom="5dp"
+            android:textSize="12sp"
+            android:background="@drawable/search_editext"
+            android:layout_alignParentLeft="true"
+
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rsearch1"
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
+        <ListView
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:id="@+id/listView2"
+
+            android:layout_marginRight="20dp"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
+    </RelativeLayout>
+</RelativeLayout>
