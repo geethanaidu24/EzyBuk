@@ -5,34 +5,44 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-
-        android:background="@color/white"
-
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+android:fillViewport="true"
         android:layout_gravity="center"
-        android:layout_height="400dp"
+        android:isScrollContainer="false"
 
-        >
+        android:id="@+id/scrollView2">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+
+            android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
             android:background="#fff"
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="10dp"
             android:id="@+id/relativeLayout">
 
-            <LinearLayout
+
+        <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
-
+                android:weightSum="1"
                 android:id="@+id/linearLayout2">
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -79,17 +89,14 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
 
-                        android:layout_toEndOf="@+id/sr1"
-                        android:layout_toRightOf="@+id/sr1"
+
                         android:background="@drawable/edittext2"
                         android:cursorVisible="true"
                         android:drawableTint="@color/cred"
                         android:hint="Email Address"
                         android:inputType="textEmailAddress"
 
-                        android:textColor="@color/colorblack"
-                        android:layout_alignTop="@+id/sr1"
-                      />
+                        android:textColor="@color/colorblack" />
 </LinearLayout>
                 </RelativeLayout>
                 <RelativeLayout
@@ -146,11 +153,7 @@
                         android:background="@drawable/edittext2"
                         android:hint="Password"
                         android:inputType="numberSigned"
-                        android:paddingLeft="8dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="10dp"
+
                         android:layout_toRightOf="@+id/imageuser1" />
 </LinearLayout>
                 </RelativeLayout>
@@ -211,11 +214,7 @@
 
                         android:hint=" Confirm Password"
                         android:inputType="text"
-                        android:paddingLeft="8dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="10dp"/>
+                       />
 </LinearLayout>
                 </RelativeLayout>
 
@@ -269,15 +268,11 @@
                         android:cursorVisible="true"
                         android:layout_centerVertical="true"
                         android:id="@+id/registration_text_mobile_no2"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="10dp"
+
                         android:background="@drawable/edittext2"
                         android:layout_toRightOf="@+id/imageuser3"
 
-                        android:paddingLeft="8dp"
-                        android:hint="Mobile Number"
+                    android:hint="Mobile Number"
                         android:inputType="text"
                         />
 </LinearLayout>
@@ -315,6 +310,7 @@
                     android:layout_below="@+id/textView30"
                     android:layout_marginTop="1dp"
                     android:layout_marginLeft="35dp"
+                    android:layout_marginBottom="30dp"
                     android:layout_marginRight="35dp"
                     android:textColor="@color/cred"
                     android:text=" Terms and conditions." />
@@ -322,7 +318,7 @@
 
 
         </RelativeLayout>
+</RelativeLayout>
 
-    </RelativeLayout>
-
+</ScrollView>
 </RelativeLayout>

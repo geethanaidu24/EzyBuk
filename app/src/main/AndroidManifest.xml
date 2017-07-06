@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
 
-        android:configChanges="orientation|keyboardHidden|screenSize"
-        android:windowSoftInputMode="stateVisible|adjustResize"
+
+        android:windowSoftInputMode="adjustResize|adjustPan"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -35,7 +35,9 @@
         <activity android:name=".RegistrationLogin" />
         <activity android:name=".LogIn" />
         <activity android:name=".Registration"
-            ></activity>
+            android:configChanges="orientation"
+            android:hardwareAccelerated="false"
+            android:windowSoftInputMode="adjustPan"    ></activity>
     </application>
 
 </manifest>
