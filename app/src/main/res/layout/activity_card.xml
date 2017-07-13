@@ -1,0 +1,180 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <include layout="@layout/activity_toolbar"
+        ></include>
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="PAYMENT GATEWAY" />
+    <View
+        android:id="@+id/busDeckSelectionMargin"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textView26"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/rpg1"
+
+        android:layout_below="@+id/busDeckSelectionMargin">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_height="100dp" />
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+
+            android:text="PAY Rs 250" />
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/vpg1"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+
+        android:layout_below="@+id/rpg1"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rpg1"
+        android:id="@+id/rpg2"
+
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="MONEY CARD"
+            android:textColor="@color/cred"/>
+    </RelativeLayout>
+    <View
+        android:id="@+id/vpg2"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+
+        android:layout_below="@+id/rpg2"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vpg2"
+        android:id="@+id/rpg3"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/rpg4"
+
+            android:layout_height="wrap_content">
+            <!--<ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/pass"/>-->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Credit Card Number"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:drawableTint="@color/ddgrey"
+                android:id="@+id/ed1"
+                android:drawableLeft="@mipmap/creditcard"
+                android:drawablePadding="10dp"
+                android:background="@drawable/edittext2"
+
+
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rpg4"
+            android:id="@+id/rpg5">
+            <EditText
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:hint="Expiry (MM/YY)"
+                android:id="@+id/ed2"
+
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edittext2"
+                android:drawableTint="@color/ddgrey"
+                android:drawableLeft="@mipmap/creditcard"
+                android:layout_marginLeft="10dp" />
+
+            <EditText
+                android:id="@+id/ed3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+
+                android:layout_toEndOf="@+id/ed2"
+                android:layout_toRightOf="@+id/ed2"
+                android:ems="10"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edittext2"
+                android:drawableLeft="@mipmap/creditcard"
+                android:drawableTint="@color/ddgrey"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="10dp"
+                android:inputType="textPersonName"
+                android:text="CVV" />
+        </RelativeLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Name On Card"
+            android:id="@+id/ed4"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rpg5"
+            android:background="@drawable/edittext2"
+            android:drawableLeft="@mipmap/creditcard"
+            android:drawableTint="@color/ddgrey"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAY NOW"
+            android:id="@+id/paybutton"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+
+            android:layout_below="@+id/ed4"/>
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -45,7 +45,7 @@ public class NowShowing extends Fragment {
         im1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), MovieBooking.class);
+                Intent myIntent = new Intent(getActivity(), ScrollingActivity.class);
                 getActivity().startActivity(myIntent);
             }
         });

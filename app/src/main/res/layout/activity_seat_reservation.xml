@@ -1,20 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <include
-        android:id="@+id/header"
-        layout="@layout/activity_toolbar" />
+
+        layout="@layout/activity_toolbar"
+        android:layout_alignTop="@+id/busDeckSelectionLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:id="@+id/busDeckSelectionLayout"
         android:layout_width="fill_parent"
         android:layout_height="25.0dip"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-
         <RelativeLayout
             android:id="@+id/busDeckSelectionButtons"
             android:layout_width="wrap_content"

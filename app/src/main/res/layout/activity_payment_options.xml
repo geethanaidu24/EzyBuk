@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <include
+
+        layout="@layout/activity_toolbar" />
+    <View
+        android:id="@+id/v1"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="10dp"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rdetails"
+        android:layout_below="@id/v1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tx1"
+            android:text="Hi User Please verify Your Details"
+            />
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/busDeckSelectionMargin"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_below="@+id/rdetails"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rdetails1"
+        android:layout_below="@+id/busDeckSelectionMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile No:"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/txm"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email Id:"
+            android:id="@+id/txe"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/txm"
+            />
+    </RelativeLayout>
+    <View
+        android:id="@+id/vcredit"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_below="@+id/rdetails1"
+        android:background="#ffdddddd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rpoptions"
+        android:layout_below="@+id/vcredit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rdetails2"
+
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tx4"
+                android:text="PAYMENT OPTIONS"
+                />
+
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/vcredit1"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/rdetails2"
+            android:background="#ffdddddd" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rdetails3"
+            android:layout_below="@+id/vcredit1"
+
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/im2"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tx5"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="100dp"
+                android:text="Credit Card"
+                />
+
+            <ImageButton
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:id="@+id/im3"
+                android:src="@mipmap/search"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+        <View
+            android:id="@+id/vcredit2"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/rdetails3"
+            android:background="#ffdddddd" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rdetails4"
+            android:layout_below="@+id/vcredit2"
+
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/im4"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tx6"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="100dp"
+                android:text="Money Card"
+                />
+
+            <ImageButton
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:id="@+id/im6"
+                android:src="@mipmap/search"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+        <View
+            android:id="@+id/vcredit3"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/rdetails4"
+            android:background="#ffdddddd" />
+    </RelativeLayout>
+</RelativeLayout>
