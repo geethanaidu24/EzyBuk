@@ -12,7 +12,7 @@
         android:layout_height="1.0dip"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="10dp"
-        android:background="#ffdddddd" />
+        android:background="@color/deemphasized_text" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tx1"
-            android:text="Hi User Please verify Your Details"
+            android:textSize="18sp"
+            android:textColor="@color/green"
+            android:text="Hi User, Please verify Your Details"
             />
 
 
@@ -37,42 +39,143 @@
         android:layout_width="fill_parent"
         android:layout_height="1.0dip"
         android:layout_below="@+id/rdetails"
-        android:background="#ffdddddd" />
+        android:background="@color/deemphasized_text" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rdetails1"
-        android:layout_below="@+id/busDeckSelectionMargin">
-
+        android:layout_below="@+id/busDeckSelectionMargin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rname">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name : "
+                android:textColor="@color/colorblack"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/nametx"
+                />
+            <EditText
+                android:id="@+id/nametx1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="130dp"  android:textSize="18sp"
+android:background="@drawable/edit_border"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Geetha" />
+        </RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rmobile"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="40dp"
+    android:layout_below="@+id/remail">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mobile No:"
+            android:text="Mobile No : "
+            android:textColor="@color/colorblack"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/txm"
             />
+    <EditText
+        android:id="@+id/textView34"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
+   android:layout_marginLeft="130dp"  android:textSize="18sp"
+        android:background="@drawable/edit_border"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:layout_marginTop="10dp"
+        android:inputType="number"/>
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="130dp"
+     android:layout_marginTop="5dp"
+        android:text="Please Enter Mobile No:"
+        android:layout_below="@+id/textView34" />
+</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/remail"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rname">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email Id:"
+            android:text="Email Id : "
             android:id="@+id/txe"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorblack"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/txm"
+            android:layout_marginLeft="10dp"
+
+
+
+
             />
+            <EditText
+                android:id="@+id/textView38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="18sp"
+                android:background="@drawable/edit_border"
+                android:layout_marginLeft="130dp"
+android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="khushbunahar@gmail.com" />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Payment Options"
+            android:background="@color/green"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/choosepaymentopt"
+            android:layout_below="@+id/rmobile"/>
+
     </RelativeLayout>
     <View
         android:id="@+id/vcredit"
         android:layout_width="fill_parent"
         android:layout_height="1.0dip"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/rdetails1"
-        android:background="#ffdddddd" />
+        android:background="@color/deemphasized_text" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rpoptions"
+        android:visibility="gone"
         android:layout_below="@+id/vcredit"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -90,6 +193,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tx4"
+                android:textColor="@color/green"
+                android:textSize="20sp"
                 android:text="PAYMENT OPTIONS"
                 />
 
@@ -100,7 +205,7 @@
             android:layout_width="fill_parent"
             android:layout_height="1.0dip"
             android:layout_below="@+id/rdetails2"
-            android:background="#ffdddddd" />
+            android:background="@color/deemphasized_text" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -115,6 +220,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/im2"
+                android:src="@drawable/airtelmoney"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"/>
@@ -122,16 +228,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tx5"
+                android:textSize="18sp"
+                android:textColor="@color/colorblack"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="100dp"
-                android:text="Credit Card"
+                android:text="Airtel Money"
                 />
 
             <ImageButton
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:id="@+id/im3"
-                android:src="@mipmap/search"
+                android:src="@mipmap/next"
                 android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"/>
@@ -141,8 +249,8 @@
             android:layout_width="fill_parent"
             android:layout_height="1.0dip"
             android:layout_below="@+id/rdetails3"
-            android:background="#ffdddddd" />
-        <RelativeLayout
+            android:background="@color/deemphasized_text" />
+       <!-- <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -156,6 +264,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/im4"
+                android:src="@mipmap/creditcard"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"/>
@@ -163,6 +272,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tx6"
+                android:textSize="18sp"
+                android:textColor="@color/colorblack"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="100dp"
                 android:text="Money Card"
@@ -172,16 +283,20 @@
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:id="@+id/im6"
-                android:src="@mipmap/search"
+                android:src="@mipmap/next"
                 android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"/>
-        </RelativeLayout>
+        </RelativeLayout>-->
         <View
             android:id="@+id/vcredit3"
             android:layout_width="fill_parent"
             android:layout_height="1.0dip"
             android:layout_below="@+id/rdetails4"
-            android:background="#ffdddddd" />
+            android:background="@color/deemphasized_text" />
     </RelativeLayout>
+
+
+
+
 </RelativeLayout>

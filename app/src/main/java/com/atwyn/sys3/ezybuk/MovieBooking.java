@@ -27,7 +27,7 @@ import com.mancj.slideup.SlideUp;
 public class MovieBooking extends Main2Activity implements NavigationView.OnNavigationItemSelectedListener {
     VideoView simpleVideoView;
     MediaController mediaControls;
-    Button book;
+    Button book1;
 
     Spinner sp1, sp2, sp3;
     ImageButton im1;
@@ -43,56 +43,56 @@ public class MovieBooking extends Main2Activity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_booking);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-     /*   if (null != toolbar) {
-            toolbar.setNavigationIcon(R.mipmap.backbutton);
+        //setSupportActionBar(toolbar);
+        if (null != toolbar) {
+            toolbar.setNavigationIcon(R.drawable.backbutton);
 
             //  actionbar.setTitle(R.string.title_activity_settings);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent in = new Intent(MoviesBooking.this, Main2Activity.class);
+                    Intent in = new Intent(MovieBooking.this, Main2Activity.class);
                     //startActivity(in);
                     finish();
                 }
             });
-*/
 
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.location);
-        toolbar.setOverflowIcon(drawable);
+            Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.location);
+            toolbar.setOverflowIcon(drawable);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                    R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
 
-        toggle.syncState();
+            toggle.syncState();
 
-        sp1 = (Spinner) findViewById(R.id.spinner);
-        sp2 = (Spinner) findViewById(R.id.spinner2);
-        sp3 = (Spinner) findViewById(R.id.spinner3);
-        book = (Button) findViewById(R.id.button);
-        // Find your VideoView in your video_main.xml layout
+            sp1 = (Spinner) findViewById(R.id.spinner);
+            sp2 = (Spinner) findViewById(R.id.spinner2);
+            sp3 = (Spinner) findViewById(R.id.spinner3);
+            book1 = (Button) findViewById(R.id.button);
+            // Find your VideoView in your video_main.xml layout
 
-        im1 = (ImageButton) findViewById(R.id.imageButton);
-        im1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(MovieBooking.this, FullTrailer.class);
-                startActivity(in);
-            }
-        });
+            im1 = (ImageButton) findViewById(R.id.imageButton);
+            im1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent in = new Intent(MovieBooking.this, FullTrailer.class);
+                    startActivity(in);
+                }
+            });
 
-        book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            book1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                Intent in = new Intent(MovieBooking.this, SeatReservation.class);
-                startActivity(in);
-            }
-        });
+                    Intent in = new Intent(MovieBooking.this, SeatReservation.class);
+                    startActivity(in);
+                }
+            });
 
 
+        }
     }
 
 

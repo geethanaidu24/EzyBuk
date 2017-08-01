@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sys3.ebfinal.ScrollingActivity"
+android:background="@color/white"
+    android:layout_marginBottom="20dp"
     tools:showIn="@layout/activity_scrolling">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginBottom="10dp">
 
 
         <RelativeLayout
@@ -18,14 +21,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="5dp">
             <ImageView
                 android:layout_width="150dp"
-                android:layout_height="180dp"
-                android:src="@drawable/backfinalfour"
+                android:layout_height="200dp"
+                android:src="@drawable/movieposter"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerCrop"/>
+                android:layout_marginTop="10dp"
+android:id="@+id/mp"
+                android:scaleType="fitXY"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +39,7 @@
                 android:text="Raabta-Movie Name"
                 android:textSize="18sp"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/cred"
+                android:textColor="@color/colorblack"
                 android:id="@+id/textView6" />
             <ImageView
                 android:id="@+id/imageView3"
@@ -45,7 +49,7 @@
                 android:layout_alignStart="@+id/textView6"
                 android:layout_below="@+id/textView6"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@mipmap/like" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -89,6 +93,15 @@
                 android:text="3D ,2D"
                 android:layout_marginBottom="5dp"/>
 
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView10"
+                android:layout_alignStart="@+id/textView10"
+                android:layout_below="@+id/textView10"
+                android:text="time | date" />
+
 
         </RelativeLayout>
 
@@ -129,7 +142,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10.0dip"
 
-                    android:src="@mipmap/seat" />
+                    android:src="@drawable/stargreen" />
 
                 <TextView
                     android:id="@+id/availableText"
@@ -146,6 +159,7 @@
                     android:text="Users Rating"
                     android:layout_below="@+id/availableImage"
                     android:layout_gravity="center"
+                    android:textColor="@color/colorblack"
                     android:gravity="center"
                     android:layout_weight="1"/>
             </RelativeLayout>
@@ -163,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
 
-                    android:src="@mipmap/seat"
+                    android:src="@drawable/stargreen"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -184,6 +198,7 @@
                     android:text="Critics Rating"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:textColor="@color/colorblack"
                     android:layout_below="@+id/bookedImage"
                     android:layout_weight="1"/>
             </RelativeLayout>
@@ -194,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
 
-                android:background="@drawable/border_city2"
+                android:background="@drawable/rounded_border_editext"
                 android:layout_toRightOf="@+id/bookedImageLayout" >
 
                 <ImageView
@@ -202,8 +217,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_alignParentTop="true"
 
-                    android:src="@mipmap/seat" />
+android:padding="5dp"
+                    android:src="@mipmap/starwhite" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -212,6 +229,7 @@
                     android:gravity="center"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/selectedImage"
+                    android:textColor="@color/colorblack"
                     android:text="Rate the Movie"
                     android:layout_weight="1"/>
             </RelativeLayout>
@@ -253,6 +271,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/spinner"
                     android:paddingRight="5dp"
 
@@ -261,7 +280,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:spinnerMode="dropdown"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
 
                     />
 
@@ -279,12 +298,12 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:spinnerMode="dropdown"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
 
                     android:layout_marginBottom="5dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignTop="@+id/spinner"
-                    android:layout_marginTop="30dp" />
+                    android:layout_marginTop="35dp" />
 
                 <Spinner
                     android:id="@+id/spinner3"
@@ -300,7 +319,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:spinnerMode="dropdown"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:layout_alignEnd="@+id/spinner"
                     android:layout_toRightOf="@+id/spinner2"
                     android:layout_toEndOf="@+id/spinner2" />
@@ -308,7 +327,7 @@
                 <Button
                     android:id="@+id/button"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_below="@+id/spinner3"
@@ -361,9 +380,9 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="14sp"
 
-                    android:textColor="@color/colorblack"
+                    android:textColor="@color/green"
                     android:layout_marginTop="30dp"
-                    android:text="Cast" />
+                    android:text="SYNOPSIS" />
 
                 <TextView
                     android:id="@+id/textView17"
@@ -373,7 +392,9 @@
                     android:layout_alignStart="@+id/textView16"
                     android:layout_below="@+id/textView16"
                     android:layout_marginTop="5dp"
-                    android:text="TextView" />
+                    android:text="In War for the Planet of the Apes, the third chapter of the critically acclaimed blockbuster franchise, Caesar and his apes are forced into a deadly conflict with an army of humans led by a ruthless Colonel.
+
+After the apes suffer unimaginable losses, Caesar wrestles with his darker instincts and begins his own mythic quest to avenge his kind. As the journey finally brings them face to face, Caesar and the Colonel are pitted against each other in an epic battle that will determine the fate of both their species and the future of the planet." />
                 <TextView
                     android:id="@+id/textView18"
                     android:layout_width="wrap_content"
@@ -384,42 +405,38 @@
 
                     android:textSize="14sp"
 
-                    android:textColor="@color/colorblack"
+                    android:textColor="@color/green"
 
                     android:layout_marginLeft="10dp"
 
-                    android:text="Director" />
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="Lead Cast" />
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
                     android:layout_below="@+id/textView18"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="TextView" />
+                    android:layout_height="match_parent" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView110"
                     android:layout_marginTop="10dp"
-                    android:text="Plot"
+                    android:text="Crew"
                     android:layout_marginLeft="10dp"
                     android:textSize="14sp"
 
-                    android:textColor="@color/colorblack"
-                    android:layout_below="@+id/textView19"
+                    android:textColor="@color/green"
+                    android:layout_below="@+id/recycler_view"
 
 
 
                     />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view1"
                     android:layout_below="@+id/textView110"
-                    android:id="@+id/textView11"
-                    android:layout_marginLeft="10dp"
-                    android:text="text"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </RelativeLayout>
         </RelativeLayout>
 

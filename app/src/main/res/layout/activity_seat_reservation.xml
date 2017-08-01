@@ -1,233 +1,309 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
     <include
 
         layout="@layout/activity_toolbar"
-        android:layout_alignTop="@+id/busDeckSelectionLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
+        />
+    <!-- Header aligned to top -->
     <RelativeLayout
-        android:id="@+id/busDeckSelectionLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="25.0dip"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/white"
+        android:gravity="center"
         android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        >
+
         <RelativeLayout
-            android:id="@+id/busDeckSelectionButtons"
-            android:layout_width="wrap_content"
+            android:id="@+id/h1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="#ffeeeeee" >
+            android:gravity="center"
+
+
+            android:background="@color/white" >
 
             <TextView
                 android:id="@+id/lowerDeck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-
+                android:layout_marginBottom="10dp"
                 android:text="Select Seat"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="18.0sp" />
 
 
         </RelativeLayout>
-    </RelativeLayout>
 
-    <View
-        android:id="@+id/busDeckSelectionMargin"
-        android:layout_width="fill_parent"
-        android:layout_height="1.0dip"
-        android:layout_below="@+id/busDeckSelectionLayout"
-        android:background="#ffdddddd" />
-    <RelativeLayout
-        android:id="@+id/seatSelectionHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/busDeckSelectionMargin">
+
+
+        <View
+            android:id="@+id/h2"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/h1"
+            android:background="#ffdddddd" />
 
         <RelativeLayout
-            android:id="@+id/seatsLayout"
+            android:id="@+id/h3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/h2">
+
+            <RelativeLayout
+                android:id="@+id/seatsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true">
+
+                <TextView
+                    android:id="@+id/seatsSelectedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Select No. of Seats"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="100dp"
+
+                    />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="80dp"
+                    android:text="Total" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:text="TextView" />
+            </RelativeLayout>
+            <View
+                android:id="@+id/seatSelectionHeaderMargin"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:layout_below="@+id/seatsLayout"
+                android:background="#ffdddddd" />
+
+
+            <LinearLayout
+                android:id="@+id/seatLegendLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/seatSelectionHeaderMargin"
+
+                android:orientation="horizontal"
+                android:weightSum="3"
+                >
+
+                <LinearLayout
+                    android:id="@+id/availableImageLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true" >
+
+                    <ImageView
+                        android:id="@+id/availableImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:tint="@color/ddgrey"
+                        android:src="@mipmap/seat" />
+
+                    <TextView
+                        android:id="@+id/availableText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5.0dip"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+
+                        android:layout_toRightOf="@+id/availableImage"
+                        android:text="Sold Out"
+                        android:textSize="12.0sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bookedImageLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@+id/availableImageLayout" >
+
+                    <ImageView
+                        android:id="@+id/bookedImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:tint="@color/colorblack"
+                        android:src="@mipmap/seat" />
+
+                    <TextView
+                        android:id="@+id/bookedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5.0dip"
+                        android:layout_toRightOf="@+id/bookedImage"
+                        android:text="Available Seats"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="12.0sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/selectedImageLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@+id/bookedImageLayout" >
+
+                    <ImageView
+                        android:id="@+id/selectedImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:tint="@color/green"
+                        android:src="@mipmap/seat" />
+
+                    <TextView
+                        android:id="@+id/selectedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5.0dip"
+                        android:layout_toRightOf="@+id/selectedImage"
+                        android:text="Selected"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="12.0sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/sr1"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_below="@+id/seatLegendLayout"
+                android:background="@color/green" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+    <!-- Footer aligned to bottom -->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        >
+
+        <View
+            android:id="@+id/sr2"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+
+            android:background="@color/green" />
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookticket"
+            android:text="BOOK"
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5.0dip" >
+            android:text="Total"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/colorblack"
+            android:layout_marginRight="100dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/textView35" />
 
-            <TextView
-                android:id="@+id/seatsSelectedText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:layout_alignParentTop="true"
-                android:text="Select No. of Seats"
-                android:textColor="@color/black"
-                android:textSize="12.0sp" />
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
-                android:layout_marginRight="100dp"
 
-                />
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/textView41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="80dp"
-                android:text="Total" />
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
 
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:text="TextView" />
-        </RelativeLayout>
+            android:layout_marginRight="20dp"
+            android:text="TextView" />
     </RelativeLayout>
-
-    <View
-        android:id="@+id/seatSelectionHeaderMargin"
+    <!-- Scrollable Content below header and above footer -->
+    <ScrollView
+        android:id="@+id/container"
         android:layout_width="fill_parent"
-        android:layout_height="1.0dip"
-        android:layout_below="@+id/seatSelectionHeader"
-        android:background="#ffdddddd" />
-
-
-
-
-    <RelativeLayout
-        android:id="@+id/seatLegendLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/seatSelectionHeaderMargin"
-        android:layout_centerVertical="true"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/header"
+android:layout_above="@+id/footer"
+        android:background="@color/white"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <RelativeLayout
-            android:id="@+id/availableImageLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" >
-
-            <ImageView
-                android:id="@+id/availableImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10.0dip"
-
-                android:src="@mipmap/seat" />
-
-            <TextView
-                android:id="@+id/availableText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5.0dip"
-                android:layout_toRightOf="@+id/availableImage"
-                android:text="Sold Out"
-                android:textSize="12.0sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/bookedImageLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/availableImageLayout" >
-
-            <ImageView
-                android:id="@+id/bookedImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10.0dip"
-
-                android:src="@mipmap/seat" />
-
-            <TextView
-                android:id="@+id/bookedText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5.0dip"
-                android:layout_toRightOf="@+id/bookedImage"
-                android:text="Available Seats"
-                android:textSize="12.0sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/selectedImageLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/bookedImageLayout" >
-
-            <ImageView
-                android:id="@+id/selectedImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10.0dip"
-
-                android:src="@mipmap/seat" />
-
-            <TextView
-                android:id="@+id/selectedText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5.0dip"
-                android:layout_toRightOf="@+id/selectedImage"
-                android:text="Selected"
-                android:textSize="12.0sp" />
-        </RelativeLayout>
-    </RelativeLayout>
-    <View
-        android:id="@+id/sr1"
-        android:layout_width="fill_parent"
-        android:layout_height="1.0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_below="@+id/seatLegendLayout"
-        android:background="@color/cred" />
-    <RelativeLayout
-        android:id="@+id/seatLayoutScroll"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-
-        android:layout_below="@+id/seatLegendLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        >
-
-        <RelativeLayout
-            android:id="@+id/seatLayoutLowerMain"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="300dp"
-
-            android:layout_centerHorizontal="true"
-
-
-
-            android:paddingRight="5.0dp" >
-
-
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
             <GridView
                 android:id="@+id/gridView1"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="315dp"
 
 
                 android:columnWidth="30dp"
@@ -236,8 +312,9 @@
                 android:verticalSpacing="5dp"
                 android:horizontalSpacing="2dp"
                 android:stretchMode="columnWidth"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true">
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true">
             </GridView>
 
 
@@ -250,78 +327,8 @@
                  android:layout_alignParentTop="true"
                  android:layout_centerHorizontal="true" />
  -->
+        </LinearLayout>
 
-        </RelativeLayout>
-    </RelativeLayout>
-    <View
-        android:id="@+id/sr2"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_below="@+id/seatLayoutScroll"
-        android:background="@color/cred" />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:id="@+id/screen"
-        android:layout_below="@+id/sr2">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Screen Here"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bookbutton"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"/>
-
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/bottomBarSeatSelection"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white" >
-
-        <Button
-            android:id="@+id/doneButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="2dp"
-            android:background="@color/cred"
-            android:text="BOOK"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/white"
-            android:textSize="18.0sp" />
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="80dp"
-            android:text="Total" />
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:text="TextView" />
-
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

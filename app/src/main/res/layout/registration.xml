@@ -25,15 +25,15 @@ android:fillViewport="true"
             android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-
+            android:layout_height="500dp"
+android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp"
-            android:background="#fff"
+
+            android:background="@drawable/backgrey"
             android:elevation="4dp"
             android:orientation="vertical"
-            android:padding="10dp"
+
             android:id="@+id/relativeLayout">
 
 
@@ -42,11 +42,12 @@ android:fillViewport="true"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+
                 android:weightSum="1"
                 android:id="@+id/linearLayout2">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:id="@+id/rreg1"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
@@ -101,7 +102,7 @@ android:fillViewport="true"
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:id="@+id/rreg2"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/rreg1"
@@ -160,7 +161,7 @@ android:fillViewport="true"
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:id="@+id/rreg3"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/rreg2"
@@ -220,7 +221,7 @@ android:fillViewport="true"
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:id="@+id/rreg4"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/rreg3"
@@ -282,12 +283,15 @@ android:fillViewport="true"
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
 
+                    android:layout_marginTop="5dp"
+android:background="@color/green"
+                    android:textColor="@color/white"
                     android:text="Sign Up"
-                    android:id="@+id/sign_in_button"
+                    android:id="@+id/sign_up_button"
                     android:textAllCaps="false"
-
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:textSize="18sp" />
                 <TextView
                     android:id="@+id/textView30"
@@ -296,7 +300,7 @@ android:fillViewport="true"
 
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/sign_in_button"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="35dp"
                     android:layout_marginRight="35dp"
                     android:textColor="@color/colorblack"
@@ -310,11 +314,53 @@ android:fillViewport="true"
                     android:layout_below="@+id/textView30"
                     android:layout_marginTop="1dp"
                     android:layout_marginLeft="35dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="35dp"
-                    android:textColor="@color/cred"
+                    android:textColor="@color/white"
                     android:text=" Terms and conditions." />
-            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_below="@+id/textView31"
+                android:gravity="center"
+                android:id="@+id/txor"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+
+
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txor"
+                android:layout_height="match_parent"
+
+                android:paddingTop="15dp"
+
+                android:paddingBottom="15dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <com.google.android.gms.common.SignInButton
+android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:id="@+id/sign_in_button"
+                android:layout_below="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@color/green"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                />
+
+
+        </LinearLayout>
 
 
         </RelativeLayout>

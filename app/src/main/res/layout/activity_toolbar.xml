@@ -1,10 +1,11 @@
 <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/cred"
+
+    android:layout_height="?attr/actionBarSize"
     android:minHeight="?attr/actionBarSize"
     android:theme="?attr/actionBarTheme"
     tools:ignore="MissingConstraints"
+    android:background="@color/colorblack"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="7dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,9 +15,9 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
-android:src="@mipmap/ezybuk"
+android:src="@drawable/logoezyb"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
       />

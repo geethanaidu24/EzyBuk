@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <include layout="@layout/activity_toolbar"
         ></include>
@@ -8,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/busDeckSelectionLayout"
         android:layout_width="fill_parent"
-        android:layout_height="25.0dip"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar" >
 
         <RelativeLayout
@@ -16,7 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="#ffeeeeee" >
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white" >
 
             <TextView
                 android:id="@+id/lowerDeck"
@@ -26,7 +29,7 @@
 
                 android:text="Apply"
                 android:textColor="@color/colorblack"
-                android:textSize="18.0sp" />
+                android:textSize="20.0sp" />
 
 
         </RelativeLayout>
@@ -53,6 +56,8 @@
             android:id="@+id/availableImageLayout"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true" >
 
@@ -60,7 +65,9 @@
                 android:layout_width="100dp"
                 android:id="@+id/offers"
                 android:layout_marginLeft="40dp"
+                android:background="@color/green"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="OFFERS"/>
         </RelativeLayout>
 
@@ -68,6 +75,8 @@
             android:id="@+id/bookedImageLayout"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/availableImageLayout" >
 
@@ -76,7 +85,9 @@
                 android:id="@+id/vouchers"
                 android:layout_marginRight="40dp"
                 android:layout_alignParentRight="true"
+                android:background="@color/green"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Vouchers"/>
         </RelativeLayout>
 
@@ -92,7 +103,7 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+android:textColor="@color/colorblack"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Theater Name"
@@ -133,13 +144,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:textSize="20sp"
-            android:textColor="@color/cred"
+            android:textColor="@color/green"
             android:text="Movie Name" />
         <TextView
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView16"
+            android:textColor="@color/colorblack"
             android:layout_marginLeft="40dp"
             android:text="DATE" />
         <TextView
@@ -149,6 +161,7 @@
 
             android:layout_alignParentRight="true"
             android:layout_below="@+id/textView16"
+            android:textColor="@color/colorblack"
             android:layout_marginRight="40dp"
             android:text="TIME" />
 
@@ -191,7 +204,7 @@
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cred"
+            android:textColor="@color/green"
             android:textSize="18sp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -209,75 +222,146 @@
             android:layout_width="match_parent"
             android:layout_below="@+id/view4"
             android:id="@+id/paymentr"
+            android:layout_marginBottom="5dp"
             android:layout_height="wrap_content">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rclass"
+    android:layout_marginTop="5dp">
             <TextView
                 android:id="@+id/textclass"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
+
+
+                android:layout_marginLeft="15dp"
                 android:text="Class :"
                 android:textColor="@color/colorblack" />
+            <TextView
+                android:id="@+id/textView36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+              android:layout_alignEnd="@+id/textclass"
 
+                android:layout_marginRight="15dp"
+                android:text="Gold"
+                android:layout_alignRight="@+id/textclass"
+                android:layout_alignTop="@+id/textclass" />
+</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rseats"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/rclass">
             <TextView
                 android:id="@+id/seats"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textclass"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
+
+
+                android:layout_marginLeft="15dp"
                 android:text="Seats :"
                 android:textColor="@color/colorblack" />
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignEnd="@+id/seats"
+                    android:layout_marginRight="15dp"
 
-
-            <TextView
-                android:id="@+id/textticket"
-
-                android:layout_width="wrap_content"
+                    android:text="4"
+                    android:layout_alignRight="@+id/seats"
+                    android:layout_alignTop="@+id/seats" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/seats"
                 android:layout_marginTop="10dp"
+                android:layout_below="@+id/rseats"
+                android:id="@+id/rticketprice">
+                <TextView
+                    android:id="@+id/textticket"
 
-                android:layout_marginLeft="10dp"
-                android:text="Ticket Price :"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:textColor="@color/colorblack" />
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
+
+                    android:layout_marginLeft="15dp"
+                    android:text="Ticket Price :"
+
+                    android:textColor="@color/colorblack" />
+                <TextView
+                    android:id="@+id/textView29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textticket"
+                    android:layout_marginLeft="15dp"
+
+                    android:text="100" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"
+
+                    android:text="400"
+                    android:layout_alignTop="@+id/textticket" />
+
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textticket"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-
-                android:layout_below="@+id/textView23"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/colorblack"
-                android:text="Convenience Charge" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView24"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="TextView" />
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/rticketprice"
+                android:id="@+id/rcovinencecharge">
 
 
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+
+
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/colorblack"
+                    android:text="Convenience Charge" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView30"
+                    android:layout_marginLeft="15dp"
+                       android:text="10" />
+                <TextView
+                    android:id="@+id/textView37"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"
+
+
+                    android:text="40" />
+
+
+
+            </RelativeLayout>
 
         </RelativeLayout>
     </RelativeLayout>
@@ -293,12 +377,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/totr"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/view6">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cred"
+            android:textColor="@color/green"
             android:layout_marginLeft="10dp"
+
             android:textSize="20sp"
             android:text="Total :"/>
         <TextView
@@ -308,22 +394,18 @@
             android:id="@+id/tot"
             android:layout_centerInParent="true"
             android:text="150Rs"
-            android:layout_marginRight="20dp"/>
+
+            android:layout_marginRight="15dp"/>
 
 
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/view7"
-        android:layout_width="fill_parent"
-        android:layout_height="1.0dip"
-        android:layout_below="@+id/totr"
-        android:background="#ffdddddd" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_below="@+id/view7"
+        android:layout_below="@+id/totr"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/button2"
@@ -332,9 +414,8 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:textColor="@color/white"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/cred"
+android:textSize="20sp"
+            android:background="@color/green"
             android:layout_centerInParent="true"
             android:text="Continue Payment" />
     </RelativeLayout>

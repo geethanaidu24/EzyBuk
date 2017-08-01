@@ -1,25 +1,44 @@
 package com.atwyn.sys3.ezybuk;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vstechlab.easyfonts.EasyFonts;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 public class NowShowing extends Fragment {
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
-   // final static String moviesUrlAddress = Config.moviesUrlAddress;
+    final static String moviesUrlAddress = Config.moviesUrlAddress;
     ImageView im1;
     TextView tx1,tx2;
     Button b1;
@@ -35,7 +54,7 @@ public class NowShowing extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        im1 = (ImageView) view.findViewById(R.id.imageDownloaded);
+      /*  im1 = (ImageView) view.findViewById(R.id.imageDownloaded);
         tx1 = (TextView) view.findViewById(R.id.textViewURL);
         tx1.setTypeface(EasyFonts.walkwayBlack(getContext()));
         tx2=(TextView)view.findViewById(R.id.textViewURL2);
@@ -48,13 +67,13 @@ public class NowShowing extends Fragment {
                 Intent myIntent = new Intent(getActivity(), ScrollingActivity.class);
                 getActivity().startActivity(myIntent);
             }
-        });
-    }
+        });*/
 
 
-}
-      /* final ListView listView = (ListView) view.findViewById(R.id.listmovies);
-        new MoviesDownloader(NowShowing.this, moviesUrlAddress, listView).execute();
+
+
+        final GridView gridView = (GridView)view.findViewById(R.id.moviesgridview);
+        new MoviesDownloader(NowShowing.this, moviesUrlAddress, gridView).execute();
 
     }
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
@@ -79,14 +98,19 @@ public class NowShowing extends Fragment {
 
         Context c;
         String moviesUrlAddress;
-        ListView listView1;
+        GridView gridview1;
 
 
-        private MoviesDownloader(NowShowing c, String urlAddress, ListView listView1) {
+        private MoviesDownloader(NowShowing c, String moviesUrlAddress, GridView gridView) {
 
-            this.moviesUrlAddress = urlAddress;
-            this.listView1 = listView1;
+            this.moviesUrlAddress = moviesUrlAddress;
+            this.gridview1 = gridView;
         }
+        /*private MoviesDownloader(Ns_grid ns_grid, String moviesUrlAddress, GridView gridView) {
+                    this.moviesUrlAddress = moviesUrlAddress;
+                    this.gridview1 = gridview1;
+                }
+        */
 
         @Override
         protected void onPreExecute() {
@@ -105,7 +129,7 @@ public class NowShowing extends Fragment {
                 Toast.makeText(c, "Unsuccessful,Null returned", Toast.LENGTH_SHORT).show();
             } else {
                 //CALL DATA PARSER TO PARSE
-                MoviesDataParser parser = new MoviesDataParser(c, listView1, s);
+               MoviesDataParser parser = new MoviesDataParser(c, gridview1, s);
                 parser.execute();
             }
         }
@@ -133,15 +157,16 @@ public class NowShowing extends Fragment {
         }
     }
     private class MoviesDataParser extends AsyncTask<Void, Void, Integer> {
+        private final GridView gridview1;
         Context c;
-        ListView listView1;
+
         String jsonData;
 
         ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
 
-        private MoviesDataParser(Context c, ListView listView1, String jsonData) {
+        private MoviesDataParser(Context c, GridView gridview1, String jsonData) {
             this.c = c;
-            this.listView1 = listView1;
+            this.gridview1 = gridview1;
             this.jsonData = jsonData;
         }
 
@@ -163,7 +188,7 @@ public class NowShowing extends Fragment {
             } else {
 
                 final MoviesListAdapter adapter = new MoviesListAdapter(c, mySQLDataBases);
-                listView1.setAdapter(adapter);
+                gridview1.setAdapter(adapter);
             }
         }
 
@@ -175,11 +200,11 @@ public class NowShowing extends Fragment {
                 MySQLDataBase mySQLDataBase;
                 for (int i = 0; i < moviesArray.length(); i++) {
                     moviesObject = moviesArray.getJSONObject(i);
-                    Log.d("result response: ", "> " + moviesObject);
-                    int moviesId = moviesObject.getInt("MoviesId");
-                    String moviesName = moviesObject.getString("MoviesName");
+                    //   Log.d("result movies response: ", "> " + moviesObject);
+                    int movieId = moviesObject.getInt("MovieId");
+                    String movietitle = moviesObject.getString("Title");
 
-                    String moviesImageUrl = moviesObject.getString("MoviesImageUrl");
+                    String moviesposterUrl = moviesObject.getString("Posterurl");
 
 
 
@@ -187,9 +212,9 @@ public class NowShowing extends Fragment {
                     //  flags |= android.text.format.DateUtils.FORMAT_SHOW_TIME;
 
                     mySQLDataBase = new MySQLDataBase();
-                    mySQLDataBase.setMoviesId(moviesId);
-                    mySQLDataBase.setMoviesName(moviesName);
-                    mySQLDataBase.setMoviesImageUrl(moviesImageUrl);
+                    mySQLDataBase.setMovieId(movieId);
+                    mySQLDataBase.setTitle(movietitle);
+                    mySQLDataBase.setPosterUrl(moviesposterUrl);
 
                     mySQLDataBases.add(mySQLDataBase);
 
@@ -231,42 +256,38 @@ public class NowShowing extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.nowshowing_listview, parent, false);
+                convertView = inflater.inflate(R.layout.nowshowing_gridview, parent, false);
             }
 
-            TextView moviename =(TextView) convertView.findViewById(R.id.textViewURL);
-            ImageView img = (ImageView) convertView.findViewById(R.id.imageDownloaded);
+            final TextView movietitle =(TextView) convertView.findViewById(R.id.textViewURL);
+            ImageView movieposter = (ImageView) convertView.findViewById(R.id.imageDownloaded);
 
 
             //BIND DATA
             MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
-            final String url = mySQLDataBase.getMoviesImageUrl();
+            final String url = mySQLDataBase.getPosterUrl();
             final String finalUrl = Config.mainUrlAddress + url;
 
-            final String movieName = mySQLDataBase.getMoviesName();
+            final String movieTitle = mySQLDataBase.getTitle();
 
             //IMG
-            PicassoClient.downloadImage(c, finalUrl, img);
+            Glide.downloadImage(c, finalUrl, movieposter);
 
-            moviename.setText(movieName);
+            movietitle.setText( movieTitle);
 
             convertView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    openDetailNewsActivity(finalUrl,movieName);
+                    openDetailNewsActivity(finalUrl, String.valueOf(movietitle));
                 }
             });
 
             return convertView;
         }
         private void openDetailNewsActivity(String...details){
-            Intent intent = new Intent(c, MoviesBooking.class);
+            Intent intent = new Intent(c, MovieBooking.class);
 
             c.startActivity(intent);
         }
     }
 }
-
-
-
-*/

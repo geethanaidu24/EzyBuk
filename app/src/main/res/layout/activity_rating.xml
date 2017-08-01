@@ -1,0 +1,156 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:focusableInTouchMode="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#80000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/white"
+        android:id="@+id/relativeLayout4"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+       >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/button5">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/rateid"
+            android:scaleType="fitXY"
+
+          />
+
+
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/rateid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="How was the Movie? \n Select stars to Rate Movie" />
+        <TextView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+          android:layout_below="@+id/textView39"
+            android:layout_centerHorizontal="true"
+           android:layout_marginTop="5dp"
+           android:text="0.0"
+            android:textColor="@color/cred"
+            android:textSize="20sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/starsr"
+            android:layout_below="@+id/imageView6">
+
+
+            <RatingBar
+                android:id="@+id/simpleRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+
+                android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+            <View
+                android:id="@+id/v1"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:layout_below="@+id/starsr"
+                android:layout_marginTop="10dp"
+                android:background="@color/deemphasized_text" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v1"
+                android:id="@+id/ratedata">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Write a Review"
+                android:gravity="center"
+                android:textColor="@color/cred"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/revtext"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Optional"
+                android:gravity="center"
+                android:id="@+id/po"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/revtext"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Review Title"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/ed1"
+                    android:layout_below="@+id/po"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/ed2"
+                    android:layout_below="@+id/ed1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum 100 Charcters"
+                    android:layout_below="@+id/ed2"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+android:background="@color/green"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="SUBMIT" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rate Later"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:background="@drawable/rate"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/relativeLayout4"/>
+
+
+
+
+</RelativeLayout>
+

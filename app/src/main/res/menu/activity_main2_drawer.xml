@@ -11,14 +11,11 @@
         android:id="@+id/fr2"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Events and Plays" />
+
     <item
-        android:id="@+id/fr3"
-        android:icon="@drawable/ic_menu_slideshow"
-        android:title="Sports" />
-    <item
-        android:id="@+id/go"
+        android:id="@+id/logout"
         android:icon="@drawable/ic_menu_manage"
-        android:title="Offers" />
+        android:title="Logout" />
 
     <!-- <item
          android:id="@+id/close"

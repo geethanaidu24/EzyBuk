@@ -12,18 +12,20 @@
 -->
 
     <item android:id="@+id/h1"
-        android:icon="@mipmap/search"
+        android:icon="@drawable/search"
 
         android:title="Search"
         android:visible="true"
         All4One:showAsAction="always"/>
 
-    <item android:id="@+id/h2"
+
+
+ <!--   <item android:id="@+id/h2"
         android:icon="@mipmap/location"
 
         android:title="City"
         android:visible="true"
         All4One:showAsAction="always"/>
-
+-->
 
 </menu>

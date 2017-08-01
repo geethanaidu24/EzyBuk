@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">EzyBuk</string>
-    <string name="title_activity_main2">EzyBuk</string>
+    <string name="title_activity_main2"> </string>
+    <string name="facebook_app_id">249522428884007</string>
 
+
+    <string name="fb_login_protocol_scheme">249522428884007</string>
+
+
+    <string name="app_id">249522428884007</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

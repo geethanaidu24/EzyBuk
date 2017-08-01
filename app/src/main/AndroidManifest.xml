@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.atwyn.sys3.ezybuk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|adjustPan">
+
+        <!--
+            <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+        -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +38,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--
+            <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        -->
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
@@ -26,24 +54,48 @@
         <activity android:name=".NowShowing" />
         <activity android:name=".ComingSoon" />
         <activity android:name=".MovieBooking" />
-        <activity android:name=".FullTrailer" />
+        <activity
+            android:name=".FullTrailer"
+            android:screenOrientation="landscape" />
         <activity android:name=".SeatReservation" />
         <activity android:name=".Payment" />
         <activity android:name=".LoginMain" />
         <activity android:name=".RegistrationLogin" />
-        <activity android:name=".LogIn" />
-        <activity
+
+        <!--
             android:name=".Registration"
             android:configChanges="orientation"
             android:hardwareAccelerated="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+        -->
         <activity android:name=".ForgotPassword" />
+        <activity
+            android:name=".LogIn"
+            tools:ignore="DuplicateActivity" />
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme" />
         <activity android:name=".PaymentOptions" />
-        <activity android:name=".Card"></activity>
+        <activity android:name=".Card" />
+        <activity android:name=".First" />
+        <activity android:name=".Second" />
+        <activity android:name=".LogInScreen" />
+        <activity android:name=".Third" />
+        <activity android:name=".UserProfile" />
+        <activity android:name=".facebook" />
+        <activity android:name=".Faceb" />
+        <activity android:name=".LoginInFinal" />
+        <activity android:name=".SignInFinal" />
+        <activity android:name=".Ns_grid" />
+        <activity android:name=".NowShowing_movies" />
+        <activity android:name=".UpComing_movies" />
+        <activity
+            android:name=".Rating"
+            android:theme="@style/Theme.Transparent" />
+        <activity android:name=".ScrollingActivity2" />
+        <activity android:name=".FacebookLogin" />
+        <activity android:name=".ConfirmDetails"></activity>
     </application>
 
 </manifest>

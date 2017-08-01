@@ -7,6 +7,7 @@
     android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     android:splitMotionEvents="false"
+
     >
 
     <!--  <android.support.v7.widget.Toolbar
@@ -47,18 +48,18 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:background="@color/white"
+            android:layout_marginTop="10dp"
+
 
             android:layout_height="400dp">
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_height="480dp"
+android:background="@drawable/backgrey"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="60dp"
-                android:background="#fff"
+
+android:layout_centerInParent="true"
                 android:elevation="4dp"
                 android:orientation="vertical"
                 android:padding="10dp"
@@ -87,6 +88,7 @@
                             android:layout_height="30dp"
                             android:src="@mipmap/pass"
                             android:layout_marginLeft="10dp"
+                            android:tint="@color/green"
                             android:layout_alignParentLeft="true"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="10dp"
@@ -133,6 +135,7 @@
                             android:layout_height="30dp"
                             android:src="@mipmap/pass"
                             android:layout_marginLeft="10dp"
+                            android:tint="@color/green"
                             android:layout_alignParentLeft="true"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="10dp"
@@ -178,6 +181,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="SIGN IN"
+                        android:background="@color/green"
+                        android:textColor="@color/white"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="20dp"
@@ -196,12 +201,46 @@
                         android:textSize="18sp"
                         android:id="@+id/forgot"
                         android:layout_marginBottom="30dp"
-                        android:textColor="@color/cred"/>
+                        android:textColor="@color/white"/>
+
+
+</LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OR"
+                    android:layout_below="@+id/linearLayout2"
+                    android:gravity="center"
+                    android:id="@+id/txor"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"/>
 
 
 
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/login_button"
 
-                </LinearLayout>
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/txor"
+                        android:layout_height="50dp"
+
+                        android:paddingTop="13dp"
+
+                        android:paddingBottom="13dp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <com.google.android.gms.common.SignInButton
+
+                        android:id="@+id/sign_in_button"
+android:layout_below="@+id/login_button"
+                        android:layout_width="match_parent"
+android:layout_marginTop="10dp"
+                        android:background="@color/green"
+                        android:layout_height="50dp"
+                        android:visibility="visible"
+                        />
+
 
             </RelativeLayout>
 

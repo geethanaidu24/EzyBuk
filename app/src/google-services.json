@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "847489931439",
+    "project_id": "ezybuk"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847489931439:android:d7de4ccd9932d4f3",
+        "android_client_info": {
+          "package_name": "com.atwyn.sys3.ezybuk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847489931439-45v30l8pnemlc0994i6luenp15d59rqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atwyn.sys3.ezybuk",
+            "certificate_hash": "3a6adafd8c62219bf61fbca2b3aa75fdb37b98d3"
+          }
+        },
+        {
+          "client_id": "847489931439-k6t982539vrbjdlh9qg1604ip364g1ah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWQxsvmy1EAr6drG6945Y3U0LoQMa0Ewk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

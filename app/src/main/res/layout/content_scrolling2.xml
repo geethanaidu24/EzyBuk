@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/white"
+    android:layout_marginBottom="20dp"
+  >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginBottom="10dp">
+
+
+        <RelativeLayout
+            android:id="@+id/r4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp">
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:src="@drawable/movieposter"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/mp2"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="170dp"
+                android:gravity="center|end"
+                android:text="Raabta-Movie Name"
+                android:textSize="18sp"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/colorblack"
+                android:id="@+id/textView62" />
+            <ImageView
+                android:id="@+id/imageView32"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignLeft="@+id/textView62"
+                android:layout_alignStart="@+id/textView62"
+                android:layout_below="@+id/textView62"
+                android:layout_marginTop="8dp"
+                app:srcCompat="@mipmap/like" />
+
+            <TextView
+                android:id="@+id/textView72"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView32"
+                android:layout_marginLeft="8dp"
+
+                android:layout_toEndOf="@+id/imageView32"
+                android:layout_toRightOf="@+id/imageView32"
+                android:text="91%" />
+
+            <TextView
+                android:id="@+id/textView82"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/imageView32"
+                android:layout_alignStart="@+id/imageView32"
+                android:layout_below="@+id/imageView32"
+                android:layout_marginTop="5dp"
+                android:text="Type of Movie-DRama,Action" />
+
+            <TextView
+                android:id="@+id/textView92"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView82"
+                android:layout_alignStart="@+id/textView82"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/textView82"
+                android:text="Languages" />
+
+            <TextView
+                android:id="@+id/textView102"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView92"
+                android:layout_alignStart="@+id/textView92"
+                android:layout_below="@+id/textView92"
+                android:layout_marginTop="5dp"
+                android:text="3D ,2D"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/textView332"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView102"
+                android:layout_alignStart="@+id/textView102"
+                android:layout_below="@+id/textView102"
+                android:text="time | date" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sr22"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/r4"
+            android:background="@color/ddgrey" />
+        <LinearLayout
+            android:id="@+id/seatLegendLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sr22"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+         >
+
+            <TextView
+                android:id="@+id/textView402"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+
+                android:text="Want to Watch this Movie ?"
+                android:textColor="@color/colorblack" />
+
+
+            <RelativeLayout
+                android:id="@+id/bookedImageLayout"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_border_editext"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/bookedImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/like"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/bookedText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5.0dip"
+                    android:textColor="@color/green"
+                    android:layout_toRightOf="@+id/bookedImage2"
+                    android:text="4.0/5"
+                    android:textSize="12.0sp" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/bookedImageLayout2"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/roundedborder_editext_opposite"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/bookedImage22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/like"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/bookedText22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5.0dip"
+                    android:layout_toRightOf="@+id/bookedImage22"
+                    android:text="4.0/5"
+                    android:textSize="12.0sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/selectedImageLayout"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+
+                android:background="@drawable/rounded_borderred"
+                android:layout_toRightOf="@+id/bookedImageLayout" >
+
+                <ImageView
+                    android:id="@+id/bookedImage12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/reddislike"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/bookedText12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5.0dip"
+                    android:textColor="@color/cred"
+                    android:layout_toRightOf="@+id/bookedImage12"
+                    android:text="4.0/5"
+                    android:textSize="12.0sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/selectedImageLayout1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+android:visibility="gone"
+                android:background="@drawable/rounded_bordered_opposite"
+                android:layout_toRightOf="@+id/bookedImageLayout" >
+
+                <ImageView
+                    android:id="@+id/bookedImage121"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/reddislike"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/bookedText121"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5.0dip"
+                    android:layout_toRightOf="@+id/bookedImage121"
+                    android:text="4.0/5"
+                    android:textSize="12.0sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/sr3"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/seatLegendLayout"
+            android:background="@color/ddgrey" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/sr3"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/moviebutton"
+            android:layout_height="fill_parent"
+            android:id="@+id/relativeLayout">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                >
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_marginLeft="5dp"
+
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorblack"
+                    android:text="About Movie....." />
+
+                <TextView
+                    android:id="@+id/textView162"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+
+                    android:textColor="@color/green"
+                    android:layout_marginTop="30dp"
+                    android:text="SYNOPSIS" />
+
+                <TextView
+                    android:id="@+id/textView172"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView162"
+                    android:layout_alignStart="@+id/textView162"
+                    android:layout_below="@+id/textView162"
+                    android:layout_marginTop="5dp"
+                    android:text="In War for the Planet of the Apes, the third chapter of the critically acclaimed blockbuster franchise, Caesar and his apes are forced into a deadly conflict with an army of humans led by a ruthless Colonel.
+
+After the apes suffer unimaginable losses, Caesar wrestles with his darker instincts and begins his own mythic quest to avenge his kind. As the journey finally brings them face to face, Caesar and the Colonel are pitted against each other in an epic battle that will determine the fate of both their species and the future of the planet." />
+                <TextView
+                    android:id="@+id/textView182"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/textView172"
+
+                    android:textSize="14sp"
+
+                    android:textColor="@color/green"
+
+                    android:layout_marginLeft="10dp"
+
+                    android:text="Lead Cast" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/textView182"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView110"
+                    android:layout_marginTop="10dp"
+                    android:text="Crew"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+
+                    android:textColor="@color/green"
+                    android:layout_below="@+id/recycler_view"
+
+
+
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view12"
+                    android:layout_below="@+id/textView110"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</android.support.v4.widget.NestedScrollView>
