@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="5dp"
@@ -20,7 +20,7 @@
         <RelativeLayout
             android:id="@+id/top_layout"
             android:layout_width="match_parent"
-            android:layout_height="140dp">
+            android:layout_height="wrap_content">
 
           <!--  <ImageView
                 android:id="@+id/img_thumbnail"
@@ -47,17 +47,31 @@
                 android:id="@+id/tv_species"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
 
+android:layout_below="@+id/img_thumbnail"
                 android:layout_gravity="bottom"
 
                 android:gravity="center"
                 android:layout_marginTop="10dp"
-              android:layout_marginBottom="5dp"
+
                 android:text="Test"
+                android:textColor="@color/cred"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_species1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+              android:layout_below="@+id/tv_species"
+                android:layout_gravity="bottom"
+
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="hello"
                 android:textColor="@color/cred"
                 android:textSize="14sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+
 </LinearLayout>

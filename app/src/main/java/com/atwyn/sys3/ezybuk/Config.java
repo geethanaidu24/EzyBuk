@@ -11,7 +11,7 @@ public class Config {
     public static final String API_KEY =
             "AIzaSyBltkcv28mWW6PnlpNMZyzOab4dOhNRKAU";
 
-    public final static String mainUrlAddress = "http://192.168.0.5/cias/";
+    public final static String mainUrlAddress = "http://192.168.0.9/cias/";
 
 
     // For admin login
@@ -22,6 +22,7 @@ public class Config {
     public final static String Facebook_Gmail = mainUrlAddress+"register/registerFBGmail";
     public final static String EzyBuk_SignUp = mainUrlAddress+"register/registerEzyBuk";
     public final static String Gmail = mainUrlAddress+"register/registerGmail";
+    public final static String castUrlAddress = mainUrlAddress+"home/get_cast/";
 
    // public final static String loginUrlAddress = mainphpUrl+"login.php";
 
@@ -32,5 +33,6 @@ public class Config {
     public final static String USER_SHARED_PREF = "username";
     public final static String LOGGEDIN_SHARED_PREF = "loggedIn";
     public final static String LOGIN_CHECK ="fail";
+    public final static String MovieID_PARAM = "MovieId";
 
 }

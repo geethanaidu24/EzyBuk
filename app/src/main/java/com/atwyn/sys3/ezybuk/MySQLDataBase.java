@@ -16,6 +16,8 @@ class MySQLDataBase implements Serializable {
     public String MLanguage;
     public String Releasing_Date;
 public String Format,Synopsis,Duration_min,Videourl;
+
+    public String CastName,CastRole,CastImgUrl;
     public MySQLDataBase() {
 
     }
@@ -98,5 +100,23 @@ public String Format,Synopsis,Duration_min,Videourl;
     }
 
     public void setBigPosterUrl(String bigPosterUrl) {this.BigPosterUrl = bigPosterUrl;}
+
+    public String getCastName() {
+        return CastName;
+    }
+
+    public void setCastName(String castName) {this.CastName = castName;}
+
+    public String getCastRole() {
+        return CastRole;
+    }
+
+    public void setCastRole(String castRole) {this.CastRole = castRole;}
+
+    public String getCastImgUrl() {
+        return CastImgUrl;
+    }
+
+    public void setCastImgUrl(String castImgUrl) {this.CastImgUrl = castImgUrl;}
 
 }

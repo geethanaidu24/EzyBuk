@@ -10,7 +10,7 @@ android:background="@color/white"
     tools:showIn="@layout/activity_scrolling">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/white"
         android:layout_marginBottom="10dp">
@@ -347,7 +347,7 @@ android:padding="5dp"
             android:layout_marginTop="10dp"
 
             android:background="@drawable/moviebutton"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/relativeLayout">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -411,12 +411,55 @@ After the apes suffer unimaginable losses, Caesar wrestles with his darker insti
 
                     android:text="Lead Cast" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+           <android.support.v7.widget.RecyclerView
+                    android:id="@+id/listcastview"
                     android:layout_width="match_parent"
                     android:layout_below="@+id/textView18"
+
                     android:layout_height="match_parent" />
-                <TextView
+
+
+
+<!--
+<HorizontalScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView18"
+                android:id="@+id/svc"
+
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+
+
+
+
+
+                    <ListView
+
+                           android:id="@+id/listcastview"
+
+                           android:layout_width="match_parent"
+                           android:splitMotionEvents="false"
+                           android:layout_height="fill_parent"
+                           >
+
+                       </ListView>
+</LinearLayout>
+                </HorizontalScrollView>
+-->
+
+
+
+
+
+               <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView110"
@@ -426,7 +469,7 @@ After the apes suffer unimaginable losses, Caesar wrestles with his darker insti
                     android:textSize="14sp"
 
                     android:textColor="@color/green"
-                    android:layout_below="@+id/recycler_view"
+                    android:layout_below="@+id/listcastview"
 
 
 
@@ -438,6 +481,7 @@ After the apes suffer unimaginable losses, Caesar wrestles with his darker insti
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </RelativeLayout>
+
         </RelativeLayout>
 
 

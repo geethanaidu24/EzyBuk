@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:splitMotionEvents="false">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/listview_back"
+        android:splitMotionEvents="false">
+
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            android:background="@drawable/imageview"
+            android:id="@+id/r1"
+            android:splitMotionEvents="false" >
+
+            <ImageView
+                android:id="@+id/imageDownloaded"
+                android:layout_width="fill_parent"
+                android:layout_height="190dp"
+
+                android:scaleType="fitXY"
+
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:background="@color/colorblack"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:id="@+id/r22"
+            android:layout_below="@+id/r1"
+            android:splitMotionEvents="false">
+
+            <TextView
+                android:id="@+id/textViewURL"
+
+
+                android:layout_height="40dp"
+                android:text="Basins"
+                android:gravity="center"
+
+                android:textColor="@android:color/white"
+
+                android:layout_gravity="center"
+                android:textSize="24sp"
+
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:typeface="normal"
+                android:layout_width="wrap_content"   />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:background="@color/colorblack"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/r22"
+            android:splitMotionEvents="false">
+
+            <TextView
+                android:id="@+id/textViewURL1"
+
+
+                android:layout_height="40dp"
+                android:text="Basins"
+                android:gravity="center"
+
+                android:textColor="@android:color/white"
+
+                android:layout_gravity="center"
+                android:textSize="24sp"
+
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:typeface="normal"
+                android:layout_width="wrap_content"   />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

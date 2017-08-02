@@ -30,6 +30,8 @@ dependencies {
 
     // If you want to use the GPU Filters
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'mobi.parchment:parchment:1.6.9@aar'
+
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
