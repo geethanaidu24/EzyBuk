@@ -1,3 +1,4 @@
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
@@ -17,21 +18,20 @@
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="0.01dp">
 
-        <RelativeLayout
-            android:id="@+id/top_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-          <!--  <ImageView
+
+ <ImageView
                 android:id="@+id/img_thumbnail"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
 
                 android:background="@drawable/round_image"
+     android:layout_marginLeft="5dp"
+     android:layout_marginRight="5dp"
+     android:layout_marginTop="5dp"
 
-                android:layout_above="@+id/tv_species"
-                android:layout_centerHorizontal="true" />-->
-            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_centerHorizontal="true" />
+           &lt;!&ndash; <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_thumbnail"
                 android:layout_width="96dp"
@@ -42,7 +42,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                app:civ_border_color="#FF000000"/>
+                app:civ_border_color="#FF000000"/>&ndash;&gt;
             <TextView
                 android:id="@+id/tv_species"
                 android:layout_width="fill_parent"
@@ -70,8 +70,63 @@ android:layout_below="@+id/img_thumbnail"
                 android:textColor="@color/cred"
                 android:textSize="14sp" />
 
-        </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
 
 </LinearLayout>
+-->
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    card_view:cardElevation="2dp"
+    card_view:cardBackgroundColor="@color/dgrey"
+
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardCornerRadius="5dp"
+    android:layout_margin="8dp">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/img_thumbnail"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+
+        android:src="@drawable/backfinalfour" />
+    <TextView
+        android:id="@+id/tv_species"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_thumbnail"
+
+    android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:text="Name"
+        android:textColor="#222"
+
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/tv_species1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_species"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+
+        android:text="Role"
+        android:textColor="#666"
+        android:textSize="15sp" />
+</RelativeLayout>
+</android.support.v7.widget.CardView>

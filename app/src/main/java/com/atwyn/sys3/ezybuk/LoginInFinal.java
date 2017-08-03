@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,7 +31,7 @@ public class LoginInFinal extends AppCompatActivity /*implements View.OnClickLis
     private EditText editName;
     private EditText editPassword;
     private Button sign_in_button;
-
+TextView forgotpwd;
 
     //boolean variable to check user is logged in or not
     //initially it is false
@@ -53,6 +54,16 @@ public class LoginInFinal extends AppCompatActivity /*implements View.OnClickLis
         editName = (EditText) findViewById(R.id.editText_user);
         editPassword = (EditText) findViewById(R.id.editText_password);
         sign_in_button = (Button) findViewById(R.id.sign_in_button);
+        forgotpwd=(TextView)findViewById(R.id.forgot);
+
+        forgotpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginInFinal.this, ForgotPassword.class);
+                // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
       //  sign_in_button.setOnClickListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

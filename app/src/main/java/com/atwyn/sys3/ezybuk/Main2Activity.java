@@ -345,16 +345,15 @@ TabHost tabHost;
 
         }
 
-        if(id == R.id.logout)
+        else if(id == R.id.logout)
         {
            logout();
 
         }
-       /*else if (id == R.id.go) {
-            Intent intent = new Intent(this, DesActivity.class);
-            intent.putExtra("string", "Go to other Activity by NavigationView item cliked!");
-            startActivity(intent);*//*
-        }*/
+     if (id == R.id.profile) {
+            Intent intent = new Intent(this, MyProfile.class);
+            startActivity(intent);
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

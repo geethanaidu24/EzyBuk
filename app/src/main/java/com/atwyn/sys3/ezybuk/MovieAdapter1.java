@@ -2,8 +2,6 @@ package com.atwyn.sys3.ezybuk;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,32 +17,30 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by SYS3 on 8/2/2017.
+ * Created by SYS3 on 8/3/2017.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MovieAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     final static String moviesUrlAddress = Config.moviesUrlAddress;
-String u;
+
     private Context context;
     private LayoutInflater inflater;
-    List<MySQLDataBase> data= Collections.emptyList();
+    List<MySQLDataBase> data = Collections.emptyList();
     MySQLDataBase current;
-    int currentPos=0;
+    int currentPos = 0;
 
     // create constructor to innitilize context and data sent from MainActivity
-    public MovieAdapter(Context context, List<MySQLDataBase> data){
-        this.context=context;
-        inflater= LayoutInflater.from(context);
-        this.data=data;
+    public MovieAdapter1(Context context, List<MySQLDataBase> data) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
+        this.data = data;
     }
-
-
 
     // Inflate the layout when viewholder created
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=inflater.inflate(R.layout.grid_item, parent,false);
-        MyHolder holder=new MyHolder(view);
+        View view = inflater.inflate(R.layout.grid_item, parent, false);
+        MyHolder holder = new MyHolder(view);
         return holder;
     }
 
@@ -53,10 +49,10 @@ String u;
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         // Get current position of item in recyclerview to bind data and assign values from list
-        MyHolder myHolder= (MyHolder) holder;
-        MySQLDataBase current=data.get(position);
-        myHolder.textCastname.setText(current.CastName);
-        myHolder.textCastrole.setText(current.CastRole);
+        MyHolder myHolder = (MyHolder) holder;
+        MySQLDataBase current = data.get(position);
+        myHolder.textCrewname.setText(current.CrewName);
+        myHolder.textCrewrole.setText(current.CrewRole);
 
      /*   myHolder.textCastname.setText(current.CastName+ "\n"+"Actor");
         myHolder.textCastrole.setText("As" + " "+ current.CastRole);*/
@@ -68,15 +64,13 @@ String u;
                // .placeholder(R.drawable.ic_img_error)
                 //.error(R.drawable.ic_img_error)
                 .into(myHolder.im);*/
-     u=   Config.mainUrlAddress + current.CastImgUrl;
-        Log.d("result image ", "> " + u);
-        /*com.bumptech.glide.Glide.with(context).load(myHolder.im).dontTransform()
-                .thumbnail(com.bumptech.glide.Glide.with(context).load(R.drawable.camaraposter).crossFade().fitCenter())
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .crossFade().centerCrop()
+      /*  Glide.with(context).load(Config.mainUrlAddress + current.CastImgUrl)
+                // .placeholder(R.drawable.ic_img_error)
+                //.error(R.drawable.ic_img_error)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(myHolder.im1);*/
 
-                .diskCacheStrategy(DiskCacheStrategy.ALL).into(myHolder.im);*/
- Glide.downloadImage2(context,u,myHolder.im);
+
+    Glide.downloadImage(context, Config.mainUrlAddress + current.CrewImgUrl, myHolder.im1);
     }
 
     // return total item from List
@@ -86,23 +80,23 @@ String u;
     }
 
 
-    class MyHolder extends RecyclerView.ViewHolder{
+    class MyHolder extends RecyclerView.ViewHolder {
 
-        TextView textCastname;
-        TextView textCastrole;
-       ImageView im;
+        TextView textCrewname;
+        TextView textCrewrole;
+        ImageView im1;
 
 
         // create constructor to get widget reference
         public MyHolder(View itemView) {
             super(itemView);
-            textCastname= (TextView) itemView.findViewById(R.id.tv_species);
-            textCastrole= (TextView) itemView.findViewById(R.id.tv_species1);
-          im  = (ImageView) itemView.findViewById(R.id.img_thumbnail);
+            textCrewname = (TextView) itemView.findViewById(R.id.tv_species);
+            textCrewrole = (TextView) itemView.findViewById(R.id.tv_species1);
+            im1 = (ImageView) itemView.findViewById(R.id.img_thumbnail);
 
         }
 
+
     }
-
-
 }
+

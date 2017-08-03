@@ -2,6 +2,7 @@ package com.atwyn.sys3.ezybuk;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,10 +16,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,19 +30,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.*;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,17 +82,12 @@ public class ScrollingActivity extends AppCompatActivity {
     Button book;
     ImageView mposter;
     TextView mtitle, mgenre, mlanguage, mformat, msynopsis, mdurationdate;
-    /* RecyclerView mRecyclerView, mRecyclerView1;
-     RecyclerView.LayoutManager mLayoutManager;
-     RecyclerView.Adapter mAdapter;
 
-     RecyclerView.LayoutManager mLayoutManager1;
-     RecyclerView.Adapter mAdapter1;
-     ArrayList<String> alName;
-     ArrayList<Integer> alImage;
-
-     ArrayList<String> alName1;
-     ArrayList<Integer> alImage1;*/
+    final ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
+    private Spinner spTheater,spdate,spTime;
+    int click=0;
+    private ArrayAdapter<MySQLDataBase> adapter ;
+    private static final String Spinnertheater=Config.crewUrlAddress;
     private MediaController mediacontroller;
     private Uri uri;
 
@@ -90,8 +97,11 @@ public class ScrollingActivity extends AppCompatActivity {
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,recyclerView1;
     private MovieAdapter mAdapter;
+    private MovieAdapter1 mAdapter1;
+
+
 
 
     String finalurl1;
@@ -147,38 +157,10 @@ public class ScrollingActivity extends AppCompatActivity {
 
         //Make call to AsyncTask
         new AsyncFetch().execute();
+        new AsyncFetch1().execute();
         //final ListView listView = (ListView) findViewById(R.id.listcastview);
         //  new CastDownloader(ScrollingActivity.this, moviesUrlAddress, listView).execute();
 
-     /*   alName = new ArrayList<>(Arrays.asList("Cheesy...", "Crispy... ", "Fizzy...", "Cool...", "Softy...", "Fruity...", "Fresh...", "Sticky..."));
-        alImage = new ArrayList<>(Arrays.asList(R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour));
-
-
-        alName1 = new ArrayList<>(Arrays.asList("Sharukh...", "Crispy... ", "Fizzy...", "Cool...", "Softy...", "Fruity...", "Fresh...", "Sticky..."));
-        alImage1 = new ArrayList<>(Arrays.asList(R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour));
-        // Calling the RecyclerView
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-
-        mRecyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
-        mRecyclerView1.setHasFixedSize(true);
-
-
-        // The number of Columns
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new HLVAdapter(ScrollingActivity.this, alName, alImage);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        mLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView1.setLayoutManager(mLayoutManager1);
-
-        mAdapter1 = new HLVAdapter(ScrollingActivity.this, alName1, alImage1);
-        mRecyclerView1.setAdapter(mAdapter1);
-*/
 
         mtitle = (TextView) findViewById(R.id.textView6);
         mgenre = (TextView) findViewById(R.id.textView10);
@@ -189,6 +171,8 @@ public class ScrollingActivity extends AppCompatActivity {
         mdurationdate = (TextView) findViewById(R.id.textView9);
         TextView tooltex = (TextView) findViewById(R.id.tooltext);
         ImageView imbigposter = (ImageView) findViewById(R.id.imageView);
+
+        spTheater=(Spinner)findViewById(R.id.spinner) ;
 
         tooltex.setText(movietitle);
         mtitle.setText(movietitle);
@@ -214,9 +198,12 @@ public class ScrollingActivity extends AppCompatActivity {
 
                 .crossFade()
                 .into(imbigposter);
-        //new MoviesInfoDownloader(ScrollingActivity.this, moviesUrlAddress).execute();
+
+       // this.initializeViews();
+        spTheater=(Spinner)findViewById(R.id.spinner) ;
         book = (Button) findViewById(R.id.button);
-        book.setOnClickListener(new View.OnClickListener() {
+
+ book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -291,300 +278,14 @@ public class ScrollingActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    /*public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
+ /*   private void initializeViews()
+    {
 
 
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        spTheater=(Spinner)findViewById(R.id.spinner) ;
+        book = (Button) findViewById(R.id.button);
 
     }
-
-    private class CastDownloader extends AsyncTask<Void, Void, String> {
-
-        Context c;
-        String moviesUrlAddress;
-        ListView listView1;
-
-
-        private CastDownloader(ScrollingActivity c, String moviesUrlAddress, ListView listView) {
-            this.c = c;
-            this.moviesUrlAddress = moviesUrlAddress;
-            this.listView1 = listView;
-            Log.d("movies url: ", "> " + moviesUrlAddress);
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            return downloadMoviesData();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (s == null) {
-                Toast.makeText(c, "Unsuccessful,Null returned", Toast.LENGTH_SHORT).show();
-            } else {
-                //CALL DATA PARSER TO PARSE
-                CastDataParser parser = new CastDataParser(c, listView1, s);
-                parser.execute();
-            }
-        }
-
-        private String downloadMoviesData() {
-            HttpURLConnection con = Connector.connect(moviesUrlAddress);
-            if (con == null) {
-                return null;
-            }
-            try {
-                InputStream is = new BufferedInputStream(con.getInputStream());
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                String line;
-                StringBuilder jsonData = new StringBuilder();
-                while ((line = br.readLine()) != null) {
-                    jsonData.append(line).append("n");
-                }
-                br.close();
-                is.close();
-                return jsonData.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    private class CastDataParser extends AsyncTask<Void, Void, Integer> {
-        private final ListView listView1;
-        Context c;
-
-        String jsonData;
-
-        ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
-
-        private CastDataParser(Context c, ListView listView1, String jsonData) {
-            this.c = c;
-            this.listView1 = listView1;
-            this.jsonData = jsonData;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-            return this.parseData();
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-            if (result == 0) {
-                Toast.makeText(c, "No Data, Add New", Toast.LENGTH_SHORT).show();
-            } else {
-
-                final CastListAdapter adapter = new CastListAdapter(c, mySQLDataBases);
-                listView1.setAdapter(adapter);
-            }
-        }
-
-        private int parseData() {
-            try {
-                JSONArray moviesArray = new JSONArray(jsonData);
-                JSONObject moviesObject = null;
-                //  JSONObject castobject = null;
-                mySQLDataBases.clear();
-                MySQLDataBase mySQLDataBase = null;
-                for (int i = 0; i < moviesArray.length(); i++) {
-                    moviesObject = moviesArray.getJSONObject(i);
-
-                    Log.d("result movies response: ", "> " + moviesObject);
-
-                    // castobject=moviesObject.getJSONObject("moviecast");
-
-                    int movieId = moviesObject.getInt("MovieId");
-                    String movietitle = moviesObject.getString("Title");
-
-                    String moviesposterUrl = moviesObject.getString("SmallPoster");
-                    String moviesbigposterUrl = moviesObject.getString("Posterurl");
-                    String moviesgenre = moviesObject.getString("Genre");
-                    String movieslanguage = moviesObject.getString("MLanguage");
-                    String moviesformat = moviesObject.getString("Format");
-                    String moviessynopsis = moviesObject.getString("Synopsis");
-                    String moviesduration = moviesObject.getString("Duration_min");
-                    String moviesvideourl = moviesObject.getString("Videourl");
-                    String moviereleasingdate = moviesObject.getString("Releasing_Date");
-
-                    //JSONObject castmovie=moviesObject.getJSONObject("moviecast");
-                    JSONArray castarray = moviesObject.getJSONArray("moviecast");
-                    for (int ii = 0; ii < castarray.length(); ii++) {
-
-                        JSONObject c = castarray.getJSONObject(ii);
-                        castname = c.getString("CastName");
-                        castrole = c.getString("CastRole");
-                        castimgurl = c.getString("CastImgUrl");
-
-                        mySQLDataBase = new MySQLDataBase();
-                        mySQLDataBase.setCastName(castname);
-                        mySQLDataBase.setCastRole(castrole);
-                        mySQLDataBase.setCastImgUrl(castimgurl);
-                        mySQLDataBases.add(mySQLDataBase);
-                    }
-                    // String castname=moviesObject.getString("CastName");
-                    //String castrole=moviesObject.getString("CastRole");
-                    //String castimgurl= moviesObject.getString("CastImgUrl");
-
-
-                    DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy ");
-                    Date date = null;
-                    try {
-                        date = iso8601Format.parse(moviereleasingdate);
-                    } catch (ParseException e) {
-                        //Log.d("Parsing ISO8601 datetime failed", "" + e);
-                    }
-
-
-                    int flags = 0;
-                    //  flags |= android.text.format.DateUtils.FORMAT_SHOW_TIME;
-                    flags |= android.text.format.DateUtils.FORMAT_SHOW_DATE;
-                    flags |= android.text.format.DateUtils.FORMAT_ABBREV_MONTH;
-                    //  flags |= android.text.format.DateUtils.FORMAT_SHOW_YEAR;
-
-
-                    mySQLDataBase = new MySQLDataBase();
-                    mySQLDataBase.setMovieId(movieId);
-                    mySQLDataBase.setTitle(movietitle);
-                    mySQLDataBase.setPosterUrl(moviesposterUrl);
-                    mySQLDataBase.setBigPosterUrl(moviesbigposterUrl);
-                    mySQLDataBase.setGenre(moviesgenre);
-                    mySQLDataBase.setMLanguage(movieslanguage);
-                    mySQLDataBase.setFormat(moviesformat);
-                    mySQLDataBase.setSynopsis(moviessynopsis);
-                    mySQLDataBase.setDuration_min(moviesduration);
-                    mySQLDataBase.setVideourl(moviesvideourl);
-                    mySQLDataBase.setReleasing_Date(moviereleasingdate);
-                *//*   *//**//**//**//* mySQLDataBase.setCastName(castname);
-                    mySQLDataBase.setCastRole(castrole);
-                    mySQLDataBase.setCastImgUrl(castimgurl);*//**//**//**//**//*
-                    mySQLDataBases.add(mySQLDataBase);
-
-                }
-                return 1;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-    }
-
-    class CastListAdapter extends BaseAdapter {
-
-        Context c;
-        ArrayList<MySQLDataBase> mySQLDataBases;
-        LayoutInflater inflater;
-
-        private CastListAdapter(Context c, ArrayList<MySQLDataBase> mySQLDataBases) {
-            this.c = c;
-            this.mySQLDataBases = mySQLDataBases;
-            inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return mySQLDataBases.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mySQLDataBases.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.scrollhorizontal_list, parent, false);
-            }
-
-            final TextView movietitle = (TextView) convertView.findViewById(R.id.textViewURL);
-            //movietitle.setSelected(true);
-            //  CircleImageView movieposter = (CircleImageView) convertView.findViewById(R.id.imageDownloaded);
-            ImageView movieposter = (ImageView) convertView.findViewById(R.id.imageDownloaded);
-            final TextView movieslanguage = (TextView) convertView.findViewById(R.id.textViewURL1);
-
-            //BIND DATA
-            MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
-            final String url = mySQLDataBase.getPosterUrl();
-            final String moviecastimgurl = mySQLDataBase.getCastImgUrl();
-            final String finalUrl = Config.mainUrlAddress + moviecastimgurl;
-            final String moviecastname = mySQLDataBase.getCastName();
-            final String moviecastrole = mySQLDataBase.getCastRole();
-
-
-            final int movieId = mySQLDataBase.getMovieId();
-            final String movieTitle = mySQLDataBase.getTitle();
-            final String movielanguage = mySQLDataBase.getMLanguage();
-            final String movieformat = mySQLDataBase.getFormat();
-            final String moviegenre = mySQLDataBase.getGenre();
-            final String moviesynopsis = mySQLDataBase.getSynopsis();
-            final String movieduration = mySQLDataBase.getDuration_min();
-            final String movievideourl = mySQLDataBase.getVideourl();
-            final String moviereleasingdate = mySQLDataBase.getReleasing_Date();
-            final String moviebiposterurl = mySQLDataBase.getBigPosterUrl();
-
-
-            //IMG
-            Glide.downloadImage(c, finalUrl, movieposter);
-
-            movietitle.setText(moviecastrole);
-            movieslanguage.setText(moviecastname);
-          *//* *//**//**//**//* convertView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    openDetailNewsActivity(movieId,finalUrl,movieTitle,movielanguage,movieformat,moviegenre,moviesynopsis,movieduration,movievideourl,moviereleasingdate,moviebiposterurl);
-                }
-            });*//**//**//**//*
-*//*
-            return convertView;
-        }
-      *//* *//**//**//**//* private void openDetailNewsActivity(int movieId, String...details ){
-            Intent i = new Intent(c, ScrollingActivity.class);
-            i.putExtra("MOVIE_ID", movieId);
-
-            i.putExtra("Movie_poster", details[0]);
-            i.putExtra("Movie_Title", details[1]);
-            i.putExtra("Movie_Language",details[2]);
-            i.putExtra("Movie_Format", details[3]);
-            i.putExtra("Movie_Genre",details[4]);
-            i.putExtra("Movie_Synopsis", details[5]);
-            i.putExtra("Movie_Duration",details[6]);
-            i.putExtra("Movie_VideoUrl", details[7]);
-            i.putExtra("Movie_ReleasingDate",details[8]);
-            i.putExtra("Movie_BigPosterurl",details[9]);
-            c.startActivity(i);
-        }*//**//**//**//**//*
-    }
-}
 */
     private class AsyncFetch extends AsyncTask<String, String, String> {
         ProgressDialog pdLoading = new ProgressDialog(ScrollingActivity.this);
@@ -740,4 +441,332 @@ public class ScrollingActivity extends AppCompatActivity {
 
         }
     }
+
+    private class AsyncFetch1 extends AsyncTask<String, String, String> {
+        ProgressDialog pdLoading = new ProgressDialog(ScrollingActivity.this);
+        HttpURLConnection conn;
+        URL url1 = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // Enter URL address where your json file resides
+            // Even you can make call to php file which returns json data
+            try {
+                url1 = new URL(Config.crewUrlAddress + movieid);
+                Log.d("third url", " >" + url1);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url1.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("GET");
+
+                // setDoOutput to true as we recieve data from json file
+                conn.setDoOutput(true);
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return e1.toString();
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return e.toString();
+            } finally {
+                conn.disconnect();
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            //this method will be running on UI thread
+            ArrayList<MySQLDataBase> mySQLDataBases = null;
+            pdLoading.dismiss();
+            List<MySQLDataBase> data1 = new ArrayList<>();
+
+            pdLoading.dismiss();
+            try {
+
+                JSONArray moviesArray = new JSONArray(result);
+
+
+                for (int i = 0; i < moviesArray.length(); i++) {
+                    JSONObject moviesObject = moviesArray.getJSONObject(i);
+
+                    Log.d("result movies response: ", "> " + moviesObject);
+
+                    // castobject=moviesObject.getJSONObject("moviecast");
+                    MySQLDataBase mySQLDataBase = new MySQLDataBase();
+                    mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
+
+                    mySQLDataBase.CrewName  = moviesObject.getString("CrewName");
+                    mySQLDataBase.CrewRole  = moviesObject.getString("CrewRole");
+                    mySQLDataBase.CrewImgUrl    = moviesObject.getString("CrewImgUrl");
+                    data1.add(mySQLDataBase);
+
+
+                    recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
+                    mAdapter1 = new MovieAdapter1(ScrollingActivity.this, data1);
+                    recyclerView1.setAdapter(mAdapter1);
+                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this,LinearLayoutManager.HORIZONTAL, true));
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private void handleClickEvents(final int movieid)
+    {
+        //EVENTS : ADD
+        click = click + 1;
+        if (click == 1) {
+            click = 0;
+            book.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (spTheater.getSelectedItem().equals("Select One")) {
+
+                        Toast.makeText(ScrollingActivity.this,
+                                "Your Selected : Nothing",
+                                Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        //SAVE
+                        // final int pos = sp.getSelectedItemPosition();
+                        MySQLDataBase s = new MySQLDataBase();
+                        s.setMovieId(movieid);
+                        if (s == null) {
+                            Toast toast = Toast.makeText(ScrollingActivity.this, "No Data To Delete", Toast.LENGTH_SHORT);
+                            toast.show();
+                            //Toast.makeText(DeleteProducts.this, "No Data To Delete", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            AndroidNetworking.post(Spinnertheater)
+
+                                    .addBodyParameter("TheaterI" +
+                                            "d", String.valueOf(s.getMovieId()))
+                                    .setTag("TAG_ADD")
+                                    .build()
+                                    .getAsJSONArray(new JSONArrayRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONArray response) {
+                                            if (response != null)
+                                                try {
+                                                    //SHOW RESPONSE FROM SERVER
+                                                    String responseString = response.get(0).toString();
+                                                    Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                                                    if (responseString.equalsIgnoreCase("Successfully Deleted")) {
+                                                        /*Intent intent = new Intent(DeleteProducts.this, DeleteProducts.class);
+                                                        startActivity(intent);
+                                                        finish();
+*/
+                                                        AlertDialog.Builder alert = new AlertDialog.Builder(ScrollingActivity.this);
+                                                        alert.setTitle(Html.fromHtml("<font color='#ff0000'>Information!</font>"));
+                                                        alert.setMessage("To Refresh Newly added content Go Back to Home Screen..\n Confirm Delete By Clicking on OK");
+                                                        //alert.setMessage("Confirm Delete By Clicking on OK");
+                                                      //  alert.setIcon(R.drawable.reload);
+                                                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                Intent intent = new Intent(ScrollingActivity.this, ScrollingActivity.class);
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                                                        Intent.FLAG_ACTIVITY_CLEAR_TASK /*|
+                    Intent.FLAG_ACTIVITY_NEW_TASK*/);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                        });
+                                                        alert.show();
+
+
+
+                                                    } else {
+                                                        Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                    Toast.makeText(ScrollingActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                        }
+
+                                        //ERROR
+                                        @Override
+                                        public void onError(ANError anError) {
+                                            Toast.makeText(ScrollingActivity.this, "UNSUCCESSFUL :  ERROR IS : " + anError.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+    public void onStart() {
+        super.onStart();
+        BackTask bt = new BackTask();
+        bt.execute();
+    }
+
+    private class BackTask extends AsyncTask<Void, Void, Void> {
+
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        protected Void doInBackground(Void... params) {
+            InputStream is = null;
+            String result = "";
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Config.moviesUrlAddress);
+                org.apache.http.HttpResponse response = httpclient.execute(httppost);
+                org.apache.http.HttpEntity entity = response.getEntity();
+                // Get our response as a String.
+                is = entity.getContent();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //convert response to string
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
+                }
+                is.close();
+                //result=sb.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // parse json data
+            try {
+                JSONArray ja = new JSONArray(result);
+                JSONObject jo=null;
+                mySQLDataBases.clear();
+                MySQLDataBase mySQLDataBase;
+                for (int i = 0; i < ja.length(); i++) {
+                    jo=ja.getJSONObject(i);
+                    // add interviewee name to arraylist
+                    int tid = jo.getInt("TheaterId");
+                    String tname = jo.getString("TheaterName");
+                    mySQLDataBase=new MySQLDataBase();
+                    mySQLDataBase.setTheaterId(tid);
+                    mySQLDataBase.setTheaterName(tname);
+                    mySQLDataBases.add(mySQLDataBase);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+
+            // productcrafts.addAll(productcrafts);
+            final ArrayList<String> listItems = new ArrayList<>();
+            listItems.add("Select One");
+            for(int i=0;i<mySQLDataBases.size();i++){
+                listItems.add(mySQLDataBases.get(i).getTheaterName());
+
+            }
+            adapter=new ArrayAdapter(ScrollingActivity.this,R.layout.spinner_layout, R.id.txt,listItems);
+            spTheater.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            spTheater.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                public void onItemSelected(AdapterView<?> arg0, View selectedItemView,
+                                           int position, long id) {
+
+                    if(spTheater.getSelectedItem().equals("Select One")){
+/*
+                        Toast.makeText(DeleteProducts.this,
+                                "Your Selected : Nothing",
+                                Toast.LENGTH_SHORT).show();*/
+                    }else {
+
+                        MySQLDataBase mySQLDataBase = mySQLDataBases.get(position - 1);
+
+                        //  final int pid
+                        final int tid = mySQLDataBase.getTheaterId();
+                        Log.d("selected id", "" + tid);
+                        handleClickEvents(tid);
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            }
+                        };
+
+                    }
+                }
+                public void onNothingSelected(AdapterView<?> arg0) {
+                    // TODO Auto-generated method stub
+                    Toast.makeText(ScrollingActivity.this,
+                            "Your Selected : Nothing",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            });
+
+        }
+
+    }
+
 }
+
+

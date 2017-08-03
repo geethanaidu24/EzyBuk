@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:splitMotionEvents="false"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.sys3.ebfinal.MoviesBooking">
+        <include layout="@layout/activity_toolbar"
+            ></include>
+
+
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/content_slide_up_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            >
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:elevation="2dp"
+                android:background="@color/divider"
+                android:layout_below="@+id/toolbar"
+                android:fillViewport="true"
+                android:layout_marginBottom="10dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/slideView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+
+
+                    android:layout_below="@+id/toolbar">
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/r4"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/improfile"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/profile"
+
+                    android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_below="@+id/improfile"
+                            android:id="@+id/profilename"
+                            android:text="Name"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"/>
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My Details"
+                            android:background="@drawable/rounded_border_editext"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/b1"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/profilename"
+                            />
+                      <Button
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="Tickets Booking History"
+                          android:id="@+id/b2"
+                          android:background="@drawable/rounded_border_editext"
+                          android:layout_marginRight="10dp"
+                          android:layout_marginLeft="10dp"
+                          android:layout_below="@+id/b1"
+                          android:layout_marginTop="10dp"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/b3"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rounded_border_editext"
+                            android:layout_marginLeft="10dp"
+                            android:layout_below="@+id/b2"
+                            android:layout_marginTop="10dp"
+                            android:text="Saved Cards"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/b4"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rounded_border_editext"
+                            android:layout_marginLeft="10dp"
+                            android:layout_below="@+id/b3"
+                            android:layout_marginTop="10dp"
+                            android:text="Change Password"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/b5"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/rounded_border_editext"
+                            android:layout_below="@+id/b4"
+                            android:layout_marginTop="10dp"
+                            android:text="Sign Out"/>
+                        </RelativeLayout>
+                </RelativeLayout>
+
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+  <!--  <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/activity_main2_drawer"
+        app:headerLayout="@layout/nav_header_main2"
+        />-->
+    <com.rom4ek.arcnavigationview.ArcNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        app:itemBackground="@android:color/white"
+
+        app:headerLayout="@layout/nav_header_main2"
+        app:menu="@menu/activity_main2_drawer"
+        app:arc_cropDirection="cropOutside"
+        app:arc_width="80dp"/>
+
+</android.support.v4.widget.DrawerLayout>
+
+

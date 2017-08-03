@@ -8,16 +8,18 @@ import java.util.Date;
  */
 
 class MySQLDataBase implements Serializable {
-    public int MovieId;
+    public int MovieId,TheaterId;
     public String Title;
     public String PosterUrl,BigPosterUrl;
   //  public String MoviesDescription;
+    public String TheaterName;
     public String Genre;
     public String MLanguage;
     public String Releasing_Date;
 public String Format,Synopsis,Duration_min,Videourl;
 
     public String CastName,CastRole,CastImgUrl;
+    public String CrewName,CrewRole,CrewImgUrl;
     public MySQLDataBase() {
 
     }
@@ -118,5 +120,21 @@ public String Format,Synopsis,Duration_min,Videourl;
     }
 
     public void setCastImgUrl(String castImgUrl) {this.CastImgUrl = castImgUrl;}
+
+    public int getTheaterId() {
+        return TheaterId;
+    }
+
+    public void setTheaterId(int theaterId) {
+        this.TheaterId = theaterId;
+    }
+    public String getTheaterName() {
+        return TheaterName;
+    }
+
+    public void setTheaterName(String theaterName) {this.TheaterName = theaterName;}
+
+
+
 
 }

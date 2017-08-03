@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -68,7 +68,9 @@
             android:hardwareAccelerated="false"
             android:windowSoftInputMode="adjustPan"
         -->
-        <activity android:name=".ForgotPassword" />
+        <activity
+            android:name=".ForgotPassword"
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".LogIn"
             tools:ignore="DuplicateActivity" />
@@ -95,7 +97,12 @@
             android:theme="@style/Theme.Transparent" />
         <activity android:name=".ScrollingActivity2" />
         <activity android:name=".FacebookLogin" />
-        <activity android:name=".ConfirmDetails"></activity>
+        <activity android:name=".ConfirmDetails" />
+        <activity android:name=".MyProfile" />
+        <activity android:name=".FinalProfile" />
+        <activity android:name=".TicketsBookingHistory" />
+        <activity android:name=".SavedCardsDetails" />
+        <activity android:name=".Changepassword"></activity>
     </application>
 
 </manifest>
