@@ -11,7 +11,7 @@ public class Config {
     public static final String API_KEY =
             "AIzaSyBltkcv28mWW6PnlpNMZyzOab4dOhNRKAU";
 
-    public final static String mainUrlAddress = "http://192.168.0.6/cias/";
+    public final static String mainUrlAddress = "http://192.168.0.14/cias/";
 
 
     // For admin login

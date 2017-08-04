@@ -70,7 +70,7 @@ public class MovieAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(myHolder.im1);*/
 
 
-    Glide.downloadImage(context, Config.mainUrlAddress + current.CrewImgUrl, myHolder.im1);
+    Glide.downloadImage2(context, Config.mainUrlAddress + current.CrewImgUrl, myHolder.im1);
     }
 
     // return total item from List
@@ -83,6 +83,9 @@ public class MovieAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class MyHolder extends RecyclerView.ViewHolder {
 
         TextView textCrewname;
+
+
+
         TextView textCrewrole;
         ImageView im1;
 

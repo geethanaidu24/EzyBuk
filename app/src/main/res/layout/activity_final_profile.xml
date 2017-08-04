@@ -69,7 +69,7 @@
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
                     android:drawableTint="@color/cred"
-                    android:id="@+id/editText_user"
+                    android:id="@+id/editText_profilename"
                     android:hint="Name"
                     android:paddingLeft="8dp"
                     android:layout_marginLeft="2dp"
@@ -217,26 +217,38 @@
 
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
 
-                <RadioButton
-                    android:id="@+id/radioButton"
+                <RadioGroup
+                    android:id="@+id/radioGender"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                   android:gravity="center"
+                    android:orientation="horizontal"
+                    android:centerInParent="true"
                     android:layout_gravity="center"
-                 android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:text="Male" />
-                <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                   android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:text="Female" />
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" >
 
+                    <RadioButton
+                        android:id="@+id/genderMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/genderFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:text="Female" />
+
+                </RadioGroup>
+                </LinearLayout>
             </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

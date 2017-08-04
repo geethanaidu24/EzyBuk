@@ -31,7 +31,7 @@ public class PaymentOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_options);
-         Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+         /*Intent i = this.getIntent(); // get Intent which we set from Previous Activity
         Gpersonname = i.getExtras().getString("Gmail_Name");
         Gpersonemail=  i.getExtras().getString("Gmail_Email");
 
@@ -42,7 +42,7 @@ public class PaymentOptions extends AppCompatActivity {
         Ezemail=i.getExtras().getString("EzyBuk_Email");
         Ezmobile=i.getExtras().getString("EzyBuk_mobile");
 
-
+*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (null != toolbar) {

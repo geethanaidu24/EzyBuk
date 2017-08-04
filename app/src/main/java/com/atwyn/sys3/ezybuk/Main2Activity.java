@@ -62,7 +62,7 @@ public class Main2Activity extends TabActivity
     private static int NUM_PAGES = 0;
 
     GoogleApiClient googleApiClient;
-    private static final Integer[] IMAGES= {R.drawable.movposttwo, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour,R.drawable.backfinalseven,R.drawable.backfinalfour};
+    private static final Integer[] IMAGES= {R.drawable.movposttwo, R.drawable.backezybuk, R.drawable.backezybuktwo};
 
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
 TabHost tabHost;

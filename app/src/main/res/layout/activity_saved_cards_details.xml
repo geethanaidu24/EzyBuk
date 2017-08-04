@@ -1,9 +1,241 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.atwyn.sys3.ezybuk.SavedCardsDetails">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-</android.support.constraint.ConstraintLayout>
+    <include
+
+        layout="@layout/activity_toolbar" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:elevation="2dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_above="@+id/footer"
+        android:fillViewport="true"
+        android:id="@+id/scrollView3">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/name1"
+            android:text="Enter Your Card Number :"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/cardnumber"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/rounded_border_editext"
+
+            android:layout_below="@+id/name1"
+            android:layout_alignParentLeft="true"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:drawableTint="@color/cred"
+                android:id="@+id/cardnumber1"
+
+                android:paddingLeft="8dp"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/colorblack"
+                android:background="@drawable/edittext2"
+                android:layout_marginRight="2dp"
+                android:inputType="text"
+             />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/cardnumber"
+                android:id="@+id/name2"
+                android:text="Enter Your Name on Card Number :"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/cardname"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/rounded_border_editext"
+
+                android:layout_below="@+id/name2"
+                android:layout_alignParentLeft="true"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:drawableTint="@color/cred"
+                    android:id="@+id/cardname1"
+
+                    android:paddingLeft="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/colorblack"
+                    android:background="@drawable/edittext2"
+                    android:layout_marginRight="2dp"
+                    android:inputType="text"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/cardname"
+                android:id="@+id/name3"
+                android:text="Card Type:"/>
+            <RadioGroup
+                android:id="@+id/radioGender"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:centerInParent="true"
+                android:layout_below="@+id/name3"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/genderMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Credit Card"
+                    />
+
+                <RadioButton
+                    android:id="@+id/genderFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="70dp"
+                    android:text="Debit Card" />
+
+            </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/radioGender"
+                android:id="@+id/name4"
+                android:text="Expire :"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/l1l"
+                android:layout_below="@+id/name4"
+                android:baselineAligned="false">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_border_editext"
+
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1">
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:drawableTint="@color/cred"
+                        android:id="@+id/selectmonth"
+android:hint="Select Month"
+                        android:paddingLeft="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:textColor="@color/colorblack"
+                        android:background="@drawable/edittext2"
+                        android:layout_marginRight="2dp"
+                        android:inputType="text"
+                        />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/rounded_border_editext"
+                    android:layout_weight="1">
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:drawableTint="@color/cred"
+                        android:id="@+id/selectyear"
+android:hint="Select date"
+                        android:paddingLeft="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:textColor="@color/colorblack"
+                        android:background="@drawable/edittext2"
+                        android:layout_marginRight="2dp"
+                        android:inputType="text"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/l1l"
+                android:id="@+id/name5"
+                android:text="Name the Card :"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/Cardspecialname"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/rounded_border_editext"
+
+                android:layout_below="@+id/name5"
+                android:layout_alignParentLeft="true"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:drawableTint="@color/cred"
+                    android:id="@+id/Cardspecialname1"
+
+                    android:paddingLeft="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/colorblack"
+                    android:background="@drawable/edittext2"
+                    android:layout_marginRight="2dp"
+                    android:inputType="text"
+                    />
+            </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        >
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SAVE"/>
+    </RelativeLayout>
+
+</RelativeLayout>
