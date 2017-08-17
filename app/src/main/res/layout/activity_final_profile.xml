@@ -210,7 +210,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/rlog3"
                 android:layout_marginTop="1dp"
-                android:background="@drawable/rounded_border_editext"
+
 
                 android:layout_below="@+id/gender1"
                 android:layout_alignParentLeft="true"
@@ -220,32 +220,34 @@
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
                     android:orientation="vertical" >
 
-                <RadioGroup
-                    android:id="@+id/radioGender"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" >
-
-                    <RadioButton
-                        android:id="@+id/genderMale"
+                    <RadioGroup
+                        android:id="@+id/radioGender"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Male"
-                        />
+                        android:orientation="horizontal"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/name3"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="wrap_content" >
 
-                    <RadioButton
-                        android:id="@+id/genderFemale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="70dp"
-                        android:text="Female" />
+                        <RadioButton
+                            android:id="@+id/genderMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Male"
+                            />
 
-                </RadioGroup>
+                        <RadioButton
+                            android:id="@+id/genderFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="70dp"
+                            android:text="Female" />
+
+                    </RadioGroup>
                 </LinearLayout>
             </RelativeLayout>
 

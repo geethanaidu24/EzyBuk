@@ -36,7 +36,7 @@ import java.util.Date;
 public class UpComing_movies extends AppCompatActivity {
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
-    final static String moviesUrlAddress = Config.moviesUrlAddress;
+    final static String moviesUrlAddress = Config.moviesUpcomingUrlAddress;
     ImageView im1;
     TextView tx1,tx2;
     Button b1;

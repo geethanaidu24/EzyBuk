@@ -1,10 +1,12 @@
 package com.atwyn.sys3.ezybuk;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +32,20 @@ import android.widget.Toast;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.atwyn.sys3.ezybuk.R.drawable.backfinalfour;
 import static com.atwyn.sys3.ezybuk.R.id.share;
@@ -38,34 +53,30 @@ import static com.atwyn.sys3.ezybuk.R.id.share;
 public class ScrollingActivity2 extends AppCompatActivity {
     Button book;
     ImageView mposter2;
-    TextView mtitle2,mgenre2,mlanguage2,mformat2,msynopsis2,mdurationdate2;
-    RecyclerView mRecyclerView, mRecyclerView1;
-    RecyclerView.LayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
+    TextView mtitle2, mgenre2, mlanguage2, mformat2, msynopsis2, mdurationdate2;
 
-    RecyclerView.LayoutManager mLayoutManager1;
-    RecyclerView.Adapter mAdapter1;
-    ArrayList<String> alName;
-    ArrayList<Integer> alImage;
-
-    ArrayList<String> alName1;
-    ArrayList<Integer> alImage1;
     private MediaController mediacontroller;
     private Uri uri;
 
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
-    final static String moviesUrlAddress = Config.moviesUrlAddress;
+    //final static String moviesUrlAddress = Config.moviesUrlAddress;
     String finalurl1;
-    String movietitle,movieposter,movielanguage,movieformat,moviegenre,moviesynopsis,movieduration,movievideourl,moviebigposter;
+    String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter;
     int movieid;
     Object mreleasingdate;
 
-    ImageView like,dislike,like1,dislike1;
-    TextView liketext,disliketext,liketext1,disliketext1;
-    int count=0;
-    int click=0;
-    RelativeLayout rlike,rlike1,rdislike,rdislike1;
+    ImageView like, dislike, like1, dislike1;
+    TextView liketext, disliketext, liketext1, disliketext1;
+    int count = 0;
+    int click = 0;
+    RelativeLayout rlike, rlike1, rdislike, rdislike1;
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
+    private RecyclerView recyclerView, recyclerView1;
+    private MovieAdapter mAdapter;
+    private MovieAdapter1 mAdapter1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +86,11 @@ public class ScrollingActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling2);
         Intent i = this.getIntent(); // get Intent which we set from Previous Activity
         movieid = i.getExtras().getInt("MOVIE_ID");
-        mreleasingdate=  i.getExtras().get("Movie_ReleasingDate");
+        mreleasingdate = i.getExtras().get("Movie_ReleasingDate");
         movieposter = i.getExtras().getString("Movie_poster");
-        movietitle =i.getExtras().getString("Movie_Title");
+        movietitle = i.getExtras().getString("Movie_Title");
 
-        moviebigposter=i.getExtras().getString("Movie_BigPosterurl");
+        moviebigposter = i.getExtras().getString("Movie_BigPosterurl");
         movielanguage = i.getExtras().getString("Movie_Language");
         movieformat = i.getExtras().getString("Movie_Format");
         moviegenre = i.getExtras().getString("Movie_Genre");
@@ -109,46 +120,19 @@ public class ScrollingActivity2 extends AppCompatActivity {
         toolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.white));
         toolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.red));
 
+//Make call to AsyncTask
+        new AsyncFetch().execute();
+        new AsyncFetch1().execute();
 
-      /*  alName = new ArrayList<>(Arrays.asList("Cheesy...", "Crispy... ", "Fizzy...", "Cool...", "Softy...", "Fruity...", "Fresh...", "Sticky..."));
-        alImage = new ArrayList<>(Arrays.asList(R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour));
-
-
-        alName1 = new ArrayList<>(Arrays.asList("Sharukh...", "Crispy... ", "Fizzy...", "Cool...", "Softy...", "Fruity...", "Fresh...", "Sticky..."));
-        alImage1 = new ArrayList<>(Arrays.asList(R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour, R.drawable.backfinalfour));
-        // Calling the RecyclerView
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-
-        mRecyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
-        mRecyclerView1.setHasFixedSize(true);
-
-
-        // The number of Columns
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new HLVAdapter(ScrollingActivity2.this, alName, alImage);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        mLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView1.setLayoutManager(mLayoutManager1);
-
-        mAdapter1 = new HLVAdapter(ScrollingActivity2.this, alName1, alImage1);
-        mRecyclerView1.setAdapter(mAdapter1);
-*/
-
-        mtitle2=(TextView)findViewById(R.id.textView62);
-        mgenre2=(TextView)findViewById(R.id.textView102);
-        mlanguage2=(TextView)findViewById(R.id.textView82);
-        mformat2=(TextView)findViewById(R.id.textView332);
-        msynopsis2=(TextView)findViewById(R.id.textView172);
-        mposter2=(ImageView)findViewById(R.id.mp2);
-        mdurationdate2=(TextView)findViewById(R.id.textView92);
-        TextView tooltex=(TextView)findViewById(R.id.tooltext1);
-        ImageView imbigposter=(ImageView)findViewById(R.id.imageView12);
+        mtitle2 = (TextView) findViewById(R.id.textView62);
+        mgenre2 = (TextView) findViewById(R.id.textView102);
+        mlanguage2 = (TextView) findViewById(R.id.textView82);
+        mformat2 = (TextView) findViewById(R.id.textView332);
+        msynopsis2 = (TextView) findViewById(R.id.textView172);
+        mposter2 = (ImageView) findViewById(R.id.mp2);
+        mdurationdate2 = (TextView) findViewById(R.id.textView92);
+        TextView tooltex = (TextView) findViewById(R.id.tooltext1);
+        ImageView imbigposter = (ImageView) findViewById(R.id.imageView12);
 
         tooltex.setText(movietitle);
         mtitle2.setText(movietitle);
@@ -162,7 +146,7 @@ public class ScrollingActivity2 extends AppCompatActivity {
         com.bumptech.glide.Glide.with(this)
                 .load(movieposter)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
-                .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
 
                 .crossFade()
                 .into(mposter2);
@@ -170,7 +154,7 @@ public class ScrollingActivity2 extends AppCompatActivity {
         com.bumptech.glide.Glide.with(this)
                 .load(finalurl1)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
-                .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
 
                 .crossFade()
                 .into(imbigposter);
@@ -182,25 +166,25 @@ public class ScrollingActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ScrollingActivity2.this, FullTrailer.class);
-                in.putExtra("Movie_VideoUrl",movievideourl );
+                in.putExtra("Movie_VideoUrl", movievideourl);
                 startActivity(in);
             }
         });
- rlike=(RelativeLayout)findViewById(R.id.bookedImageLayout);
-        rlike1=(RelativeLayout)findViewById(R.id.bookedImageLayout2);
+        rlike = (RelativeLayout) findViewById(R.id.bookedImageLayout);
+        rlike1 = (RelativeLayout) findViewById(R.id.bookedImageLayout2);
 
-        rdislike=(RelativeLayout)findViewById(R.id.selectedImageLayout);
-        rdislike1=(RelativeLayout)findViewById(R.id.selectedImageLayout1) ;
+        rdislike = (RelativeLayout) findViewById(R.id.selectedImageLayout);
+        rdislike1 = (RelativeLayout) findViewById(R.id.selectedImageLayout1);
 
-        like =(ImageView) findViewById(R.id.bookedImage2);
-        liketext=(TextView)findViewById(R.id.bookedText2);
-        dislike=(ImageView)findViewById(R.id.bookedImage12) ;
-        disliketext=(TextView)findViewById(R.id.bookedText12);
+        like = (ImageView) findViewById(R.id.bookedImage2);
+        liketext = (TextView) findViewById(R.id.bookedText2);
+        dislike = (ImageView) findViewById(R.id.bookedImage12);
+        disliketext = (TextView) findViewById(R.id.bookedText12);
 
-        like1 =(ImageView) findViewById(R.id.bookedImage22);
-        liketext1=(TextView)findViewById(R.id.bookedText22);
-        dislike1 =(ImageView) findViewById(R.id.bookedImage121);
-        disliketext1=(TextView)findViewById(R.id.bookedText121);
+        like1 = (ImageView) findViewById(R.id.bookedImage22);
+        liketext1 = (TextView) findViewById(R.id.bookedText22);
+        dislike1 = (ImageView) findViewById(R.id.bookedImage121);
+        disliketext1 = (TextView) findViewById(R.id.bookedText121);
 
 
         like.setOnClickListener(new View.OnClickListener() {
@@ -210,18 +194,18 @@ public class ScrollingActivity2 extends AppCompatActivity {
                 if (click == 1) {
                     click = 0;
 
-      rlike.setVisibility(View.GONE);
+                    rlike.setVisibility(View.GONE);
                     rlike1.setVisibility(View.VISIBLE);
                     like1.setImageResource(R.drawable.likewhite);
 
                     count++;
                     dislike.setEnabled(false);
                     disliketext.setEnabled(false);
-                   // liketext.setText("" + count);
+                    // liketext.setText("" + count);
                 }
                 liketext1.setText("" + count);
                 liketext1.setTextColor(Color.WHITE);
-                Toast.makeText(ScrollingActivity2.this,"Submmitted",Toast.LENGTH_LONG);
+                Toast.makeText(ScrollingActivity2.this, "Submmitted", Toast.LENGTH_LONG);
 
 
             }
@@ -247,7 +231,7 @@ public class ScrollingActivity2 extends AppCompatActivity {
                 }
                 disliketext1.setText("" + count);
                 disliketext1.setTextColor(Color.WHITE);
-                Toast.makeText(ScrollingActivity2.this,"Submmitted",Toast.LENGTH_LONG);
+                Toast.makeText(ScrollingActivity2.this, "Submmitted", Toast.LENGTH_LONG);
 
 
             }
@@ -258,9 +242,8 @@ public class ScrollingActivity2 extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.share, menu);
-       return true;
+        return true;
     }
-
 
 
     @Override
@@ -273,21 +256,9 @@ public class ScrollingActivity2 extends AppCompatActivity {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
 
-                // sharingIntent.setType("image/*");
 
-                // Make sure you put example png image named myImage.png in your
-                // directory
-              /*  File f=new File(finalurl1);
-                Uri uri = Uri.parse(f.getAbsolutePath());
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                share.setType("image*//*");
-                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-               startActivity(Intent.createChooser(share, "Share image File"));
-*/
-                //String shareBodyText = "Check it out. Your message goes here";
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"hi");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,movietitle +"("+movielanguage +")" + "\n \n"+ moviesynopsis  +"\n \n"+ "All that you would like to explore and know about movie"+ movietitle + "\n"+  "https://www.youtube.com/watch?v=YheC-4Qgoro&t=3s" );
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "hi");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, movietitle + "(" + movielanguage + ")" + "\n \n" + moviesynopsis + "\n \n" + "All that you would like to explore and know about movie" + movietitle + "\n" + "https://www.youtube.com/watch?v=YheC-4Qgoro&t=3s");
 
                 startActivity(Intent.createChooser(sharingIntent, "Shearing Option"));
                 return true;
@@ -297,230 +268,282 @@ public class ScrollingActivity2 extends AppCompatActivity {
         }
 
     }
-}
-    /*public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
 
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-
-
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-
-    }
-
-
-
-    private class MoviesInfoDownloader extends AsyncTask<Void, Void, String> {
-
-        Context c;
-        String moviesUrlAddress;
-
-
-
-
-
-        public MoviesInfoDownloader(ScrollingActivity scrollingActivity, String moviesUrlAddress) {
-            this.c=c;
-            this.moviesUrlAddress = moviesUrlAddress;
-        }
-
-
-        *//*private MoviesDownloader(Ns_grid ns_grid, String moviesUrlAddress, GridView gridView) {
-                    this.moviesUrlAddress = moviesUrlAddress;
-                    this.gridview1 = gridview1;
-                }
-        *//*
+    private class AsyncFetch extends AsyncTask<String, String, String> {
+        ProgressDialog pdLoading = new ProgressDialog(ScrollingActivity2.this);
+        HttpURLConnection conn;
+        URL url = null;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
         }
 
         @Override
-        protected String doInBackground(Void... params) {
-            return downloadMoviesData();
-        }
+        protected String doInBackground(String... params) {
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (s == null) {
-                Toast.makeText(c, "Unsuccessful,Null returned", Toast.LENGTH_SHORT).show();
-            } else {
-                //CALL DATA PARSER TO PARSE
-             MoviesInfoDataParser parser = new MoviesInfoDataParser(c, s);
-                parser.execute();
-            }
-        }
-
-        private String downloadMoviesData() {
-            HttpURLConnection con = Connector.connect(moviesUrlAddress);
-            if (con == null) {
-                return null;
-            }
+            // Enter URL address where your json file resides
+            // Even you can make call to php file which returns json data
             try {
-                InputStream is = new BufferedInputStream(con.getInputStream());
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                String line;
-                StringBuffer jsonData = new StringBuffer();
-                while ((line = br.readLine()) != null) {
-                    jsonData.append(line + "n");
-                }
-                br.close();
-                is.close();
-                return jsonData.toString();
-            } catch (IOException e) {
+                url = new URL(Config.castUrlAddress + movieid);
+                Log.d("second url", " >" + url);
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-            return null;
-        }
-    }
-    private class MoviesInfoDataParser extends AsyncTask<Void, Void, Integer> {
-
-        Context c;
-
-        String jsonData;
-
-        ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
-
-        private MoviesInfoDataParser(Context c, String jsonData) {
-            this.c = c;
-
-            this.jsonData = jsonData;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-            return this.parseData();
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-            if (result == 0) {
-                Toast.makeText(c, "No Data, Add New", Toast.LENGTH_SHORT).show();
-            } else {
-
-                final MoviesInfoListAdapter adapter = new MoviesInfoListAdapter(c, mySQLDataBases);
-
-            }
-        }
-
-        private int parseData() {
             try {
-                JSONArray moviesArray = new JSONArray(jsonData);
-                JSONObject moviesObject = null;
-                mySQLDataBases.clear();
-                MySQLDataBase mySQLDataBase;
+
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("GET");
+
+                // setDoOutput to true as we recieve data from json file
+                conn.setDoOutput(true);
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return e1.toString();
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return e.toString();
+            } finally {
+                conn.disconnect();
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            //this method will be running on UI thread
+            ArrayList<MySQLDataBase> mySQLDataBases = null;
+            pdLoading.dismiss();
+            List<MySQLDataBase> data = new ArrayList<>();
+
+            pdLoading.dismiss();
+            try {
+
+               /* JSONArray jArray = new JSONArray(result);
+
+                // Extract data from json and store into ArrayList as class objects
+                for(int i=0;i<jArray.length();i++){
+                    JSONObject json_data = jArray.getJSONObject(i);
+                    DataFish fishData = new DataFish();
+                    fishData.fishImage= json_data.getString("fish_img");
+                    fishData.fishName= json_data.getString("fish_name");
+                    fishData.catName= json_data.getString("cat_name");
+                    fishData.sizeName= json_data.getString("size_name");
+                    fishData.price= json_data.getInt("price");
+                    data.add(fishData);*/
+                JSONArray moviesArray = new JSONArray(result);
+
+
                 for (int i = 0; i < moviesArray.length(); i++) {
-                    moviesObject = moviesArray.getJSONObject(i);
-                    //   Log.d("result movies response: ", "> " + moviesObject);
-                    int movieId = moviesObject.getInt("MovieId");
-                    String movietitle = moviesObject.getString("Title");
+                    JSONObject moviesObject = moviesArray.getJSONObject(i);
 
-                    String moviesposterUrl = moviesObject.getString("Posterurl");
-                    String moviesgenre=moviesObject.getString("Genre");
-                    String movieslanguage=moviesObject.getString("MLanguage");
-                    String moviesformat=moviesObject.getString("Format");
+                    Log.d("result movies response: ", "> " + moviesObject);
+
+                    // castobject=moviesObject.getJSONObject("moviecast");
+                    MySQLDataBase mySQLDataBase = new MySQLDataBase();
+                    mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
+
+                    mySQLDataBase.CastName = moviesObject.getString("CastName");
+                    mySQLDataBase.CastRole = moviesObject.getString("CastRole");
+                    mySQLDataBase.CastImgUrl = moviesObject.getString("CastImgUrl");
+                    data.add(mySQLDataBase);
+
+                       /* mySQLDataBase.setCastName(castname);
+                        mySQLDataBase.setCastRole(castrole);
+                        mySQLDataBase.setCastImgUrl(castimgurl);*/
 
 
 
-                    //  flags |= android.text.format.DateUtils.FORMAT_SHOW_TIME;
 
-                    mySQLDataBase = new MySQLDataBase();
+
+                 /*   mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setMovieId(movieId);
-                    mySQLDataBase.setTitle(movietitle);
+                   *//* mySQLDataBase.setTitle(movietitle);
                     mySQLDataBase.setPosterUrl(moviesposterUrl);
+                    mySQLDataBase.setBigPosterUrl(moviesbigposterUrl);
                     mySQLDataBase.setGenre(moviesgenre);
                     mySQLDataBase.setMLanguage(movieslanguage);
                     mySQLDataBase.setFormat(moviesformat);
-                    mySQLDataBases.add(mySQLDataBase);
+                    mySQLDataBase.setSynopsis(moviessynopsis);
+                    mySQLDataBase.setDuration_min(moviesduration);
+                    mySQLDataBase.setVideourl(moviesvideourl);
+                    mySQLDataBase.setReleasing_Date(moviereleasingdate);*//*
+
+                    // Setup and Handover data to recyclerview*/
+                    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+                    mAdapter = new MovieAdapter(ScrollingActivity2.this, data);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));
 
                 }
-                return 1;
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return 0;
+
         }
     }
-    private class MoviesInfoListAdapter extends BaseAdapter {
 
-        Context c;
-        ArrayList<MySQLDataBase> mySQLDataBases;
-        LayoutInflater inflater;
+    private class AsyncFetch1 extends AsyncTask<String, String, String> {
+        ProgressDialog pdLoading = new ProgressDialog(ScrollingActivity2.this);
+        HttpURLConnection conn;
+        URL url1 = null;
 
-        private MoviesInfoListAdapter(Context c, ArrayList<MySQLDataBase> mySQLDataBases) {
-            this.c = c;
-            this.mySQLDataBases = mySQLDataBases;
-            inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
         }
 
         @Override
-        public int getCount() {
-            return mySQLDataBases.size();
-        }
+        protected String doInBackground(String... params) {
 
-        @Override
-        public Object getItem(int position) {
-            return mySQLDataBases.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-           *//* if (convertView == null) {
-                convertView = inflater.inflate(R.layout.nowshowing_gridview, parent, false);
+            // Enter URL address where your json file resides
+            // Even you can make call to php file which returns json data
+            try {
+                url1 = new URL(Config.crewUrlAddress + movieid);
+                Log.d("third url", " >" + url1);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-*//*
-            final TextView movietitle =(TextView) convertView.findViewById(R.id.textViewURL);
-            movietitle.setSelected(true);
-            ImageView movieposter = (ImageView) convertView.findViewById(R.id.imageDownloaded);
-            final TextView movieslanguage=(TextView)convertView.findViewById(R.id.textgenre);
+            try {
 
-            //BIND DATA
-            MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
-            final String url = mySQLDataBase.getPosterUrl();
-            final String finalUrl = Config.mainUrlAddress + url;
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url1.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("GET");
 
-            final String movieTitle = mySQLDataBase.getTitle();
-            final String movielanguage=mySQLDataBase.getGenre();
-            final String movieformat=mySQLDataBase.getFormat();
-            //IMG
-            Glide.downloadImage1(c, finalUrl, movieposter);
+                // setDoOutput to true as we recieve data from json file
+                conn.setDoOutput(true);
 
-            movietitle.setText( movieTitle);
-            movieslanguage.setText( movielanguage + "  |  " + movieformat );
-            convertView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    openDetailNewsActivity(finalUrl, String.valueOf(movietitle));
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return e1.toString();
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("unsuccessful");
                 }
-            });
 
-            return convertView;
-        }
-        private void openDetailNewsActivity(String...details){
-            Intent intent = new Intent(c, ScrollingActivity.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return e.toString();
+            } finally {
+                conn.disconnect();
+            }
 
-            c.startActivity(intent);
+
         }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            //this method will be running on UI thread
+            ArrayList<MySQLDataBase> mySQLDataBases = null;
+            pdLoading.dismiss();
+            List<MySQLDataBase> data1 = new ArrayList<>();
+
+            pdLoading.dismiss();
+            try {
+
+                JSONArray moviesArray = new JSONArray(result);
+
+
+                for (int i = 0; i < moviesArray.length(); i++) {
+                    JSONObject moviesObject = moviesArray.getJSONObject(i);
+
+                    Log.d("result movies response: ", "> " + moviesObject);
+
+                    // castobject=moviesObject.getJSONObject("moviecast");
+                    MySQLDataBase mySQLDataBase = new MySQLDataBase();
+                    mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
+
+                    mySQLDataBase.CrewName = moviesObject.getString("CrewName");
+                    mySQLDataBase.CrewRole = moviesObject.getString("CrewRole");
+                    mySQLDataBase.CrewImgUrl = moviesObject.getString("CrewImgUrl");
+                    data1.add(mySQLDataBase);
+
+
+                    recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view12);
+                    mAdapter1 = new MovieAdapter1(ScrollingActivity2.this, data1);
+                    recyclerView1.setAdapter(mAdapter1);
+                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
-
 }
-*/

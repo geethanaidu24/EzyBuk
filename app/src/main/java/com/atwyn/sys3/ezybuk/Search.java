@@ -89,14 +89,7 @@ public class Search extends AppCompatActivity {
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show();
-        }
-        });
+
         lv= (ListView) findViewById(R.id.lv);
         sv= (SearchView) findViewById(R.id.sv);
      //   noDataImg= (ImageView) findViewById(R.id.nodataImg);
@@ -155,16 +148,14 @@ public boolean onQueryTextChange(String query) {
                 {
                     Parser p=new Parser(c,s,lv);
                     p.execute();
-                    noNetworkImg.setVisibility(View.INVISIBLE);
-                    noDataImg.setVisibility(View.INVISIBLE);
+
                 }else
                 {
-                    noNetworkImg.setVisibility(View.INVISIBLE);
-                    noDataImg.setVisibility(View.VISIBLE);
+
                 }
             }else {
-                noNetworkImg.setVisibility(View.VISIBLE);
-                noDataImg.setVisibility(View.INVISIBLE);
+
+
             }
         }
         private String sendAndReceive()

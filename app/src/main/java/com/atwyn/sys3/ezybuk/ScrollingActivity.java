@@ -71,6 +71,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -84,16 +85,23 @@ public class ScrollingActivity extends AppCompatActivity {
     TextView mtitle, mgenre, mlanguage, mformat, msynopsis, mdurationdate;
 
     final ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
+    final ArrayList<MySQLDataBase> mySQLDataBases1 = new ArrayList<>();
+    final ArrayList<MySQLDataBase> mySQLDataBases2 = new ArrayList<>();
     private Spinner spTheater,spdate,spTime;
     int click=0;
     private ArrayAdapter<MySQLDataBase> adapter ;
-    private static final String Spinnertheater=Config.crewUrlAddress;
-    private MediaController mediacontroller;
-    private Uri uri;
+    private ArrayAdapter<MySQLDataBase> adapter1 ;
+    private ArrayAdapter<MySQLDataBase> adapter2 ;
+    private static final String Spinnertheater=Config.TheaterNameUrlAddress;
+    private static final String SpinnerDate=Config.DateNameUrlAddress;
+    private static final String SpinnerTime=Config.TimeNameUrlAddress;
 
+  int tid;
+    int tid1;
+  String  date;
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
-    final static String moviesUrlAddress = Config.moviesUrlAddress;
+  //  final static String moviesUrlAddress = Config.moviesUrlAddress;
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
@@ -101,13 +109,13 @@ public class ScrollingActivity extends AppCompatActivity {
     private MovieAdapter mAdapter;
     private MovieAdapter1 mAdapter1;
 
-
-
-
+  String theaterid;
+    BackTask1 bt1;
+   BackTask2 bt2;
     String finalurl1;
     String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter;
     int movieid;
-    String castname, castrole, castimgurl;
+    String castname, castrole, castimgurl,time;
     Object mreleasingdate;
 
     @Override
@@ -172,7 +180,8 @@ public class ScrollingActivity extends AppCompatActivity {
         TextView tooltex = (TextView) findViewById(R.id.tooltext);
         ImageView imbigposter = (ImageView) findViewById(R.id.imageView);
 
-        spTheater=(Spinner)findViewById(R.id.spinner) ;
+       // spTheater=(Spinner)findViewById(R.id.spinner) ;
+
 
         tooltex.setText(movietitle);
         mtitle.setText(movietitle);
@@ -181,7 +190,7 @@ public class ScrollingActivity extends AppCompatActivity {
         mformat.setText(movieformat);
         msynopsis.setText(moviesynopsis);
         mdurationdate.setText(movieduration + "  |  " + mreleasingdate);
-
+        book = (Button) findViewById(R.id.button);
 
         com.bumptech.glide.Glide.with(this)
                 .load(movieposter)
@@ -198,19 +207,17 @@ public class ScrollingActivity extends AppCompatActivity {
 
                 .crossFade()
                 .into(imbigposter);
+ this.initializeViews();
 
-       // this.initializeViews();
-        spTheater=(Spinner)findViewById(R.id.spinner) ;
-        book = (Button) findViewById(R.id.button);
 
- book.setOnClickListener(new View.OnClickListener() {
+ /*book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
                 startActivity(in);
             }
-        });
+        });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -278,15 +285,21 @@ public class ScrollingActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
- /*   private void initializeViews()
+   private void initializeViews()
     {
 
 
         spTheater=(Spinner)findViewById(R.id.spinner) ;
+        spdate=(Spinner)findViewById(R.id.spinner2);
+        // spdate.setPrompt("Select Date");
+        spTime=(Spinner)findViewById(R.id.spinner3);
+        //spdate.setPrompt("Select Time");
+
         book = (Button) findViewById(R.id.button);
 
+
     }
-*/
+
     private class AsyncFetch extends AsyncTask<String, String, String> {
         ProgressDialog pdLoading = new ProgressDialog(ScrollingActivity.this);
         HttpURLConnection conn;
@@ -564,7 +577,7 @@ public class ScrollingActivity extends AppCompatActivity {
         }
     }
 
-    private void handleClickEvents(final int movieid)
+    private void handleClickEvents(final int movieid, final String date, final String time)
     {
         //EVENTS : ADD
         click = click + 1;
@@ -573,80 +586,42 @@ public class ScrollingActivity extends AppCompatActivity {
             book.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (spTheater.getSelectedItem().equals("Select One")) {
+
+                    if (spTheater.getSelectedItem().equals("Select Theater")) {
 
                         Toast.makeText(ScrollingActivity.this,
-                                "Your Selected : Nothing",
+                                "Please Select Theater",
                                 Toast.LENGTH_SHORT).show();
+                        spdate.setEnabled(false);
+                        spTime.setEnabled(false);
+                        spdate.setClickable(false);
 
-                    } else {
-                        //SAVE
-                        // final int pos = sp.getSelectedItemPosition();
-                        MySQLDataBase s = new MySQLDataBase();
-                        s.setMovieId(movieid);
-                        if (s == null) {
-                            Toast toast = Toast.makeText(ScrollingActivity.this, "No Data To Delete", Toast.LENGTH_SHORT);
-                            toast.show();
-                            //Toast.makeText(DeleteProducts.this, "No Data To Delete", Toast.LENGTH_SHORT).show();
-                        } else {
+                        spTime.setClickable(false);}
+//                 else if(spdate.getSelectedItem().equals("Select Date")) {
+//                        Toast.makeText(ScrollingActivity.this,
+//                                "Please Select Theater",
+//                                Toast.LENGTH_SHORT).show();
+//
+//                    }else if(spTime.getSelectedItem().equals("Select Time")) {
+//                        Toast.makeText(ScrollingActivity.this,
+//                                "Please Select Date First",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
 
-                            AndroidNetworking.post(Spinnertheater)
-
-                                    .addBodyParameter("TheaterI" +
-                                            "d", String.valueOf(s.getMovieId()))
-                                    .setTag("TAG_ADD")
-                                    .build()
-                                    .getAsJSONArray(new JSONArrayRequestListener() {
-                                        @Override
-                                        public void onResponse(JSONArray response) {
-                                            if (response != null)
-                                                try {
-                                                    //SHOW RESPONSE FROM SERVER
-                                                    String responseString = response.get(0).toString();
-                                                    Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
-                                                    if (responseString.equalsIgnoreCase("Successfully Deleted")) {
-                                                        /*Intent intent = new Intent(DeleteProducts.this, DeleteProducts.class);
-                                                        startActivity(intent);
-                                                        finish();
-*/
-                                                        AlertDialog.Builder alert = new AlertDialog.Builder(ScrollingActivity.this);
-                                                        alert.setTitle(Html.fromHtml("<font color='#ff0000'>Information!</font>"));
-                                                        alert.setMessage("To Refresh Newly added content Go Back to Home Screen..\n Confirm Delete By Clicking on OK");
-                                                        //alert.setMessage("Confirm Delete By Clicking on OK");
-                                                      //  alert.setIcon(R.drawable.reload);
-                                                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                Intent intent = new Intent(ScrollingActivity.this, ScrollingActivity.class);
-                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                                                        Intent.FLAG_ACTIVITY_CLEAR_TASK /*|
-                    Intent.FLAG_ACTIVITY_NEW_TASK*/);
-                                                                startActivity(intent);
-                                                                finish();
-                                                            }
-                                                        });
-                                                        alert.show();
+                  else{
 
 
+                        Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                        in.putExtra("Movie_Id", movieid);
+                        in.putExtra("Show_Date", date);
+                        in.putExtra("Show_Time", time);
 
-                                                    } else {
-                                                        Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                    Toast.makeText(ScrollingActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                        }
+                        startActivity(in);
 
-                                        //ERROR
-                                        @Override
-                                        public void onError(ANError anError) {
-                                            Toast.makeText(ScrollingActivity.this, "UNSUCCESSFUL :  ERROR IS : " + anError.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
                     }
                 }
+
+
             });
         }
 
@@ -654,8 +629,16 @@ public class ScrollingActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         BackTask bt = new BackTask();
+
         bt.execute();
+
+        bt1 = new BackTask1();
+        bt1.execute();
+        bt2 = new BackTask2();
+        bt2.execute();
+
     }
+
 
     private class BackTask extends AsyncTask<Void, Void, Void> {
 
@@ -670,7 +653,9 @@ public class ScrollingActivity extends AppCompatActivity {
             String result = "";
             try {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(Config.moviesUrlAddress);
+                HttpPost httppost = new HttpPost(Config.TheaterNameUrlAddress + movieid);
+                String h1 = Config.TheaterNameUrlAddress + movieid;
+                Log.d("hello url", " >" + h1);
                 org.apache.http.HttpResponse response = httpclient.execute(httppost);
                 org.apache.http.HttpEntity entity = response.getEntity();
                 // Get our response as a String.
@@ -693,16 +678,18 @@ public class ScrollingActivity extends AppCompatActivity {
             }
             // parse json data
             try {
+
+
                 JSONArray ja = new JSONArray(result);
-                JSONObject jo=null;
+                JSONObject jo = null;
                 mySQLDataBases.clear();
                 MySQLDataBase mySQLDataBase;
                 for (int i = 0; i < ja.length(); i++) {
-                    jo=ja.getJSONObject(i);
+                    jo = ja.getJSONObject(i);
                     // add interviewee name to arraylist
-                    int tid = jo.getInt("TheaterId");
-                    String tname = jo.getString("TheaterName");
-                    mySQLDataBase=new MySQLDataBase();
+                    int tid = jo.getInt("CinemaId");
+                    String tname = jo.getString("Name");
+                    mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setTheaterId(tid);
                     mySQLDataBase.setTheaterName(tname);
                     mySQLDataBases.add(mySQLDataBase);
@@ -716,13 +703,19 @@ public class ScrollingActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
 
             // productcrafts.addAll(productcrafts);
-            final ArrayList<String> listItems = new ArrayList<>();
-            listItems.add("Select One");
-            for(int i=0;i<mySQLDataBases.size();i++){
-                listItems.add(mySQLDataBases.get(i).getTheaterName());
+            final ArrayList<String> listItems1 = new ArrayList<>();
+            listItems1.add("Select Theater");
+            for (int i = 0; i < mySQLDataBases.size(); i++) {
+                listItems1.add(mySQLDataBases.get(i).getTheaterName());
+
 
             }
-            adapter=new ArrayAdapter(ScrollingActivity.this,R.layout.spinner_layout, R.id.txt,listItems);
+        /*    HashSet<String> hashSet = new HashSet<String>();
+            hashSet.addAll(listItems);
+            listItems.clear();
+            listItems.addAll(hashSet);*/
+
+            adapter = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems1);
             spTheater.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             spTheater.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -731,19 +724,27 @@ public class ScrollingActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> arg0, View selectedItemView,
                                            int position, long id) {
 
-                    if(spTheater.getSelectedItem().equals("Select One")){
+                    if (spTheater.getSelectedItem().equals("Select Theater")) {
 /*
                         Toast.makeText(DeleteProducts.this,
                                 "Your Selected : Nothing",
                                 Toast.LENGTH_SHORT).show();*/
-                    }else {
+                    } else {
 
                         MySQLDataBase mySQLDataBase = mySQLDataBases.get(position - 1);
 
                         //  final int pid
-                        final int tid = mySQLDataBase.getTheaterId();
+                        tid = mySQLDataBase.getTheaterId();
                         Log.d("selected id", "" + tid);
-                        handleClickEvents(tid);
+
+
+                        theaterid= spTheater.getSelectedItem().toString();
+                     spdate.setEnabled(true);
+                     spTime.setEnabled(false);
+                        spdate.setClickable(true);
+                        spTime.setClickable(false);
+                        SpinnerDate(tid,movieid);
+              // handleClickEvents(tid);
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int which) {
@@ -754,6 +755,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
                     }
                 }
+
                 public void onNothingSelected(AdapterView<?> arg0) {
                     // TODO Auto-generated method stub
                     Toast.makeText(ScrollingActivity.this,
@@ -763,10 +765,338 @@ public class ScrollingActivity extends AppCompatActivity {
 
             });
 
+
         }
 
+        }
+    private void SpinnerDate(int theaterid, int movieid) {
+        bt1 = new BackTask1();
+        bt1.execute();
+
+        MySQLDataBase s = new MySQLDataBase();
+        s.setMovieId(movieid);
+        if (s == null) {
+            Toast toast = Toast.makeText(ScrollingActivity.this, "Please Select Theater Name", Toast.LENGTH_SHORT);
+            toast.show();
+            //Toast.makeText(DeleteProducts.this, "No Data To Delete", Toast.LENGTH_SHORT).show();
+            AndroidNetworking.post(SpinnerDate)
+                    .addBodyParameter("CinemaId", String.valueOf(theaterid))
+                    .addBodyParameter("MovieId", String.valueOf(s.getMovieId()))
+                    .setTag("TAG_ADD")
+                    .build()
+                    .getAsJSONArray(new JSONArrayRequestListener() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            if (response != null) {
+                                //SHOW RESPONSE FROM SERVER
+                                // String responseString = response.get(0).toString();
+                                // Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }
+
+                        //ERROR
+                        @Override
+                        public void onError(ANError anError) {
+                            Toast.makeText(ScrollingActivity.this, "UNSUCCESSFUL :  ERROR IS : " + anError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
-}
+
+
+        private class BackTask1 extends AsyncTask<Void, Void, Void> {
+
+
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+            }
+
+            protected Void doInBackground(Void... params) {
+                InputStream is = null;
+                String result = "";
+                try {
+                    HttpClient httpclient = new DefaultHttpClient();
+                    HttpPost httppost = new HttpPost(Config.DateNameUrlAddress + tid + '/' + movieid);
+                    String h2 = Config.DateNameUrlAddress + tid + '/' + movieid;
+                    Log.d("hi url", " >" + h2);
+                    org.apache.http.HttpResponse response = httpclient.execute(httppost);
+                    org.apache.http.HttpEntity entity = response.getEntity();
+                    // Get our response as a String.
+                    is = entity.getContent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //convert response to string
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        result += line;
+                    }
+                    is.close();
+                    //result=sb.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // parse json data
+                try {
+
+
+                    JSONArray ja = new JSONArray(result);
+                    JSONObject jo = null;
+                    mySQLDataBases1.clear();
+                    MySQLDataBase mySQLDataBase;
+                    for (int i = 0; i < ja.length(); i++) {
+                        jo = ja.getJSONObject(i);
+                        // add interviewee name to arraylist
+                        int tid = jo.getInt("CinemaId");
+                        String date = jo.getString("ShowDate");
+                        mySQLDataBase = new MySQLDataBase();
+                        mySQLDataBase.setTheaterId(tid);
+                        mySQLDataBase.setShowDate(date);
+                        mySQLDataBases1.add(mySQLDataBase);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            protected void onPostExecute(Void result) {
+
+                // productcrafts.addAll(productcrafts);
+                final ArrayList<String> listItems2 = new ArrayList<>();
+                listItems2.add("Select Date");
+                for (int i = 0; i < mySQLDataBases1.size(); i++) {
+                    listItems2.add(mySQLDataBases1.get(i).getShowDate());
+
+
+                }
+             /*   HashSet<String> hashSet=new HashSet<String>();
+                hashSet.addAll(listItems);
+                listItems.clear();
+                listItems.addAll(hashSet);*/
+
+                adapter1 = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems2);
+                spdate.setAdapter(adapter1);
+                adapter1.notifyDataSetChanged();
+                spdate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                    public void onItemSelected(AdapterView<?> arg0, View selectedItemView,
+                                               int position, long id) {
+
+                        if (spdate.getSelectedItem().equals("Select Date")) {
+
+                      /*  Toast.makeText(ScrollingActivity.this,
+                                "Please Select Date",
+                                Toast.LENGTH_SHORT).show();*/
+                        } else {
+
+                            MySQLDataBase mySQLDataBase = mySQLDataBases1.get(position - 1);
+
+                            //  final int pid
+                            tid1 = mySQLDataBase.getTheaterId();
+                            Log.d("selected id", "" + tid1);
+                            date = spdate.getSelectedItem().toString();
+                        spTime.setEnabled(true);
+                            spTime.setClickable(true);
+                            SpinnerTime(date, tid1, movieid);
+
+                            //  handleClickEvents(tid);
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    // TODO Auto-generated method stub
+                                    dialog.dismiss();
+                                }
+                            };
+
+                        }
+                    }
+
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                        // TODO Auto-generated method stub
+                        Toast.makeText(ScrollingActivity.this,
+                                "Your Selected : Nothing",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
+
+            }
+        }
+
+            private void SpinnerTime(String date, int cineid, int movieid) {
+
+                bt2 = new BackTask2();
+                bt2.execute();
+
+                MySQLDataBase s = new MySQLDataBase();
+                s.setMovieId(movieid);
+                if (s == null) {
+                    Toast toast = Toast.makeText(ScrollingActivity.this, "Please Select Theater Name", Toast.LENGTH_SHORT);
+                    toast.show();
+                    //Toast.makeText(DeleteProducts.this, "No Data To Delete", Toast.LENGTH_SHORT).show();
+                    AndroidNetworking.post(SpinnerTime)
+                            .addBodyParameter("ShowDate",date)
+                            .addBodyParameter("CinemaId", String.valueOf(cineid))
+                            .addBodyParameter("MovieId", String.valueOf(s.getMovieId()))
+                            .setTag("TAG_ADD")
+                            .build()
+                            .getAsJSONArray(new JSONArrayRequestListener() {
+                                @Override
+                                public void onResponse(JSONArray response) {
+                                    if (response != null) {
+                                        //SHOW RESPONSE FROM SERVER
+                                        // String responseString = response.get(0).toString();
+                                        // Toast.makeText(ScrollingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                }
+
+                                //ERROR
+                                @Override
+                                public void onError(ANError anError) {
+                                    Toast.makeText(ScrollingActivity.this, "UNSUCCESSFUL :  ERROR IS : " + anError.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+
+
+
+            private class BackTask2 extends AsyncTask<Void, Void, Void> {
+
+
+                protected void onPreExecute() {
+                    super.onPreExecute();
+
+                }
+
+                protected Void doInBackground(Void... params) {
+                    InputStream is = null;
+                    String result = "";
+                    try {
+                        HttpClient httpclient = new DefaultHttpClient();
+                        HttpPost httppost = new HttpPost(Config.TimeNameUrlAddress + date + '/' + tid1 + '/' + movieid);
+                        String h3 = Config.TimeNameUrlAddress + date + '/' + tid1 + '/' + movieid;
+                        Log.d("hjkchjsdhvj url", " >" + h3);
+                        org.apache.http.HttpResponse response = httpclient.execute(httppost);
+                        org.apache.http.HttpEntity entity = response.getEntity();
+                        // Get our response as a String.
+                        is = entity.getContent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //convert response to string
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                        String line = null;
+                        while ((line = reader.readLine()) != null) {
+                            result += line;
+                        }
+                        is.close();
+                        //result=sb.toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // parse json data
+                    try {
+
+
+                        JSONArray ja = new JSONArray(result);
+                        JSONObject jo = null;
+                        mySQLDataBases2.clear();
+                        MySQLDataBase mySQLDataBase;
+                        for (int i = 0; i < ja.length(); i++) {
+                            jo = ja.getJSONObject(i);
+                            // add interviewee name to arraylist
+                            int tid1 = jo.getInt("CinemaId");
+                            String time = jo.getString("ShowTime");
+                            mySQLDataBase = new MySQLDataBase();
+                            mySQLDataBase.setTheaterId(tid1);
+                            mySQLDataBase.setShowTime(time);
+                            mySQLDataBases2.add(mySQLDataBase);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                protected void onPostExecute(Void result) {
+
+                    // productcrafts.addAll(productcrafts);
+                    final ArrayList<String> listItems3 = new ArrayList<>();
+                    listItems3.add("Select Time");
+                    for (int i = 0; i < mySQLDataBases2.size(); i++) {
+                        listItems3.add(mySQLDataBases2.get(i).getShowTime());
+
+
+                    }
+             /*   HashSet<String> hashSet=new HashSet<String>();
+                hashSet.addAll(listItems);
+                listItems.clear();
+                listItems.addAll(hashSet);*/
+
+                    adapter2 = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems3);
+                    spTime.setAdapter(adapter2);
+                    adapter2.notifyDataSetChanged();
+                    spTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                        public void onItemSelected(AdapterView<?> arg0, View selectedItemView,
+                                                   int position, long id) {
+
+                            if (spTime.getSelectedItem().equals("Select Time")) {
+
+                      /*  Toast.makeText(ScrollingActivity.this,
+                                "Please Select Time",
+                                Toast.LENGTH_SHORT).show();*/
+                            } else {
+
+                                MySQLDataBase mySQLDataBase = mySQLDataBases2.get(position - 1);
+
+                                //  final int pid
+                                final int tid1 = mySQLDataBase.getTheaterId();
+                                Log.d("selected id", "" + tid1);
+                                time = spTime.getSelectedItem().toString();
+
+                      handleClickEvents(tid1,date,time);
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        // TODO Auto-generated method stub
+                                        dialog.dismiss();
+                                    }
+                                };
+
+                            }
+                        }
+
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                            Toast.makeText(ScrollingActivity.this,
+                                    "Your Selected : Nothing",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
+
+                }
+            }
+        }
+
+
+
 
 

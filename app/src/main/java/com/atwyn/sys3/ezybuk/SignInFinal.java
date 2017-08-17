@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PagerSnapHelper;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignInFinal extends AppCompatActivity implements View.OnClickListener  {
     private EditText editTextName;
@@ -59,12 +62,42 @@ String name,email;
             } else {
                 Toast.makeText(getApplicationContext(), "Password Not Equal", Toast.LENGTH_SHORT).show();
             }
-
-            registerUser();
+            String email = editTextEmail.getText().toString();
+            String mobile = editTextMobile.getText().toString();
+            Boolean onError = false;
+            if(!TextUtils.isEmpty(email)){
+                if (!isValidEmail(email)) {
+                    onError = true;
+                    editTextEmail.setError("Invalid Email");
+                    return;
+                }
+            }
+            if(!TextUtils.isEmpty(mobile)) {
+                if (!isValidPhone(mobile)) {
+                    onError = true;
+                    editTextMobile.setError("Invalid contact");
+                    return;
+                }
+            }
+           // registerUser();
         }
     }
 
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    public static boolean isValidPhone(String phone)
+    {
+        String expression = "^([0-9\\+]|\\(\\d{1,3}\\))[0-9\\-\\. ]{3,15}$";
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
 
 
     private void registerUser() {

@@ -15,7 +15,7 @@ class MySQLDataBase implements Serializable {
     public String TheaterName;
     public String Genre;
     public String MLanguage;
-    public String Releasing_Date;
+    public String Releasing_Date,ShowDate,ShowTime;
 public String Format,Synopsis,Duration_min,Videourl;
 
     public String CastName,CastRole,CastImgUrl;
@@ -134,6 +134,17 @@ public String Format,Synopsis,Duration_min,Videourl;
 
     public void setTheaterName(String theaterName) {this.TheaterName = theaterName;}
 
+    public String getShowDate() {
+        return ShowDate;
+    }
+
+    public void setShowDate(String showDate) {this.ShowDate = showDate;}
+
+    public String getShowTime() {
+        return ShowTime;
+    }
+
+    public void setShowTime(String showTime) {this.ShowTime = showTime;}
 
 
 

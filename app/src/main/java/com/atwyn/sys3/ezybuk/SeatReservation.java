@@ -25,12 +25,17 @@ public class SeatReservation extends AppCompatActivity implements AdapterView.On
     public Bitmap seatIcon;
     public Bitmap seatSelect;
     WebView WebViewWithCSS;
-
+    String showdate,showtime;
+    Integer movieid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_reservation);
+        Intent i = this.getIntent(); //
+        movieid = i.getExtras().getInt("Movie_Id");
+        showdate=i.getExtras().getString("Show_Date");
+        showtime=i.getExtras().getString("Show_Time");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

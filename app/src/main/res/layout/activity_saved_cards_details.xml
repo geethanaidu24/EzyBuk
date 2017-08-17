@@ -105,7 +105,7 @@
                 android:id="@+id/radioGender"
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
-                android:centerInParent="true"
+
                 android:layout_below="@+id/name3"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"

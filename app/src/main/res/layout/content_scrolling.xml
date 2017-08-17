@@ -121,7 +121,7 @@ android:id="@+id/mp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal"
-            android:weightSum="3"
+            android:weightSum="2"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
@@ -132,16 +132,16 @@ android:id="@+id/mp"
                 android:id="@+id/availableImageLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true" >
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/availableImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10.0dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
 
+                    android:padding="5dp"
                     android:src="@drawable/stargreen" />
 
                 <TextView
@@ -149,22 +149,28 @@ android:id="@+id/mp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5.0dip"
+                    android:layout_marginLeft="2.0dip"
                     android:layout_toRightOf="@+id/availableImage"
                     android:text="4.6/5"
+                    android:layout_centerHorizontal="true"
+
                     android:textSize="12.0sp" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+
                     android:text="Users Rating"
                     android:layout_below="@+id/availableImage"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorblack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:gravity="center"
+                    android:layout_centerHorizontal="true"
+
+                    android:textColor="@color/colorblack"
+
                     android:layout_weight="1"/>
             </RelativeLayout>
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:id="@+id/bookedImageLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -202,7 +208,7 @@ android:id="@+id/mp"
                     android:layout_below="@+id/bookedImage"
                     android:layout_weight="1"/>
             </RelativeLayout>
-
+-->
             <RelativeLayout
                 android:id="@+id/selectedImageLayout"
                 android:layout_width="wrap_content"
@@ -258,8 +264,8 @@ android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 >
@@ -268,18 +274,18 @@ android:padding="5dp"
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+android:spinnerMode="dialog"
 
                     android:paddingRight="5dp"
 
                     android:paddingLeft="5dp"
-                    android:paddingBottom="5dp"
+
                     android:paddingTop="5dp"
-                    android:spinnerMode="dialog"
-                    android:layout_height="30dp"
+
+                    android:layout_height="50dp"
 
                     />
 
@@ -288,37 +294,37 @@ android:padding="5dp"
                     android:layout_width="180dp"
 
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/spinner"
+                    android:layout_marginLeft="2dp"
+                    android:spinnerMode="dialog"
                     android:paddingRight="5dp"
 
 
                     android:paddingLeft="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:spinnerMode="dropdown"
-                    android:layout_height="30dp"
 
-                    android:layout_marginBottom="5dp"
+                    android:paddingTop="2dp"
+
+                    android:layout_height="50dp"
+
+
                     android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/spinner"
-                    android:layout_marginTop="35dp" />
+                  android:layout_below="@+id/spinner"
+                    android:layout_marginTop="1dp" />
 
                 <Spinner
                     android:id="@+id/spinner3"
                     android:layout_width="match_parent"
-
+                    android:spinnerMode="dialog"
                     android:layout_alignTop="@+id/spinner2"
                     android:layout_alignRight="@+id/spinner"
-                    android:background="@drawable/spinner"
+
                     android:paddingRight="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="2dp"
 
                     android:paddingLeft="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:spinnerMode="dropdown"
-                    android:layout_height="30dp"
+
+                    android:paddingTop="2dp"
+
+                    android:layout_height="50dp"
                     android:layout_alignEnd="@+id/spinner"
                     android:layout_toRightOf="@+id/spinner2"
                     android:layout_toEndOf="@+id/spinner2" />
@@ -326,12 +332,12 @@ android:padding="5dp"
                 <Button
                     android:id="@+id/button"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_below="@+id/spinner3"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/bookbutton"
                     android:textColor="@color/white"
