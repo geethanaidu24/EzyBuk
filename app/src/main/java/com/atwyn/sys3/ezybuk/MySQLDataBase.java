@@ -17,7 +17,7 @@ class MySQLDataBase implements Serializable {
     public String MLanguage;
     public String Releasing_Date,ShowDate,ShowTime;
 public String Format,Synopsis,Duration_min,Videourl;
-
+public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
     public String CastName,CastRole,CastImgUrl;
     public String CrewName,CrewRole,CrewImgUrl;
     public MySQLDataBase() {
@@ -145,6 +145,26 @@ public String Format,Synopsis,Duration_min,Videourl;
     }
 
     public void setShowTime(String showTime) {this.ShowTime = showTime;}
+
+    public String getEmailId() {
+        return EmailId;
+    }
+
+    public void setEmailId(String emailId) {this.EmailId = emailId;}
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {this.UserName = userName;}
+
+    public String getUserMobileNo() {
+        return UserMobileNo;
+    }
+
+    public void setUserMobileNo(String userMobileNo) {this.UserMobileNo = userMobileNo;}
+
+
+
 
 
 

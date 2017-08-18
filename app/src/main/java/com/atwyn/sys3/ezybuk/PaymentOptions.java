@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,7 @@ import static android.text.TextUtils.isEmpty;
 
 public class PaymentOptions extends AppCompatActivity {
     ImageButton nextcreditcard;
-    String Gpersonname,Gpersonemail,Fbname,Fbemail,Ezname,Ezemail,Ezmobile;
+    String Gpersonname,Gpersonemail,Fbname,Fbemail,Ezname,Ezemail,Ezmobile,Loginemail;
     EditText name,email,mobileno;
 
     Button chooseoptions;
@@ -31,8 +32,8 @@ public class PaymentOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_options);
-     Intent i = this.getIntent(); // get Intent which we set from Previous Activity
-        Gpersonname = i.getExtras().getString("Gmail_Name");
+  Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+     Gpersonname = i.getExtras().getString("Gmail_Name");
         Gpersonemail=  i.getExtras().getString("Gmail_Email");
 
         Fbname=i.getExtras().getString("FB_Name");
@@ -42,7 +43,8 @@ public class PaymentOptions extends AppCompatActivity {
         Ezemail=i.getExtras().getString("EzyBuk_Email");
         Ezmobile=i.getExtras().getString("EzyBuk_mobile");
 
-
+    Loginemail=i.getExtras().getString("Login_Email");
+        Log.d("Em", Loginemail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (null != toolbar) {
@@ -103,7 +105,9 @@ if(Fbname==""|| Fbname==null ||Gpersonname==""||Gpersonname==null) {
     email.setText(Fbemail);
 }
 */
+          email.setText(Loginemail);
 
+/*
 if(isEmpty(Fbname) && isEmpty(Ezname))
 
             {
@@ -115,11 +119,16 @@ if(isEmpty(Fbname) && isEmpty(Ezname))
                 name.setText(Ezname);
                 email.setText(Ezemail);
                 mobileno.setText(Ezmobile);
-            }else
+            }else if(isEmpty(Fbemail) && isEmpty(Ezemail) && isEmpty(Gpersonemail))
             {
-                 name.setText(Fbname);
-                email.setText(Fbemail);
-            }
+               email.setText(Loginemail);
+            }else
+{
+    name.setText(Fbname);
+    email.setText(Fbemail);
+}
+*/
+
 
 
             nextcreditcard = (ImageButton) findViewById(R.id.im3);
