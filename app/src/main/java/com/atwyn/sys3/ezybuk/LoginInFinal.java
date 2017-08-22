@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.atwyn.sys3.ezybuk.R.id.username;
+
 
 public class LoginInFinal extends AppCompatActivity /*implements View.OnClickListener */ {
     ImageView im4;

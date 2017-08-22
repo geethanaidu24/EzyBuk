@@ -70,6 +70,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -108,7 +109,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private RecyclerView recyclerView,recyclerView1;
     private MovieAdapter mAdapter;
     private MovieAdapter1 mAdapter1;
-
+    String ActDate1;
   String theaterid;
     BackTask1 bt1;
    BackTask2 bt2;
@@ -116,7 +117,7 @@ public class ScrollingActivity extends AppCompatActivity {
     String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter;
     int movieid;
     String castname, castrole, castimgurl,time;
-    Object mreleasingdate;
+    String mreleasingdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         Intent i = this.getIntent(); // get Intent which we set from Previous Activity
         movieid = i.getExtras().getInt("MOVIE_ID");
-        mreleasingdate = i.getExtras().get("Movie_ReleasingDate");
+        mreleasingdate = String.valueOf(i.getExtras().get("Movie_ReleasingDate"));
         movieposter = i.getExtras().getString("Movie_poster");
         movietitle = i.getExtras().getString("Movie_Title");
 
@@ -189,7 +190,19 @@ public class ScrollingActivity extends AppCompatActivity {
         mlanguage.setText(movielanguage);
         mformat.setText(movieformat);
         msynopsis.setText(moviesynopsis);
-        mdurationdate.setText(movieduration + "  |  " + mreleasingdate);
+        String DateFromDb = mreleasingdate;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//set format of date you receiving from db
+        Date date = null;
+        try {
+            date = sdf.parse(DateFromDb);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat newDate = new SimpleDateFormat("MMM dd, yyyy");//set format of new date
+        System.out.println(newDate.format(date));
+        String ActDate = newDate.format(date);// here is your new date !
+        Log.d("DATE",ActDate);
+        mdurationdate.setText(movieduration + "  |  " + ActDate);
         book = (Button) findViewById(R.id.button);
 
         com.bumptech.glide.Glide.with(this)
@@ -819,6 +832,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 InputStream is = null;
                 String result = "";
                 try {
+
                     HttpClient httpclient = new DefaultHttpClient();
                     HttpPost httppost = new HttpPost(Config.DateNameUrlAddress + tid + '/' + movieid);
                     String h2 = Config.DateNameUrlAddress + tid + '/' + movieid;
@@ -860,6 +874,8 @@ public class ScrollingActivity extends AppCompatActivity {
                         mySQLDataBase.setTheaterId(tid);
                         mySQLDataBase.setShowDate(date);
                         mySQLDataBases1.add(mySQLDataBase);
+
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -873,9 +889,26 @@ public class ScrollingActivity extends AppCompatActivity {
                 final ArrayList<String> listItems2 = new ArrayList<>();
                 listItems2.add("Select Date");
                 for (int i = 0; i < mySQLDataBases1.size(); i++) {
-                    listItems2.add(mySQLDataBases1.get(i).getShowDate());
+                  //  listItems2.add(mySQLDataBases1.get(i).getShowDate());
+                    String DateFromDb = mySQLDataBases1.get(i).getShowDate();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//set format of date you receiving from db
+                    Date date = null;
+                    try {
+                        date = sdf.parse(DateFromDb);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    SimpleDateFormat newDate = new SimpleDateFormat("EEEE, MMM d,yyyy");//set format of new date EEEE-wed
 
+                    String input = "EEEE MMM d,yyyy";
+                    String[] out = input.split(",");
 
+                Log.d("Month = " , out[0]);
+                  Log.d("Day = " , out[1]);
+
+                    ActDate1 = newDate.format(date);// here is your new date !
+                    Log.d("DATEewretr",ActDate1);
+                    listItems2.add(ActDate1);
                 }
              /*   HashSet<String> hashSet=new HashSet<String>();
                 hashSet.addAll(listItems);
@@ -904,9 +937,24 @@ public class ScrollingActivity extends AppCompatActivity {
                             tid1 = mySQLDataBase.getTheaterId();
                             Log.d("selected id", "" + tid1);
                             date = spdate.getSelectedItem().toString();
+                            Log.d("hewhrhf",date);
                         spTime.setEnabled(true);
                             spTime.setClickable(true);
-                            SpinnerTime(date, tid1, movieid);
+
+
+                          String DateFromDb = date;
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d,yyyy");//set format of date you receiving from db
+                            Date date = null;
+                            try {
+                                date = sdf.parse(DateFromDb);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd");//set format of new date
+
+                          ActDate1 = newDate.format(date);// here is your new date !
+                            Log.d("DATEewretr",ActDate1);
+                            SpinnerTime(ActDate1, tid1, movieid);
 
                             //  handleClickEvents(tid);
                             new DialogInterface.OnClickListener() {
@@ -933,7 +981,7 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         }
 
-            private void SpinnerTime(String date, int cineid, int movieid) {
+            private void SpinnerTime(String date1, int cineid, int movieid) {
 
                 bt2 = new BackTask2();
                 bt2.execute();
@@ -945,7 +993,7 @@ public class ScrollingActivity extends AppCompatActivity {
                     toast.show();
                     //Toast.makeText(DeleteProducts.this, "No Data To Delete", Toast.LENGTH_SHORT).show();
                     AndroidNetworking.post(SpinnerTime)
-                            .addBodyParameter("ShowDate",date)
+                            .addBodyParameter("ShowDate",date1)
                             .addBodyParameter("CinemaId", String.valueOf(cineid))
                             .addBodyParameter("MovieId", String.valueOf(s.getMovieId()))
                             .setTag("TAG_ADD")
@@ -985,9 +1033,10 @@ public class ScrollingActivity extends AppCompatActivity {
                     InputStream is = null;
                     String result = "";
                     try {
+
                         HttpClient httpclient = new DefaultHttpClient();
-                        HttpPost httppost = new HttpPost(Config.TimeNameUrlAddress + date + '/' + tid1 + '/' + movieid);
-                        String h3 = Config.TimeNameUrlAddress + date + '/' + tid1 + '/' + movieid;
+                        HttpPost httppost = new HttpPost(Config.TimeNameUrlAddress + ActDate1 + '/' + tid1 + '/' + movieid);
+                        String h3 = Config.TimeNameUrlAddress + ActDate1+ '/' + tid1 + '/' + movieid;
                         Log.d("hjkchjsdhvj url", " >" + h3);
                         org.apache.http.HttpResponse response = httpclient.execute(httppost);
                         org.apache.http.HttpEntity entity = response.getEntity();

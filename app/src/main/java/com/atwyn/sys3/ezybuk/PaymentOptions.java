@@ -23,7 +23,7 @@ import static android.text.TextUtils.isEmpty;
 
 public class PaymentOptions extends AppCompatActivity {
     ImageButton nextcreditcard;
-    String Gpersonname,Gpersonemail,Fbname,Fbemail,Ezname,Ezemail,Ezmobile,Loginemail;
+    String Gpersonname,Gpersonemail,Fbname,Fbemail,Ezname,Ezemail,Ezmobile,Loginemail,Loginname,Loginmobileno;
     EditText name,email,mobileno;
 
     Button chooseoptions;
@@ -44,7 +44,9 @@ public class PaymentOptions extends AppCompatActivity {
         Ezmobile=i.getExtras().getString("EzyBuk_mobile");
 
     Loginemail=i.getExtras().getString("Login_Email");
-        Log.d("Em", Loginemail);
+        Loginname=i.getExtras().getString("Login_Name");
+        Loginmobileno=i.getExtras().getString("Login_MobileNo");
+//      Log.d("Em", Loginemail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (null != toolbar) {
@@ -105,7 +107,7 @@ if(Fbname==""|| Fbname==null ||Gpersonname==""||Gpersonname==null) {
     email.setText(Fbemail);
 }
 */
-          email.setText(Loginemail);
+          name.setText(Loginname);
 
 /*
 if(isEmpty(Fbname) && isEmpty(Ezname))

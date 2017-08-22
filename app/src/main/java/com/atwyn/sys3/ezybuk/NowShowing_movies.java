@@ -199,6 +199,7 @@ public class NowShowing_movies extends AppCompatActivity {
                     String moviesvideourl=moviesObject.getString("Videourl");
                     String moviereleasingdate= moviesObject.getString("Releasing_Date");
 
+
                     DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy ");
                     Date date = null;
                     try {

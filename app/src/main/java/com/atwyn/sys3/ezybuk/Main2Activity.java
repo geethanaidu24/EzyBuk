@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +47,17 @@ import com.google.android.gms.common.api.Status;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,15 +74,16 @@ public class Main2Activity extends TabActivity
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-
+    private boolean loggedIn = false;
     GoogleApiClient googleApiClient;
     private static final Integer[] IMAGES= {R.drawable.movposttwo, R.drawable.backezybuk, R.drawable.backezybuktwo};
-
+    String navigationusername;
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
 TabHost tabHost;
     protected Menu menu;
-
-    TextView username;
+    TextView navname,navemail;
+    final ArrayList<MySQLDataBase> mySQLDataBases4 = new ArrayList<>();
+    private ArrayAdapter<MySQLDataBase> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +91,7 @@ TabHost tabHost;
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_main2);
+
 
        // viewPager = (ViewPager) findViewById(R.id.view_pager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -109,8 +125,40 @@ TabHost tabHost;
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view);
+  ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view);
+
+        View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        navname=(TextView)header.findViewById(R.id.uname) ;
+        navemail=(TextView)header.findViewById(R.id.uemail) ;
+       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+        if(loggedIn && googleApiClient != null && googleApiClient.isConnected())
+        {
+            navigationView.getMenu().clear();
+            sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, MODE_PRIVATE);
+
+            navigationusername = sharedPreferences.getString("LoginEmailId", "UNKNOWN");
+            // boolean loggedIn = String.valueOf(pref.getBoolean("logged_in", false);
+            //  String username = sharedPreferences.getString(useremail, "");
+            Log.d("EmailIdddddddddd", navigationusername);
+            //  Log.d("hieel", String.valueOf(loggedIn));
+            navemail.setText(navigationusername);
+          BackTask b1t = new BackTask();
+            b1t.execute();
+
+            navigationView.inflateMenu(R.menu.menu_logout);
+        } else
+        {
+            navigationView.getMenu().clear();
+
+
+            navigationView.inflateMenu(R.menu.activity_main2_drawer);
+
+
+        }
         //setting Tab layout (number of Tabs = number of ViewPager pages)
        /* tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         for (int i = 0; i < 2; i++) {
@@ -232,7 +280,83 @@ TabHost tabHost;
         TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
         tv.setTextColor(Color.parseColor("#000000"));
     }
+    class BackTask extends AsyncTask<Object, Object, String> {
 
+
+        //private MySQLDataBase mySQLDataBase4;
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        protected String doInBackground(Object... params) {
+
+            InputStream is = null;
+            String result = "";
+            try {
+                Log.d("EmailIdiii", navigationusername);
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Config.EmailSubmitUrlAddress + navigationusername);
+                String h3 = Config.EmailSubmitUrlAddress + navigationusername;
+                Log.d("hjkchjsdhvj url", " >" + h3);
+                org.apache.http.HttpResponse response = httpclient.execute(httppost);
+                org.apache.http.HttpEntity entity = response.getEntity();
+                // Get our response as a String.
+                is = entity.getContent();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //convert response to string
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
+                }
+                is.close();
+                //result=sb.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // parse json data
+            // String mysql = null;
+            String name1 = null;
+            try {
+
+
+                JSONArray ja = new JSONArray(result);
+                JSONObject jo = null;
+
+
+                mySQLDataBases4.clear();
+                MySQLDataBase mySQLDataBase;
+                for (int i = 0; i < ja.length(); i++) {
+                    jo = ja.getJSONObject(i);
+                    // add interviewee name to arraylist
+
+                    name1 = jo.getString("Name");
+
+                    mySQLDataBase = new MySQLDataBase();
+                    mySQLDataBase.setUserName(name1);
+
+                    mySQLDataBases4.add(mySQLDataBase);
+                    //     mysql = mySQLDataBases4.toString();
+
+                    Log.d("Name", name1);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return name1;
+        }
+        protected void onPostExecute(String result) {
+         navname.setText("Hello" + " " +result);
+
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -350,6 +474,13 @@ TabHost tabHost;
            logout();
 
         }
+        else if(id == R.id.login)
+        {
+            Intent in=new Intent(Main2Activity.this,LoginMain.class);
+            startActivity(in);
+
+
+        }
      if (id == R.id.profile) {
             Intent intent = new Intent(this, MyProfile.class);
             startActivity(intent);
@@ -382,7 +513,7 @@ TabHost tabHost;
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         //Getting out sharedpreferences
-                        /*SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                     SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
@@ -404,7 +535,8 @@ TabHost tabHost;
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
-                        finish();*/
+                        finish();
+
 
                        if (googleApiClient.isConnected()) {
                             Auth.GoogleSignInApi.signOut(googleApiClient);
