@@ -10,14 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-public class SeatReservation extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class SeatReservation extends AppCompatActivity /*implements AdapterView.OnItemClickListener */{
     Button book;
     GridView gridView;
     ArrayList<Item> gridArray = new ArrayList<Item>();
@@ -25,17 +29,17 @@ public class SeatReservation extends AppCompatActivity implements AdapterView.On
     public Bitmap seatIcon;
     public Bitmap seatSelect;
     WebView WebViewWithCSS;
-    String showdate,showtime;
+    String showdate, showtime;
     Integer movieid;
-
+Spinner mspin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_reservation);
         Intent i = this.getIntent(); //
         movieid = i.getExtras().getInt("Movie_Id");
-        showdate=i.getExtras().getString("Show_Date");
-        showtime=i.getExtras().getString("Show_Time");
+        showdate = i.getExtras().getString("Show_Date");
+        showtime = i.getExtras().getString("Show_Time");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,18 +67,17 @@ public class SeatReservation extends AppCompatActivity implements AdapterView.On
                     startActivity(in);
                 }
             });
-            seatIcon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.seat);
+            /*seatIcon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.seat);
             seatSelect = BitmapFactory.decodeResource(this.getResources(), R.mipmap.location);
             totalSeat(100);
 
             gridView = (GridView) findViewById(R.id.gridView1);
             customGridAdapter = new CustomGridViewAdapter(this, R.layout.seat_gridview, gridArray);
             gridView.setAdapter(customGridAdapter);
-            gridView.setOnItemClickListener(this);
-        }
-    }
+            gridView.setOnItemClickListener(this);*/
 
-    public void totalSeat(int n)
+
+   /* public void totalSeat(int n)
     {
         for (int i = 1; i <= n; ++i)
         {
@@ -117,24 +120,27 @@ public class SeatReservation extends AppCompatActivity implements AdapterView.On
 
     }
 
-}
-
-      /*  WebViewWithCSS = (WebView)findViewById(R.id.webView1);
-
-        WebSettings webSetting = WebViewWithCSS.getSettings();
-        webSetting.setJavaScriptEnabled(true);
-
-        WebViewWithCSS.setWebViewClient(new WebViewClient());
-        WebViewWithCSS.loadUrl("file:///android_asset/ex.html");
-    }
-
-    private class WebViewClient extends android.webkit.WebViewClient
-    {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
-            return super.shouldOverrideUrlLoading(view, url);
-        }
-    }
-
 }*/
+            mspin=(Spinner) findViewById(R.id.spinner);
+            Integer[] items = new Integer[]{1,2,3,4,6};
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, items);
+            mspin.setAdapter(adapter);
+
+            WebViewWithCSS = (WebView) findViewById(R.id.webView1);
+
+            WebSettings webSetting = WebViewWithCSS.getSettings();
+            webSetting.setJavaScriptEnabled(true);
+
+            WebViewWithCSS.setWebViewClient(new WebViewClient());
+            WebViewWithCSS.loadUrl("file:///android_asset/seat-layout.html");
+        }
+
+        class WebViewClient extends android.webkit.WebViewClient {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        }
+
+    }
+}

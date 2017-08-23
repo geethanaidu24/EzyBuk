@@ -180,9 +180,8 @@
                     android:background="@color/cred"
                     android:layout_toRightOf="@+id/imageView422" />
                 <EditText
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_centerInParent="true"
 
                     android:id="@+id/editText_user22"
                     android:hint="Date Of Birth"
@@ -190,10 +189,17 @@
                     android:layout_marginLeft="2dp"
                     android:textColor="@color/colorblack"
                     android:background="@drawable/edittext2"
-                    android:layout_marginRight="2dp"
                     android:inputType="textEmailAddress"
                     android:layout_toRightOf="@+id/imageView422"
-                    android:layout_toEndOf="@+id/imageView422" />
+                    android:layout_centerVertical="true" />
+                <Button
+                    android:id="@+id/button8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                  android:layout_alignParentRight="true"
+
+                    android:text="Select Date" />
 
             </RelativeLayout>
 
@@ -321,8 +327,10 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/savefinal"
             android:text="SAVE"/>
 </RelativeLayout>
+
 
 
 

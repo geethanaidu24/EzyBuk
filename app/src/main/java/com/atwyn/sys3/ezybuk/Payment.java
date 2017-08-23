@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class Payment extends AppCompatActivity {
     Button payment;
-    String name11, mobilno11;
+    String name1, mobileno1;
     String username;
 
     private boolean loggedIn = false;
@@ -101,7 +101,7 @@ public class Payment extends AppCompatActivity {
 
     }
 
-    class BackTask extends AsyncTask<Object, Object, String> {
+    class BackTask extends AsyncTask<Object, Object, ArrayList<MySQLDataBase>> {
 
 
         //private MySQLDataBase mySQLDataBase4;
@@ -111,7 +111,7 @@ public class Payment extends AppCompatActivity {
 
         }
 
-        protected String doInBackground(Object... params) {
+        protected ArrayList<MySQLDataBase> doInBackground(Object... params) {
 
             InputStream is = null;
             String result = "";
@@ -156,8 +156,8 @@ public class Payment extends AppCompatActivity {
                     jo = ja.getJSONObject(i);
                     // add interviewee name to arraylist
 
-                    String name1 = jo.getString("Name");
-                    String mobileno1 = jo.getString("Mobile");
+                  name1 = jo.getString("Name");
+                   mobileno1 = jo.getString("Mobile");
                     mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setUserName(name1);
                     mySQLDataBase.setUserMobileNo(mobileno1);
@@ -170,10 +170,10 @@ public class Payment extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
+            return mySQLDataBases4;
         }
 
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(ArrayList<MySQLDataBase> result) {
            // Log.d("Result", result);
          /*   name11 = mySQLDataBases4.getUserName();
            mobilno11=mySQLDataBases4.getUserMobileNo();
@@ -182,8 +182,9 @@ public class Payment extends AppCompatActivity {
 */
 Intent in = new Intent(Payment.this, PaymentOptions.class);
         in.putExtra("Login_Email", username);
-in.putExtra("Login_Name", name11);
-in.putExtra("Login_MobileNo", mobilno11);
+in.putExtra("Login_Name", name1);
+in.putExtra("Login_MobileNo", mobileno1);
+            Log.d("Mobile11111", mobileno1);
         startActivity(in);
 
         }

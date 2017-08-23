@@ -108,6 +108,8 @@ if(Fbname==""|| Fbname==null ||Gpersonname==""||Gpersonname==null) {
 }
 */
           name.setText(Loginname);
+            email.setText(Loginemail);
+            mobileno.setText(Loginmobileno);
 
 /*
 if(isEmpty(Fbname) && isEmpty(Ezname))

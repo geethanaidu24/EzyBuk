@@ -1,21 +1,14 @@
 package com.atwyn.sys3.ezybuk;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -26,27 +19,24 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -61,9 +51,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.R.id.tabhost;
-import static com.atwyn.sys3.ezybuk.R.drawable.search;
 
 public class Main2Activity extends TabActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabHost.OnTabChangeListener {
@@ -81,8 +68,13 @@ public class Main2Activity extends TabActivity
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
 TabHost tabHost;
     protected Menu menu;
-    TextView navname,navemail;
+    TextView navname;
+    TextView navemail;
+    String name1,mobile1;
+    private static String KEY_SUCCESS = "success";
+    int valoreOnPostExecute = 0;
     final ArrayList<MySQLDataBase> mySQLDataBases4 = new ArrayList<>();
+    final ArrayList userdata = new ArrayList<>();
     private ArrayAdapter<MySQLDataBase> adapter;
 
     @Override
@@ -135,7 +127,7 @@ TabHost tabHost;
         navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-        if(loggedIn && googleApiClient != null && googleApiClient.isConnected())
+        if(loggedIn )
         {
             navigationView.getMenu().clear();
             sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, MODE_PRIVATE);
@@ -300,8 +292,8 @@ TabHost tabHost;
                 HttpPost httppost = new HttpPost(Config.EmailSubmitUrlAddress + navigationusername);
                 String h3 = Config.EmailSubmitUrlAddress + navigationusername;
                 Log.d("hjkchjsdhvj url", " >" + h3);
-                org.apache.http.HttpResponse response = httpclient.execute(httppost);
-                org.apache.http.HttpEntity entity = response.getEntity();
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
                 // Get our response as a String.
                 is = entity.getContent();
             } catch (IOException e) {
@@ -322,7 +314,7 @@ TabHost tabHost;
             }
             // parse json data
             // String mysql = null;
-            String name1 = null;
+
             try {
 
 
@@ -337,14 +329,20 @@ TabHost tabHost;
                     // add interviewee name to arraylist
 
                     name1 = jo.getString("Name");
+                    mobile1=jo.getString("Mobile");
 
                     mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setUserName(name1);
+                    mySQLDataBase.setUserMobileNo(mobile1);
 
                     mySQLDataBases4.add(mySQLDataBase);
                     //     mysql = mySQLDataBases4.toString();
 
+                   // Log.d("Mysql",mySQLDataBases4);
                     Log.d("Name", name1);
+                    Log.d("MobileNoUse",mobile1);
+
+
 
                 }
             } catch (JSONException e) {
@@ -353,7 +351,12 @@ TabHost tabHost;
             return name1;
         }
         protected void onPostExecute(String result) {
-         navname.setText("Hello" + " " +result);
+
+     /*  // dialog.dismiss();
+            String lol1= result.get(0).toString();
+        //    String lol2= result.get(1).toString();
+Log.d("lllllflkld", String.valueOf(result));*/
+ navname.setText("Hello" + " " +result);
 
         }
     }
@@ -483,6 +486,9 @@ TabHost tabHost;
         }
      if (id == R.id.profile) {
             Intent intent = new Intent(this, MyProfile.class);
+     intent.putExtra("UseName",  name1);
+         intent.putExtra("UseEmail", navigationusername);
+         intent.putExtra("UserMobileNo", mobile1);
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);

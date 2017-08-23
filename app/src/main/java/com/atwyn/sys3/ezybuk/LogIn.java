@@ -55,10 +55,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,7 +62,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-public class LogIn extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class LogIn extends Fragment /*implements GoogleApiClient.OnConnectionFailedListener*/ {
 
     private static final String TAG = "GPlusFragent";
     private int RC_SIGN_IN = 0;
@@ -78,9 +74,9 @@ public class LogIn extends Fragment implements GoogleApiClient.OnConnectionFaile
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
     private ImageView imgProfilePic;
-    View v ;
+    View v;
 
-private Button SignInAccount;
+    private Button SignInAccount;
 
 
     private CallbackManager callbackManager;
@@ -94,7 +90,7 @@ private Button SignInAccount;
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayMessage(profile);
+          //  displayMessage(profile);
         }
 
         @Override
@@ -111,21 +107,24 @@ private Button SignInAccount;
     public LogIn() {
 
     }
+
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
 
-        accessTokenTracker= new AccessTokenTracker() {
+        accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
 
             }
         };
+    }
+}
 
-        profileTracker = new ProfileTracker() {
+     /*   profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
                 displayMessage(newProfile);
@@ -133,10 +132,10 @@ private Button SignInAccount;
         };
 
         accessTokenTracker.startTracking();
-        profileTracker.startTracking();
+        profileTracker.startTracking();*/
 
 
-        // Configure sign-in to request the user's ID, email address, and basic
+ /*       // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -145,7 +144,7 @@ private Button SignInAccount;
         // Build a GoogleApiClient with access to the Google Sign-In API and the
 // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(getActivity() *//* FragmentActivity *//*, this *//* OnConnectionFailedListener *//*)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
@@ -216,7 +215,7 @@ private Button SignInAccount;
 
 
 
-      /*  signOutButton.setOnClickListener(new View.OnClickListener() {
+      *//*  signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -228,7 +227,7 @@ private Button SignInAccount;
                         });
             }
 
-        });*/
+        });*//*
 
         return v;
     }
@@ -315,9 +314,9 @@ private Button SignInAccount;
     }
 
 
-    /**
+    *//**
      * Background Async task to load user profile picture from url
-     * */
+     * *//*
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -373,7 +372,7 @@ private Button SignInAccount;
         displayMessage(profile);
     }
 }
-
+*/
 /*@Override
         public void onResume() {
             super.onResume();
