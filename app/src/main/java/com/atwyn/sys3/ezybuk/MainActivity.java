@@ -26,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        MultiDex.install(this);
+       // MultiDex.install(this);
         setContentView(R.layout.activity_main);
-      /*  ActionBar actionBar = getSupportActionBar();
+     ActionBar actionBar = getSupportActionBar();
         if(null != actionBar){
-            actionBar.hide();*//*
-        //  }*/
+            actionBar.hide();
+        }
 
-      /*  new Handler().postDelayed(new Runnable(){
+     new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
                 Intent startActivityIntent = new Intent(MainActivity.this, Main2Activity.class);
@@ -41,17 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
                 MainActivity.this.finish();
             }
-        }, SPLASH_DISPLAY_LENGTH);*/
+        }, SPLASH_DISPLAY_LENGTH);
 
-        ImageView im=(ImageView)findViewById(R.id.mainimg);
-        im.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Main2Activity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
-            }
-        });
+
 
 
 

@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        preDexLibraries true
+    }
 }
 
 repositories {
@@ -33,7 +36,7 @@ dependencies {
 
     // If you want to use the GPU Filters
 
-    compile 'com.android.support:multidex:1.0.1'
+  
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
