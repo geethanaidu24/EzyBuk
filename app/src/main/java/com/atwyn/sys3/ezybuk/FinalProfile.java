@@ -20,8 +20,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.internal.ImageRequest;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,7 +39,7 @@ import java.util.List;
 public class FinalProfile extends AppCompatActivity {
     EditText ed1, ed2, ed3, ed4;
     //  JSONParser jsonParser = new JSONParser();
-    String finalprofilname, finalprofileemail, finalprofilemobileno;
+    String finalprofilname, finalprofileemail, finalprofilemobileno,facebookname2;
     private DatePicker datePicker;
     private Calendar calendar;
     private boolean loggedIn = false;
@@ -42,8 +49,10 @@ public class FinalProfile extends AppCompatActivity {
     private Button pPickDate;
     private int pYear;
     private int pMonth;
+    Profile profile;
     private int pDay;
     private static final String REGISTER_URL = Config.EzyBuk_SignUp;
+    AccessToken accessToken;
     private static final String TAG_SUCCESS = "success";
     /**
      * This integer will uniquely define the dialog to be used for displaying date picker.
@@ -92,7 +101,7 @@ public class FinalProfile extends AppCompatActivity {
         finalprofilname = i.getExtras().getString("UseName");
         finalprofileemail = i.getExtras().getString("UseEmail");
         finalprofilemobileno = i.getExtras().getString("UserMobileNo");
-
+        facebookname2=i.getExtras().getString("Facebook_Name");
         ed1 = (EditText) findViewById(R.id.editText_profilename);
         ed2 = (EditText) findViewById(R.id.editText_user2);
         ed3 = (EditText) findViewById(R.id.editText_user22);
@@ -103,10 +112,22 @@ public class FinalProfile extends AppCompatActivity {
         final RadioButton male = (RadioButton) findViewById(R.id.genderMale);
         final RadioButton female = (RadioButton) findViewById(R.id.genderFemale);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+        profile = Profile.getCurrentProfile();
+        if(loggedIn)
+        {
+            ed1.setText(finalprofilname);
+            ed2.setText(finalprofilemobileno);
+            ed4.setText(finalprofileemail);
+        }else if (AccessToken.getCurrentAccessToken() != null)
+        {
 
-        ed1.setText(finalprofilname);
-        ed2.setText(finalprofilemobileno);
-        ed4.setText(finalprofileemail);
+
+           ed1.setText(facebookname2);
+        }
+
+
         selectdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);

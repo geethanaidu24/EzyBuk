@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -211,7 +212,7 @@ String name,email,gender,birthday,mobile,pass,mobile1;
                     @Override
                     public void onError(FacebookException exception) {
                         System.out.println("onError");
-                        Log.v("LoginActivity", exception.getCause().toString());
+                        //Log.v("LoginActivity", exception.getCause().toString());
                     }
                 });
 
@@ -376,16 +377,16 @@ Log.d("facebook name"+">", bname);
 
          GoogleSignInAccount acct = result.getSignInAccount();
 
-            Log.e(TAG, "display name: " + acct.getDisplayName());
+            Log.d(TAG, "display name: " + acct.getDisplayName());
 
 
            gpersonname = acct.getDisplayName();
 
-            String personPhotoUrl = acct.getPhotoUrl().toString();
+         //   String personPhotoUrl = acct.getPhotoUrl().toString();
             gemail = acct.getEmail();
 
-            Log.e(TAG, "Name: " + gpersonname + ", email: " + gemail
-                    + ", Image: " + personPhotoUrl);
+            Log.d(TAG, "Name: " + gpersonname + ", email: " + gemail
+                    + ", Image: " );
 
             uploadMultipartGmail();
 
@@ -559,5 +560,26 @@ Log.d("facebook name"+">", bname);
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(LoginMain.this).setTitle(Html.fromHtml("<font color='#ff0000'>Exit</font>"))
+
+                .setMessage(Html.fromHtml(" Are you sure you want to exit Payment?"))
+                .setIcon(R.drawable.logoezyb)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            Intent in = new Intent(LoginMain.this, Main2Activity.class);
+                            startActivity(in);
+                            //finish();
+                        }
+
+                    }
+                }).setNegativeButton("No", null).show();
+
+
+    }
+
 }
 

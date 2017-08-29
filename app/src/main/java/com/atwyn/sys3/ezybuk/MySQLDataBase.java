@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 class MySQLDataBase implements Serializable {
-    public int MovieId,TheaterId;
+    public int MovieId,TheaterId,ScreenId;
     public String Title;
     public String PosterUrl,BigPosterUrl;
   //  public String MoviesDescription;
@@ -164,7 +164,13 @@ public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
     public void setUserMobileNo(String userMobileNo) {this.UserMobileNo = userMobileNo;}
 
 
+    public int getScreenId() {
+        return ScreenId;
+    }
 
+    public void setScreenId(int screenId) {
+        this.ScreenId = screenId;
+    }
 
 
 

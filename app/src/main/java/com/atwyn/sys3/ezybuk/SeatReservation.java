@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -30,7 +31,7 @@ public class SeatReservation extends AppCompatActivity /*implements AdapterView.
     public Bitmap seatSelect;
     WebView WebViewWithCSS;
     String showdate, showtime;
-    Integer movieid;
+    Integer movieid,screenid;
 Spinner mspin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ Spinner mspin;
         movieid = i.getExtras().getInt("Movie_Id");
         showdate = i.getExtras().getString("Show_Date");
         showtime = i.getExtras().getString("Show_Time");
+        screenid = i.getExtras().getInt("Screen_Id");
+        Log.d("SCREEn_id", String.valueOf(screenid));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

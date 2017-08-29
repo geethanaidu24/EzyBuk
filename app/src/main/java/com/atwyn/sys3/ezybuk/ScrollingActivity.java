@@ -103,7 +103,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
   //  final static String moviesUrlAddress = Config.moviesUrlAddress;
-
+  int screenid1;
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
     private RecyclerView recyclerView,recyclerView1;
@@ -564,7 +564,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 for (int i = 0; i < moviesArray.length(); i++) {
                     JSONObject moviesObject = moviesArray.getJSONObject(i);
 
-                    Log.d("result movies response: ", "> " + moviesObject);
+                 //   Log.d("result movies response: ", "> " + moviesObject);
 
                     // castobject=moviesObject.getJSONObject("moviecast");
                     MySQLDataBase mySQLDataBase = new MySQLDataBase();
@@ -590,7 +590,7 @@ public class ScrollingActivity extends AppCompatActivity {
         }
     }
 
-    private void handleClickEvents(final int movieid, final String date, final String time)
+    private void handleClickEvents(final int movieid, final String date, final String time, final int screenid1)
     {
         //EVENTS : ADD
         click = click + 1;
@@ -628,7 +628,7 @@ public class ScrollingActivity extends AppCompatActivity {
                         in.putExtra("Movie_Id", movieid);
                         in.putExtra("Show_Date", date);
                         in.putExtra("Show_Time", time);
-
+                        in.putExtra("Screen_Id", screenid1);
                         startActivity(in);
 
                     }
@@ -868,10 +868,10 @@ public class ScrollingActivity extends AppCompatActivity {
                     for (int i = 0; i < ja.length(); i++) {
                         jo = ja.getJSONObject(i);
                         // add interviewee name to arraylist
-                        int tid = jo.getInt("CinemaId");
+                    int tid = jo.getInt("CinemaId");
                         String date = jo.getString("ShowDate");
                         mySQLDataBase = new MySQLDataBase();
-                        mySQLDataBase.setTheaterId(tid);
+                     mySQLDataBase.setTheaterId(tid);
                         mySQLDataBase.setShowDate(date);
                         mySQLDataBases1.add(mySQLDataBase);
 
@@ -934,8 +934,9 @@ public class ScrollingActivity extends AppCompatActivity {
                             MySQLDataBase mySQLDataBase = mySQLDataBases1.get(position - 1);
 
                             //  final int pid
-                            tid1 = mySQLDataBase.getTheaterId();
+                         tid1 = mySQLDataBase.getTheaterId();
                             Log.d("selected id", "" + tid1);
+                        //   tid1= Integer.parseInt(spTheater.getSelectedItem().toString());
                             date = spdate.getSelectedItem().toString();
                             Log.d("hewhrhf",date);
                         spTime.setEnabled(true);
@@ -1070,9 +1071,12 @@ public class ScrollingActivity extends AppCompatActivity {
                             jo = ja.getJSONObject(i);
                             // add interviewee name to arraylist
                             int tid1 = jo.getInt("CinemaId");
+                            int screenid=jo.getInt("ScreenId");
                             String time = jo.getString("ShowTime");
+
                             mySQLDataBase = new MySQLDataBase();
                             mySQLDataBase.setTheaterId(tid1);
+                            mySQLDataBase.setScreenId(screenid);
                             mySQLDataBase.setShowTime(time);
                             mySQLDataBases2.add(mySQLDataBase);
                         }
@@ -1119,8 +1123,9 @@ public class ScrollingActivity extends AppCompatActivity {
                                 final int tid1 = mySQLDataBase.getTheaterId();
                                 Log.d("selected id", "" + tid1);
                                 time = spTime.getSelectedItem().toString();
-
-                      handleClickEvents(tid1,date,time);
+                                screenid1=mySQLDataBase.getScreenId();
+                                Log.d("screennnnn id", "" + screenid1);
+                      handleClickEvents(tid1,date,time,screenid1);
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
                                                         int which) {

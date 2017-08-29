@@ -20,24 +20,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MyProfile extends AppCompatActivity {
     Button b1, b2, b3, b4, b5;
-
+    Profile profile;
     private boolean loggedIn = false;
 TextView tx,pLogin;
-    String profilename,profileemail,profilemobileno;
+    GoogleApiClient googleApiClient;
+    String profilename,profileemail,profilemobileno,facebookname1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_my_profile);
         Intent i = this.getIntent();
 profilename = i.getExtras().getString("UseName");
         profileemail=i.getExtras().getString("UseEmail");
         profilemobileno=i.getExtras().getString("UserMobileNo");
+        facebookname1=i.getExtras().getString("Facebook_Name");
         //Log.d("PProfilemobileno",profilemobileno);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -58,8 +70,14 @@ profilename = i.getExtras().getString("UseName");
 tx=(TextView)findViewById(R.id.profilename) ;
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+       profile = Profile.getCurrentProfile();
         if(loggedIn ) {
             tx.setText(profilename);
+        }
+        else if(AccessToken.getCurrentAccessToken() != null)
+        {
+
+       tx.setText(facebookname1);
         }
         else
         {
@@ -89,15 +107,22 @@ tx=(TextView)findViewById(R.id.profilename) ;
                     in.putExtra("UseName",  profilename);
                     in.putExtra("UseEmail", profileemail);
                     in.putExtra("UserMobileNo", profilemobileno);
+
                     startActivity(in);
                 }
-                else
+                else if(profile != null)
                 {
 
-                            Intent in = new Intent(MyProfile.this, LoginMain.class);
-                            startActivity(in);
+                    Intent in = new Intent(MyProfile.this, FinalProfile.class);
+
+                    in.putExtra("Facebook_Name",facebookname1);
+                    startActivity(in);
 
 
+                }else
+                {
+                    Intent in = new Intent(MyProfile.this, LoginMain.class);
+                    startActivity(in);
                 }
 
 
@@ -109,6 +134,13 @@ tx=(TextView)findViewById(R.id.profilename) ;
                 if(loggedIn ) {
                     Intent in = new Intent(MyProfile.this, TicketsBookingHistory.class);
                     startActivity(in);
+
+                }else if(profile != null)
+                {
+
+                    Intent in = new Intent(MyProfile.this, TicketsBookingHistory.class);
+                    startActivity(in);
+
 
                 }
                 else
@@ -131,6 +163,13 @@ tx=(TextView)findViewById(R.id.profilename) ;
                     startActivity(in);
 
 
+                }else if(profile != null)
+                {
+
+                    Intent in = new Intent(MyProfile.this, SavedCardsDetails.class);
+                    startActivity(in);
+
+
                 }
                 else
                 {
@@ -149,7 +188,18 @@ tx=(TextView)findViewById(R.id.profilename) ;
             public void onClick(View v) {
                 if(loggedIn ) {
                     Intent in = new Intent(MyProfile.this, Changepassword.class);
+                    in.putExtra("UseEmail", profileemail);
                     startActivity(in);
+
+
+                }else if(profile != null)
+                {
+
+                    Intent in = new Intent(MyProfile.this, Changepassword.class);
+                    in.putExtra("UseEmail", profileemail);
+                    startActivity(in);
+
+
 
 
                 }
@@ -171,6 +221,13 @@ tx=(TextView)findViewById(R.id.profilename) ;
             public void onClick(View v) {
                 if(loggedIn ) {
                     logout();
+
+
+                }
+                else if(profile != null)
+                {
+                    logout();
+
 
 
                 }
@@ -215,7 +272,12 @@ tx=(TextView)findViewById(R.id.profilename) ;
                         editor.apply();
 
                         //Starting login activity
-
+                        if (googleApiClient.isConnected()) {
+                            Auth.GoogleSignInApi.signOut(googleApiClient);
+                            googleApiClient.disconnect();
+                            googleApiClient.connect();
+                            Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+                        }
                         Intent intent = new Intent(MyProfile.this, Main2Activity.class);
                         intent.putExtra("finish",true);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -225,22 +287,11 @@ tx=(TextView)findViewById(R.id.profilename) ;
 
                         finish();
 
-
-                      /*  if (googleApiClient.isConnected()) {
-                            Auth.GoogleSignInApi.signOut(googleApiClient);
-                            googleApiClient.disconnect();
-                            googleApiClient.connect();
-                            Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
-                        }
-                          *//*  LoginManager.getInstance().logOut();
-                         *//**//* Intent intent = new Intent(Main2Activity.this, MainActivity.class);
-                            startActivity(intent);*//**//*
-                            Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
-                            finish();*//*
                         LoginManager.getInstance().logOut();
-
                         AccessToken.setCurrentAccessToken(null);
-                        Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();*/
+                        Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+
+
 
                     }
                 });
@@ -258,5 +309,7 @@ tx=(TextView)findViewById(R.id.profilename) ;
         alertDialog.show();
 
     }
+
+
 
 }

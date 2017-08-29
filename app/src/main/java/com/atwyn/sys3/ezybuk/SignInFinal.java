@@ -9,6 +9,7 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ public class SignInFinal extends AppCompatActivity implements View.OnClickListen
     private EditText editTextConfirmPassword;
     private Button buttonRegister;
 String name,email;
+    String Type="app";
+    String Role="3";
     private static final String REGISTER_URL = Config.EzyBuk_SignUp;
 
     @Override
@@ -145,7 +148,8 @@ String name,email;
                 in.putExtra("EzyBuk_Email",email);
                 in.putExtra("EzyBuk_mobile",mobile);
                 startActivity(in);
-                Toast.makeText(getApplicationContext(),"Successfully Registered..."+s,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Successf" +
+                        "ully Registered..."+s,Toast.LENGTH_LONG).show();
 
             }
 
@@ -162,10 +166,12 @@ String name,email;
 
                 return  result;
 
+
             }
         }
 
         RegisterUser ru = new RegisterUser();
-        ru.execute(name,email,password,mobile);
+        ru.execute(Type,Role,name,email,password,mobile);
+        Log.d("Register",REGISTER_URL+"/"+Type+"/"+Role+"/"+name+"/"+email+"/"+password+"/"+mobile);
     }
 }
