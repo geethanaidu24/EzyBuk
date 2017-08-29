@@ -69,6 +69,7 @@ public class LoginMain extends AppCompatActivity  implements View.OnClickListene
     Button login, signup;
     CallbackManager callbackManager;
 
+    String Role="3";
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
@@ -257,7 +258,8 @@ Log.d("facebook name"+">", bname);
 
        try {
            AndroidNetworking.post(UPLOAD_URL)
-
+                    .addBodyParameter("loginType","Facebook")
+                   .addBodyParameter("Role","3")
                    .addBodyParameter("name", bname)
                    //.addBodyParameter("gender", baddress)
                    .addBodyParameter("email",bemail)
@@ -267,8 +269,10 @@ Log.d("facebook name"+">", bname);
                    .setTag("TAG_ADD")
                    .build()
                    .getAsJSONArray(new JSONArrayRequestListener() {
+
                        @Override
                        public void onResponse(JSONArray response) {
+
 
 
                            if(response != null)
@@ -435,7 +439,8 @@ Log.d("facebook name"+">", bname);
 
         try {
             AndroidNetworking.post(UPLOAD_URL1)
-
+                    .addBodyParameter("loginType","Gmail")
+                    .addBodyParameter("Role","3")
                     .addBodyParameter("name", gname)
                     .addBodyParameter("email",gemailfinal)
                     //    .addBodyParameter("mobile",bmobile)

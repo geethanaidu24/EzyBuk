@@ -30,7 +30,7 @@ public class SeatReservation extends AppCompatActivity /*implements AdapterView.
     public Bitmap seatIcon;
     public Bitmap seatSelect;
     WebView WebViewWithCSS;
-    String showdate, showtime;
+    String showdate, showtime,selecetedlanguage,selectedformat;
     Integer movieid,screenid;
 Spinner mspin;
     @Override
@@ -41,6 +41,8 @@ Spinner mspin;
         movieid = i.getExtras().getInt("Movie_Id");
         showdate = i.getExtras().getString("Show_Date");
         showtime = i.getExtras().getString("Show_Time");
+        selecetedlanguage = i.getExtras().getString("Selected_language");
+        selectedformat = i.getExtras().getString("Selected_format");
         screenid = i.getExtras().getInt("Screen_Id");
         Log.d("SCREEn_id", String.valueOf(screenid));
 

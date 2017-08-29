@@ -1,8 +1,12 @@
 package com.atwyn.sys3.ezybuk;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PagerSnapHelper;
@@ -20,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,28 +144,58 @@ String name,email;
                 loading = ProgressDialog.show(SignInFinal.this, "Please Wait",null, true, true);
             }
 
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                Intent in=new Intent(SignInFinal.this, PaymentOptions.class);
-                in.putExtra("EzyBuk_name",name);
-                in.putExtra("EzyBuk_Email",email);
-                in.putExtra("EzyBuk_mobile",mobile);
-                startActivity(in);
-                Toast.makeText(getApplicationContext(),"Successf" +
-                        "ully Registered..."+s,Toast.LENGTH_LONG).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    if(s.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                        SharedPreferences sharedPreferences = SignInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
+                        //Creating editor to store values to shared preferences
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        //Adding values to editor
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                        editor.putString("LoginEmailId", email);
+                        Log.d("Login Email", " >" + email);
+
+                        editor.putString(Config.LOGIN_CHECK,"suc");
+
+
+                        //editor.putBoolean(loginExits,true);
+
+
+                        //Saving values to editor
+                        editor.commit();
+                        //Log.d("Login SharedEmaoil", " >" + geetha);
+
+                        //Starting profile activity
+
+                        Intent in = new Intent(SignInFinal.this, PaymentOptions.class);
+                        in.putExtra("EzyBuk_name", name);
+                        in.putExtra("EzyBuk_Email", email);
+                        in.putExtra("EzyBuk_mobile", mobile);
+                        startActivity(in);
+                        Toast.makeText(getApplicationContext(), "Successfully Registered..." + s, Toast.LENGTH_LONG).show();
+                    }else
+                    {
+                        Toast.makeText(getApplicationContext(), "Unsuccessfully.." + s, Toast.LENGTH_LONG).show();
+                    }
+                }
             }
 
             @Override
             protected String doInBackground(String... params) {
 
                 HashMap<String, String> data = new HashMap<String,String>();
-                data.put("name",params[0]);
-                data.put("email",params[1]);
-                data.put("password",params[2]);
-                data.put("mobileno",params[3]);
+                data.put("Type",params[0]);
+                data.put("Role",params[1]);
+                data.put("name",params[2]);
+                data.put("email",params[3]);
+                data.put("password",params[4]);
+                data.put("mobileno",params[5]);
 
                 String result = ruc.sendPostRequest(REGISTER_URL,data);
 

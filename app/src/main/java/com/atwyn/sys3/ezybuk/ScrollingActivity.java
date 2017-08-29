@@ -118,7 +118,9 @@ public class ScrollingActivity extends AppCompatActivity {
     int movieid;
     String castname, castrole, castimgurl,time;
     String mreleasingdate;
-
+   //String[] myList1;
+    List<String> myList;
+    String[] myList1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,7 +223,11 @@ public class ScrollingActivity extends AppCompatActivity {
                 .crossFade()
                 .into(imbigposter);
  this.initializeViews();
+        String s = movielanguage;
 
+        List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+
+       Log.d("LIstll", String.valueOf(myList));  // prints [lorem, ipsum, dolor, sit, amet]
 
  /*book.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -622,14 +628,106 @@ public class ScrollingActivity extends AppCompatActivity {
 //                    }
 
                   else{
+                        String s = movielanguage;
+                       /*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+                        Log.d("LIstll", String.valueOf(myList));*/
+                       final String[] myList=s.split(",");
+                        Log.d("LIstll", String.valueOf(myList));
+                        String s1 = movieformat;
+                       /*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+                        Log.d("LIstll", String.valueOf(myList));*/
+                        myList1=s1.split(",");
+                        Log.d("LIstl122l", String.valueOf(myList1));
+
+                        if(myList.length>1) {
+                          AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
+                          builder.setTitle("Make your selection");
+                          builder.setItems(myList, new DialogInterface.OnClickListener() {
+                              public void onClick(DialogInterface dialog, int item) {
+                                  // Do something with the selection
+                                  // mDoneButton.setText(items[item]);
+                                  Log.d("Itemmmm", myList[item]);
+                                 /* Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                                  in.putExtra("Movie_Id", movieid);
+                                  in.putExtra("Show_Date", date);
+                                  in.putExtra("Show_Time", time);
+                                  in.putExtra("Screen_Id", screenid1);
+                                  in.putExtra("Selected_language",myList[item]);
+                                  startActivity(in);
+*/
+                                  if(myList1.length>1)
+                                  {
+                                      AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                                      builder1.setTitle("Make your selection");
+                                      builder1.setItems(myList1, new DialogInterface.OnClickListener() {
+                                          public void onClick(DialogInterface dialog, int item) {
+                                              // Do something with the selection
+                                              // mDoneButton.setText(items[item]);
+                                              Log.d("Itemmmm",myList1[item]);
+                                              Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                                              in.putExtra("Movie_Id", movieid);
+                                              in.putExtra("Show_Date", date);
+                                              in.putExtra("Show_Time", time);
+                                              in.putExtra("Screen_Id", screenid1);
+                                              in.putExtra("Selected_language",myList[item]);
+                                              in.putExtra("Selected_format",myList1[item]);
+                                              startActivity(in);
 
 
-                        Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
-                        in.putExtra("Movie_Id", movieid);
-                        in.putExtra("Show_Date", date);
-                        in.putExtra("Show_Time", time);
-                        in.putExtra("Screen_Id", screenid1);
-                        startActivity(in);
+
+                                          }
+                                      });
+                                      AlertDialog alert1 = builder1.create();
+                                      alert1.show();
+                                  }
+
+                              }
+                          });
+                          AlertDialog alert = builder.create();
+                          alert.show();
+                      }
+
+
+
+
+                           else if(myList1.length>1)
+                                  {
+                                      AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                                      builder1.setTitle("Make your selection");
+                                      builder1.setItems(myList1, new DialogInterface.OnClickListener() {
+                                          public void onClick(DialogInterface dialog, int item) {
+                                              // Do something with the selection
+                                              // mDoneButton.setText(items[item]);
+                                              Log.d("Itemmmm",myList1[item]);
+                                              Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                                              in.putExtra("Movie_Id", movieid);
+                                              in.putExtra("Show_Date", date);
+                                              in.putExtra("Show_Time", time);
+                                              in.putExtra("Screen_Id", screenid1);
+
+                                              in.putExtra("Selected_format",myList1[item]);
+                                              startActivity(in);
+
+
+
+                              }
+                          });
+                          AlertDialog alert1 = builder1.create();
+                          alert1.show();
+                      }
+else
+                      {
+                          Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                          in.putExtra("Movie_Id", movieid);
+                          in.putExtra("Show_Date", date);
+                          in.putExtra("Show_Time", time);
+                          in.putExtra("Screen_Id", screenid1);
+                          startActivity(in);
+
+                      }
+
+
+
 
                     }
                 }

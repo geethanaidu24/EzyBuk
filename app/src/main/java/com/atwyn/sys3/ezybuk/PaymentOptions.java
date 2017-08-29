@@ -107,9 +107,9 @@ if(Fbname==""|| Fbname==null ||Gpersonname==""||Gpersonname==null) {
     email.setText(Fbemail);
 }
 */
-          name.setText(Loginname);
-            email.setText(Loginemail);
-            mobileno.setText(Loginmobileno);
+          name.setText(Ezname);
+            email.setText(Ezemail);
+            mobileno.setText(Ezmobile);
 
 /*
 if(isEmpty(Fbname) && isEmpty(Ezname))

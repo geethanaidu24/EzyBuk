@@ -67,7 +67,8 @@ TextView forgotpwd;
     public static final String USER_NAME = "USERNAME";
     String password;
     String username;
-
+    String loginType="app";
+    //String Role="3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +169,7 @@ TextView forgotpwd;
       password = editPassword.getText().toString().trim();
 
         //Creating a string request
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.loginUrlAddress+'/'+useremail+'/'+password,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.loginUrlAddress+'/'+loginType+'/'+useremail+'/'+password,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -227,6 +228,7 @@ TextView forgotpwd;
                 //Adding parameters to request
                 params.put(Config.KEY_USER, useremail);
                 params.put(Config.KEY_PASS, password);
+params.put("loginType","app");
 
                 //returning parameter
                 return params;

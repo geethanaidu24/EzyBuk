@@ -45,6 +45,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -82,6 +84,7 @@ public class Main2Activity extends TabActivity
     private static int NUM_PAGES = 0;
     private boolean loggedIn = false;
     GoogleApiClient googleApiClient;
+    GoogleApiClient mGoogleApiClient;
     private static final Integer[] IMAGES= {R.drawable.movposttwo, R.drawable.backezybuk, R.drawable.backezybuktwo};
     String navigationusername;
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
@@ -89,6 +92,7 @@ TabHost tabHost;
     protected Menu menu;
     TextView navname;
     TextView navemail;
+    Intent data = null;
     String name1,mobile1,facebookname;
     private static String KEY_SUCCESS = "success";
     int valoreOnPostExecute = 0;
@@ -129,13 +133,10 @@ TabHost tabHost;
                 .build();
    init();
 */
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        init();
+       mGoogleApiClient = new GoogleApiClient.Builder(this)
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
 // more stuff here...
@@ -156,6 +157,10 @@ TabHost tabHost;
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
         Profile profile = Profile.getCurrentProfile();
+
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+
         if(loggedIn)
         {
             navigationView.getMenu().clear();
@@ -183,15 +188,14 @@ TabHost tabHost;
             navigationView.inflateMenu(R.menu.menu_logout);
 
         }
-        else if(googleApiClient != null && googleApiClient.isConnected() )
+      else if(mGoogleApiClient != null && mGoogleApiClient.isConnected())
         {
             navigationView.getMenu().clear();
-        /*   navemail.setText(profile.getId());
-            Log.d("shreyemail", profile.getId());*/
-            Intent data = null;
+  //  navemail.setText(profile.getId());
+            //Log.d("shreyemail", profile.getId());
 
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             GoogleSignInAccount acct = result.getSignInAccount();
+
             String personName = acct.getDisplayName();
 
             String personEmail = acct.getEmail();
@@ -199,6 +203,8 @@ TabHost tabHost;
             Uri personPhoto = acct.getPhotoUrl();
 
             navname.setText("Hello" + " " +personName);
+
+            Log.d("hhhh khush",personName);
             navigationView.inflateMenu(R.menu.menu_logout);
 
         }
@@ -616,10 +622,10 @@ Log.d("lllllflkld", String.valueOf(result));*/
                         finish();
 
 
-                       if (googleApiClient.isConnected()) {
-                            Auth.GoogleSignInApi.signOut(googleApiClient);
-                            googleApiClient.disconnect();
-                            googleApiClient.connect();
+                       if (mGoogleApiClient.isConnected()) {
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                           mGoogleApiClient.disconnect();
+                           mGoogleApiClient.connect();
                             Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
                         }
                       /* LoginManager.getInstance().logOut();
@@ -652,26 +658,49 @@ Log.d("lllllflkld", String.valueOf(result));*/
         alertDialog.show();
 
     }
-    @Override
+ @Override
     protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-    }
+     super.onStart();
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
+     OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+     if (opr.isDone()) {
+         // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+         // and the GoogleSignInResult will be available instantly.
+         Log.d(TAG, "Got cached sign-in");
+         GoogleSignInResult result = opr.get();
+         handleSignInResult(result);
+     } else {
+         // If the user has not previously signed in on this device or the sign-in has expired,
+         // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+         // single sign-on will occur in this branch.
+        // showProgressDialog();
+         opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+             @Override
+             public void onResult(GoogleSignInResult googleSignInResult) {
+            //     hideProgressDialog();
+                 handleSignInResult(googleSignInResult);
+             }
+         });
+
+     }
+ }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+
+
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.d(TAG, "display name: " + acct.getDisplayName());
+
+
         }
+
     }
 
-  /*  private void signOut() {
-        if (googleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.signOut(googleApiClient);
-            googleApiClient.disconnect();
-            googleApiClient.connect();
-        }*/
-    }
+
+}
 
 
