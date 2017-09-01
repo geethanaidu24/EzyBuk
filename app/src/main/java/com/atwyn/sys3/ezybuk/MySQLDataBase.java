@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 class MySQLDataBase implements Serializable {
-    public int MovieId,TheaterId,ScreenId;
+    public int MovieId,TheaterId,ScreenId,LayoutId,Rows,Columns;
     public String Title;
     public String PosterUrl,BigPosterUrl;
   //  public String MoviesDescription;
@@ -20,6 +20,8 @@ public String Format,Synopsis,Duration_min,Videourl;
 public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
     public String CastName,CastRole,CastImgUrl;
     public String CrewName,CrewRole,CrewImgUrl;
+
+    public String SeatNos,RowNames;
     public MySQLDataBase() {
 
     }
@@ -172,6 +174,36 @@ public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
         this.ScreenId = screenId;
     }
 
+    public int getLayoutId() {
+        return LayoutId;
+    }
+    public void setLayoutId(int layoutId) {
+        this.LayoutId = layoutId;
+    }
 
+    public int getRows() {
+        return Rows;
+    }
+    public void setRows(int rows) {
+        this.Rows = Rows;
+    }
+
+
+    public int getColumns() {
+        return Columns;
+    }
+    public void setColumns(int columns) {
+        this.Columns = columns;
+    }
+
+    public String getSeatNos() {
+        return SeatNos;
+    }
+    public void setSeatNos(String seatNos) {this.SeatNos = seatNos;}
+
+    public String getRowNames() {
+        return RowNames;
+    }
+    public void setRowNames(String rowNames) {this.RowNames = rowNames;}
 
 }

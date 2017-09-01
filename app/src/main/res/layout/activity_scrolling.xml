@@ -74,4 +74,23 @@ android:adjustViewBounds="true"
 
     <include layout="@layout/content_scrolling" />
 
+    <LinearLayout
+        android:id="@+id/groupbutton"
+
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/button"
+            android:text="Book"
+            android:background="@color/green"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

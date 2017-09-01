@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 android:background="@color/white"
     android:layout_marginBottom="20dp"
+
     tools:showIn="@layout/activity_scrolling">
     <LinearLayout
         android:layout_width="match_parent"
@@ -249,7 +251,7 @@ android:padding="5dp"
             android:layout_marginTop="2dp"
             android:layout_below="@+id/seatLegendLayout"
             android:background="@color/ddgrey" />
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/r5"
@@ -343,7 +345,7 @@ android:spinnerMode="dialog"
                     android:textColor="@color/white"
                     android:text="BOOK" />
             </RelativeLayout>
-        </RelativeLayout>
+        </RelativeLayout>-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_below="@+id/r5"
@@ -487,8 +489,8 @@ After the apes suffer unimaginable losses, Caesar wrestles with his darker insti
                     android:layout_height="match_parent" />
             </RelativeLayout>
 
-        </RelativeLayout>
 
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -499,3 +501,5 @@ After the apes suffer unimaginable losses, Caesar wrestles with his darker insti
 
 
 </android.support.v4.widget.NestedScrollView>
+
+

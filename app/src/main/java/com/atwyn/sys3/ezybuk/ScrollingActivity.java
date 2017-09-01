@@ -1,19 +1,15 @@
 package com.atwyn.sys3.ezybuk;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
 import android.support.v7.app.AlertDialog;
@@ -22,22 +18,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +37,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.*;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
@@ -56,71 +48,70 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.atwyn.sys3.ezybuk.R.id.selectedImage;
+import static android.text.Html.fromHtml;
 import static com.atwyn.sys3.ezybuk.R.id.share;
 
 public class ScrollingActivity extends AppCompatActivity {
     Button book;
     ImageView mposter;
-    TextView mtitle, mgenre, mlanguage, mformat, msynopsis, mdurationdate;
+    TextView mtitle;
+    TextView mgenre;
+    TextView mlanguage;
+    TextView mformat;
+    TextView msynopsis;
+    TextView mdurationdate;
 
     final ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
     final ArrayList<MySQLDataBase> mySQLDataBases1 = new ArrayList<>();
     final ArrayList<MySQLDataBase> mySQLDataBases2 = new ArrayList<>();
-    private Spinner spTheater,spdate,spTime;
-    int click=0;
-    private ArrayAdapter<MySQLDataBase> adapter ;
-    private ArrayAdapter<MySQLDataBase> adapter1 ;
-    private ArrayAdapter<MySQLDataBase> adapter2 ;
-    private static final String Spinnertheater=Config.TheaterNameUrlAddress;
-    private static final String SpinnerDate=Config.DateNameUrlAddress;
-    private static final String SpinnerTime=Config.TimeNameUrlAddress;
+    private Spinner spTheater, spdate, spTime;
+    int click = 0;
+    private ArrayAdapter<MySQLDataBase> adapter;
+    private ArrayAdapter<MySQLDataBase> adapter1;
+    private ArrayAdapter<MySQLDataBase> adapter2;
+    private static final String Spinnertheater = Config.TheaterNameUrlAddress;
+    private static final String SpinnerDate = Config.DateNameUrlAddress;
+    private static final String SpinnerTime = Config.TimeNameUrlAddress;
 
-  int tid;
+    int tid;
     int tid1;
-  String  date;
+    String date;
     private LruCache<String, Bitmap> mMemoryCache;
     private boolean loggedIn = false;
-  //  final static String moviesUrlAddress = Config.moviesUrlAddress;
-  int screenid1;
+    //  final static String moviesUrlAddress = Config.moviesUrlAddress;
+    int screenid1;
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
-    private RecyclerView recyclerView,recyclerView1;
+    private RecyclerView recyclerView, recyclerView1;
     private MovieAdapter mAdapter;
     private MovieAdapter1 mAdapter1;
     String ActDate1;
-  String theaterid;
-    BackTask1 bt1;
-   BackTask2 bt2;
+    String theaterid;
+    /* BackTask1 bt1;
+     BackTask2 bt2;*/
     String finalurl1;
     String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter;
     int movieid;
-    String castname, castrole, castimgurl,time;
+    String castname, castrole, castimgurl, time;
     String mreleasingdate;
-   //String[] myList1;
-    List<String> myList;
-    String[] myList1;
+    //String[] myList1;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,7 +174,7 @@ public class ScrollingActivity extends AppCompatActivity {
         TextView tooltex = (TextView) findViewById(R.id.tooltext);
         ImageView imbigposter = (ImageView) findViewById(R.id.imageView);
 
-       // spTheater=(Spinner)findViewById(R.id.spinner) ;
+        // spTheater=(Spinner)findViewById(R.id.spinner) ;
 
 
         tooltex.setText(movietitle);
@@ -191,7 +182,11 @@ public class ScrollingActivity extends AppCompatActivity {
         mgenre.setText(moviegenre);
         mlanguage.setText(movielanguage);
         mformat.setText(movieformat);
-        msynopsis.setText(moviesynopsis);
+
+
+        Spanned sp = Html.fromHtml(moviesynopsis.replace("&lt;", "<").replace("&gt;", ">"));
+        msynopsis.setText(sp);
+
         String DateFromDb = mreleasingdate;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//set format of date you receiving from db
         Date date = null;
@@ -203,7 +198,7 @@ public class ScrollingActivity extends AppCompatActivity {
         SimpleDateFormat newDate = new SimpleDateFormat("MMM dd, yyyy");//set format of new date
         System.out.println(newDate.format(date));
         String ActDate = newDate.format(date);// here is your new date !
-        Log.d("DATE",ActDate);
+        Log.d("DATE", ActDate);
         mdurationdate.setText(movieduration + "  |  " + ActDate);
         book = (Button) findViewById(R.id.button);
 
@@ -215,28 +210,17 @@ public class ScrollingActivity extends AppCompatActivity {
                 .crossFade()
                 .into(mposter);
 
-        com.bumptech.glide.Glide.with(this)
+        Glide.with(this)
                 .load(finalurl1)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
 
                 .crossFade()
                 .into(imbigposter);
- this.initializeViews();
-        String s = movielanguage;
+      //  this.initializeViews();
 
-        List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
 
-       Log.d("LIstll", String.valueOf(myList));  // prints [lorem, ipsum, dolor, sit, amet]
 
- /*book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
-                startActivity(in);
-            }
-        });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -258,7 +242,111 @@ public class ScrollingActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
-    }
+
+      /*  String s1 = movieformat;
+        final String[] myList13 = s1.split(",");
+        Log.d("LIstl122l", String.valueOf(myList13));*/
+
+
+        book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = movielanguage;
+                final String[] myList = s.split(",");
+                Log.d("LIstll", String.valueOf(myList));
+
+                String s1 = movieformat;
+                final String[] myList13 = s1.split(",");
+                Log.d("LIstl122l", String.valueOf(myList13));
+
+
+
+                if (myList.length > 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
+                    builder.setTitle("Make your selection");
+                    builder.setItems(myList, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            // Do something with the selection
+                            // mDoneButton.setText(items[item]);
+
+
+
+                            if (myList13.length > 1) {
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                                builder1.setTitle("Make your selection");
+                                builder1.setItems(myList13, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int item) {
+                                        // Do something with the selection
+                                        // mDoneButton.setText(items[item]);
+
+                                        Intent in = new Intent(ScrollingActivity.this, SeatSelection.class);
+                                        in.putExtra("Movie_Id", movieid);
+                                        in.putExtra("Movie_Title", movietitle);
+                                        //in.putExtra("Movie_Id", movieid);
+                                       // in.putExtra("Movie_Title", movietitle);
+
+                                        in.putExtra("Selected_language",myList[item]);
+                                        Log.d("Itemmmm", myList[item]);
+                                        in.putExtra("Selected_format", myList13[item]);
+                                        Log.d("Itemmmm", myList13[item]);
+                                        startActivity(in);
+
+
+                                    }
+                                });
+                                AlertDialog alert1 = builder1.create();
+                                alert1.show();
+                            }
+
+
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }else if (myList13.length > 1) {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                    builder1.setTitle("Make your selection");
+                    builder1.setItems(myList13, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            // Do something with the selection
+                            // mDoneButton.setText(items[item]);
+                            Log.d("Itemmmm", myList13[item]);
+                            Intent in = new Intent(ScrollingActivity.this, SeatSelection.class);
+                            in.putExtra("Movie_Id", movieid);
+in.putExtra("Selected_language",movielanguage);
+                            in.putExtra("Movie_Title", movietitle);
+                            in.putExtra("Selected_format", myList13[item]);
+                            startActivity(in);
+
+
+                        }
+                    });
+                    AlertDialog alert1 = builder1.create();
+                    alert1.show();
+                } else {
+                    Intent in = new Intent(ScrollingActivity.this, SeatSelection.class);
+                    in.putExtra("Movie_Id", movieid);
+                    in.putExtra("Movie_Title", movietitle);
+                    in.putExtra("Selected_language",movielanguage);
+                    in.putExtra("Selected_format",movieformat);
+                    startActivity(in);
+
+                }
+
+
+            }
+
+
+
+
+
+
+
+    });
+}
+
+
+
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -304,14 +392,14 @@ public class ScrollingActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-   private void initializeViews()
-    {
+
+    private void initializeViews() {
 
 
-        spTheater=(Spinner)findViewById(R.id.spinner) ;
-        spdate=(Spinner)findViewById(R.id.spinner2);
+        spTheater = (Spinner) findViewById(R.id.spinner);
+        spdate = (Spinner) findViewById(R.id.spinner2);
         // spdate.setPrompt("Select Date");
-        spTime=(Spinner)findViewById(R.id.spinner3);
+        spTime = (Spinner) findViewById(R.id.spinner3);
         //spdate.setPrompt("Select Time");
 
         book = (Button) findViewById(R.id.button);
@@ -425,18 +513,18 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
                 for (int i = 0; i < moviesArray.length(); i++) {
-             JSONObject moviesObject = moviesArray.getJSONObject(i);
+                    JSONObject moviesObject = moviesArray.getJSONObject(i);
 
                     Log.d("result movies response: ", "> " + moviesObject);
 
                     // castobject=moviesObject.getJSONObject("moviecast");
-                MySQLDataBase mySQLDataBase = new MySQLDataBase();
-                 mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
+                    MySQLDataBase mySQLDataBase = new MySQLDataBase();
+                    mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
 
-                       mySQLDataBase.CastName  = moviesObject.getString("CastName");
-                      mySQLDataBase.CastRole  = moviesObject.getString("CastRole");
-                     mySQLDataBase.CastImgUrl    = moviesObject.getString("CastImgUrl");
-                         data.add(mySQLDataBase);
+                    mySQLDataBase.CastName = moviesObject.getString("CastName");
+                    mySQLDataBase.CastRole = moviesObject.getString("CastRole");
+                    mySQLDataBase.CastImgUrl = moviesObject.getString("CastImgUrl");
+                    data.add(mySQLDataBase);
 
                        /* mySQLDataBase.setCastName(castname);
                         mySQLDataBase.setCastRole(castrole);
@@ -463,7 +551,7 @@ public class ScrollingActivity extends AppCompatActivity {
                     recyclerView = (RecyclerView) findViewById(R.id.listcastview);
                     mAdapter = new MovieAdapter(ScrollingActivity.this, data);
                     recyclerView.setAdapter(mAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this,LinearLayoutManager.HORIZONTAL, true));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this, LinearLayoutManager.HORIZONTAL, true));
 
                 }
 
@@ -570,22 +658,22 @@ public class ScrollingActivity extends AppCompatActivity {
                 for (int i = 0; i < moviesArray.length(); i++) {
                     JSONObject moviesObject = moviesArray.getJSONObject(i);
 
-                 //   Log.d("result movies response: ", "> " + moviesObject);
+                     Log.d("result movies response cast: ", "> " + moviesObject);
 
                     // castobject=moviesObject.getJSONObject("moviecast");
                     MySQLDataBase mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
 
-                    mySQLDataBase.CrewName  = moviesObject.getString("CrewName");
-                    mySQLDataBase.CrewRole  = moviesObject.getString("CrewRole");
-                    mySQLDataBase.CrewImgUrl    = moviesObject.getString("CrewImgUrl");
+                    mySQLDataBase.CrewName = moviesObject.getString("CrewName");
+                    mySQLDataBase.CrewRole = moviesObject.getString("CrewRole");
+                    mySQLDataBase.CrewImgUrl = moviesObject.getString("CrewImgUrl");
                     data1.add(mySQLDataBase);
 
 
                     recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
                     mAdapter1 = new MovieAdapter1(ScrollingActivity.this, data1);
                     recyclerView1.setAdapter(mAdapter1);
-                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this,LinearLayoutManager.HORIZONTAL, true));
+                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this, LinearLayoutManager.HORIZONTAL, true));
 
                 }
 
@@ -595,9 +683,10 @@ public class ScrollingActivity extends AppCompatActivity {
 
         }
     }
+}
 
-    private void handleClickEvents(final int movieid, final String date, final String time, final int screenid1)
-    {
+
+   /* private void handleClickEvents(final int movieid, final String date, final String time, final int screenid1) {
         //EVENTS : ADD
         click = click + 1;
         if (click == 1) {
@@ -615,7 +704,8 @@ public class ScrollingActivity extends AppCompatActivity {
                         spTime.setEnabled(false);
                         spdate.setClickable(false);
 
-                        spTime.setClickable(false);}
+                        spTime.setClickable(false);
+                    }
 //                 else if(spdate.getSelectedItem().equals("Select Date")) {
 //                        Toast.makeText(ScrollingActivity.this,
 //                                "Please Select Theater",
@@ -627,106 +717,94 @@ public class ScrollingActivity extends AppCompatActivity {
 //                                Toast.LENGTH_SHORT).show();
 //                    }
 
-                  else{
+                    else {
                         String s = movielanguage;
-                       /*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
-                        Log.d("LIstll", String.valueOf(myList));*/
-                       final String[] myList=s.split(",");
+                       *//*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+                        Log.d("LIstll", String.valueOf(myList));*//*
+                        final String[] myList = s.split(",");
                         Log.d("LIstll", String.valueOf(myList));
                         String s1 = movieformat;
-                       /*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
-                        Log.d("LIstll", String.valueOf(myList));*/
-                        myList1=s1.split(",");
+                       *//*  myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+                        Log.d("LIstll", String.valueOf(myList));*//*
+                        myList1 = s1.split(",");
                         Log.d("LIstl122l", String.valueOf(myList1));
 
-                        if(myList.length>1) {
-                          AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
-                          builder.setTitle("Make your selection");
-                          builder.setItems(myList, new DialogInterface.OnClickListener() {
-                              public void onClick(DialogInterface dialog, int item) {
-                                  // Do something with the selection
-                                  // mDoneButton.setText(items[item]);
-                                  Log.d("Itemmmm", myList[item]);
-                                 /* Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                        if (myList.length > 1) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
+                            builder.setTitle("Make your selection");
+                            builder.setItems(myList, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int item) {
+                                    // Do something with the selection
+                                    // mDoneButton.setText(items[item]);
+                                    Log.d("Itemmmm", myList[item]);
+                                 *//* Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
                                   in.putExtra("Movie_Id", movieid);
                                   in.putExtra("Show_Date", date);
                                   in.putExtra("Show_Time", time);
                                   in.putExtra("Screen_Id", screenid1);
                                   in.putExtra("Selected_language",myList[item]);
                                   startActivity(in);
-*/
-                                  if(myList1.length>1)
-                                  {
-                                      AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
-                                      builder1.setTitle("Make your selection");
-                                      builder1.setItems(myList1, new DialogInterface.OnClickListener() {
-                                          public void onClick(DialogInterface dialog, int item) {
-                                              // Do something with the selection
-                                              // mDoneButton.setText(items[item]);
-                                              Log.d("Itemmmm",myList1[item]);
-                                              Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
-                                              in.putExtra("Movie_Id", movieid);
-                                              in.putExtra("Show_Date", date);
-                                              in.putExtra("Show_Time", time);
-                                              in.putExtra("Screen_Id", screenid1);
-                                              in.putExtra("Selected_language",myList[item]);
-                                              in.putExtra("Selected_format",myList1[item]);
-                                              startActivity(in);
+*//*
+                                    if (myList1.length > 1) {
+                                        AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                                        builder1.setTitle("Make your selection");
+                                        builder1.setItems(myList1, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int item) {
+                                                // Do something with the selection
+                                                // mDoneButton.setText(items[item]);
+                                                Log.d("Itemmmm", myList1[item]);
+                                                Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                                                in.putExtra("Movie_Id", movieid);
+                                                in.putExtra("Movie_Title", movietitle);
+                                                in.putExtra("Show_Date", date);
+                                                in.putExtra("Show_Time", time);
+                                                in.putExtra("Screen_Id", screenid1);
+                                                in.putExtra("Selected_language", myList[item]);
+                                                in.putExtra("Selected_format", myList1[item]);
+                                                startActivity(in);
 
 
+                                            }
+                                        });
+                                        AlertDialog alert1 = builder1.create();
+                                        alert1.show();
+                                    }
 
-                                          }
-                                      });
-                                      AlertDialog alert1 = builder1.create();
-                                      alert1.show();
-                                  }
-
-                              }
-                          });
-                          AlertDialog alert = builder.create();
-                          alert.show();
-                      }
-
-
-
-
-                           else if(myList1.length>1)
-                                  {
-                                      AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
-                                      builder1.setTitle("Make your selection");
-                                      builder1.setItems(myList1, new DialogInterface.OnClickListener() {
-                                          public void onClick(DialogInterface dialog, int item) {
-                                              // Do something with the selection
-                                              // mDoneButton.setText(items[item]);
-                                              Log.d("Itemmmm",myList1[item]);
-                                              Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
-                                              in.putExtra("Movie_Id", movieid);
-                                              in.putExtra("Show_Date", date);
-                                              in.putExtra("Show_Time", time);
-                                              in.putExtra("Screen_Id", screenid1);
-
-                                              in.putExtra("Selected_format",myList1[item]);
-                                              startActivity(in);
+                                }
+                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        } else if (myList1.length > 1) {
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                            builder1.setTitle("Make your selection");
+                            builder1.setItems(myList1, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int item) {
+                                    // Do something with the selection
+                                    // mDoneButton.setText(items[item]);
+                                    Log.d("Itemmmm", myList1[item]);
+                                    Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                                    in.putExtra("Movie_Id", movieid);
+                                    in.putExtra("Show_Date", date);
+                                    in.putExtra("Show_Time", time);
+                                    in.putExtra("Screen_Id", screenid1);
+                                    in.putExtra("Movie_Title", movietitle);
+                                    in.putExtra("Selected_format", myList1[item]);
+                                    startActivity(in);
 
 
+                                }
+                            });
+                            AlertDialog alert1 = builder1.create();
+                            alert1.show();
+                        } else {
+                            Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
+                            in.putExtra("Movie_Id", movieid);
+                            in.putExtra("Show_Date", date);
+                            in.putExtra("Show_Time", time);
+                            in.putExtra("Screen_Id", screenid1);
+                            startActivity(in);
 
-                              }
-                          });
-                          AlertDialog alert1 = builder1.create();
-                          alert1.show();
-                      }
-else
-                      {
-                          Intent in = new Intent(ScrollingActivity.this, SeatReservation.class);
-                          in.putExtra("Movie_Id", movieid);
-                          in.putExtra("Show_Date", date);
-                          in.putExtra("Show_Time", time);
-                          in.putExtra("Screen_Id", screenid1);
-                          startActivity(in);
-
-                      }
-
-
+                        }
 
 
                     }
@@ -737,7 +815,8 @@ else
         }
 
     }
-    public void onStart() {
+}*/
+   /* public void onStart() {
         super.onStart();
         BackTask bt = new BackTask();
 
@@ -821,10 +900,10 @@ else
 
 
             }
-        /*    HashSet<String> hashSet = new HashSet<String>();
+        *//*    HashSet<String> hashSet = new HashSet<String>();
             hashSet.addAll(listItems);
             listItems.clear();
-            listItems.addAll(hashSet);*/
+            listItems.addAll(hashSet);*//*
 
             adapter = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems1);
             spTheater.setAdapter(adapter);
@@ -836,10 +915,10 @@ else
                                            int position, long id) {
 
                     if (spTheater.getSelectedItem().equals("Select Theater")) {
-/*
+*//*
                         Toast.makeText(DeleteProducts.this,
                                 "Your Selected : Nothing",
-                                Toast.LENGTH_SHORT).show();*/
+                                Toast.LENGTH_SHORT).show();*//*
                     } else {
 
                         MySQLDataBase mySQLDataBase = mySQLDataBases.get(position - 1);
@@ -1008,10 +1087,10 @@ else
                     Log.d("DATEewretr",ActDate1);
                     listItems2.add(ActDate1);
                 }
-             /*   HashSet<String> hashSet=new HashSet<String>();
+             *//*   HashSet<String> hashSet=new HashSet<String>();
                 hashSet.addAll(listItems);
                 listItems.clear();
-                listItems.addAll(hashSet);*/
+                listItems.addAll(hashSet);*//*
 
                 adapter1 = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems2);
                 spdate.setAdapter(adapter1);
@@ -1024,9 +1103,9 @@ else
 
                         if (spdate.getSelectedItem().equals("Select Date")) {
 
-                      /*  Toast.makeText(ScrollingActivity.this,
+                      *//*  Toast.makeText(ScrollingActivity.this,
                                 "Please Select Date",
-                                Toast.LENGTH_SHORT).show();*/
+                                Toast.LENGTH_SHORT).show();*//*
                         } else {
 
                             MySQLDataBase mySQLDataBase = mySQLDataBases1.get(position - 1);
@@ -1194,10 +1273,10 @@ else
 
 
                     }
-             /*   HashSet<String> hashSet=new HashSet<String>();
+             *//*   HashSet<String> hashSet=new HashSet<String>();
                 hashSet.addAll(listItems);
                 listItems.clear();
-                listItems.addAll(hashSet);*/
+                listItems.addAll(hashSet);*//*
 
                     adapter2 = new ArrayAdapter(ScrollingActivity.this, R.layout.spinner_layout, R.id.txt, listItems3);
                     spTime.setAdapter(adapter2);
@@ -1210,9 +1289,9 @@ else
 
                             if (spTime.getSelectedItem().equals("Select Time")) {
 
-                      /*  Toast.makeText(ScrollingActivity.this,
+                      *//*  Toast.makeText(ScrollingActivity.this,
                                 "Please Select Time",
-                                Toast.LENGTH_SHORT).show();*/
+                                Toast.LENGTH_SHORT).show();*//*
                             } else {
 
                                 MySQLDataBase mySQLDataBase = mySQLDataBases2.get(position - 1);
@@ -1247,7 +1326,7 @@ else
                 }
             }
         }
-
+*/
 
 
 
