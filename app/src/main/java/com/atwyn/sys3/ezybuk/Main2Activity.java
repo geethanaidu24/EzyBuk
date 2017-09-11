@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -23,11 +25,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -47,8 +60,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
-import com.viewpagerindicator.CirclePageIndicator;
+
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,14 +82,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.android.volley.Request.Method.*;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class Main2Activity extends TabActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabHost.OnTabChangeListener {
-    private ViewPager viewPager;
+    // private ViewPager viewPager;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
     private String[] pageTitle = {"Now Showing", "Coming Soon "};
@@ -83,22 +99,35 @@ public class Main2Activity extends TabActivity
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
     private boolean loggedIn = false;
+    private boolean gmail ;
     GoogleApiClient googleApiClient;
     GoogleApiClient mGoogleApiClient;
-    private static final Integer[] IMAGES= {R.drawable.movposttwo, R.drawable.backezybuk, R.drawable.backezybuktwo};
-    String navigationusername;
+    private static final Integer[] IMAGES = {R.drawable.movposttwo, R.drawable.backezybuk, R.drawable.backezybuktwo};
+    String navigationusername,navigationusername1;
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
-TabHost tabHost;
+    TabHost tabHost;
     protected Menu menu;
     TextView navname;
     TextView navemail;
     Intent data = null;
-    String name1,mobile1,facebookname;
+    String name1, mobile1, facebookname,GmailName,GmailEmail;
     private static String KEY_SUCCESS = "success";
     int valoreOnPostExecute = 0;
     final ArrayList<MySQLDataBase> mySQLDataBases4 = new ArrayList<>();
     final ArrayList userdata = new ArrayList<>();
     private ArrayAdapter<MySQLDataBase> adapter;
+    String Gpersonname,Gpersonemail,Fbname,Fbemail,Ezname,Ezemail,Ezmobile,Loginemail,Loginname,Loginmobileno,typeLogin;
+    ViewPager viewPager;
+    LinearLayout sliderDotspanel;
+    private int dotscount;
+    private ImageView[] dots;
+    OptionalPendingResult<GoogleSignInResult> opr;
+    RequestQueue rq;
+   /* List<SliderUtils> sliderImg;
+
+    String request_url = Config.ScrollingImages;
+    ViewPagerAdapter viewPagerAdapter;*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,21 +135,69 @@ TabHost tabHost;
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_main2);
+      /*  Intent intent11 = this.getIntent(); // get Intent which we set from Previous Activity
+
+        Gpersonname = intent11.getExtras().getString("Gmail_Name");
+        Gpersonemail = intent11.getExtras().getString("Gmail_Email");
+
+        Fbname = intent11.getExtras().getString("FB_Name");
+        Fbemail = intent11.getExtras().getString("FB_Email");
+
+        Ezname = intent11.getExtras().getString("EzyBuk_name");
+        Ezemail = intent11.getExtras().getString("EzyBuk_Email");
+        Ezmobile = intent11.getExtras().getString("EzyBuk_mobile");
+
+        Loginemail = intent11.getExtras().getString("Login_Email");
+        Loginname = intent11.getExtras().getString("Login_Name");
+        Loginmobileno = intent11.getExtras().getString("Login_MobileNo");
+        typeLogin = intent11.getExtras().getString("Type_Login");*/
+        rq = Volley.newRequestQueue(this);
+      //  sliderImg = new ArrayList<>();
+
+     //  viewPager = (ViewPager) findViewById(R.id.viewPager);
+      //  sliderDotspanel = (LinearLayout) findViewById(R.id.sliderdots);
+
+       /* //sendRequest();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotscount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactivedot));
+
+                }
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.activedot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+*/
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000);
 
 
-       // viewPager = (ViewPager) findViewById(R.id.view_pager);
+        // viewPager = (ViewPager) findViewById(R.id.view_pager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-  //setActionBar(toolbar);
+        //setActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar.setNavigationIcon(R.drawable.menu);
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.search));
+        toolbar.setOverflowIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search));
 
-         toolbar.inflateMenu(R.menu.main2);
+        toolbar.inflateMenu(R.menu.main2);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem arg0) {
-                if(arg0.getItemId() == R.id.h1){
+                if (arg0.getItemId() == R.id.h1) {
                     Intent in = new Intent(Main2Activity.this, Search.class);
                     startActivity(in);
                 }
@@ -133,36 +210,83 @@ TabHost tabHost;
                 .build();
    init();
 */
-        init();
-       mGoogleApiClient = new GoogleApiClient.Builder(this)
+        //init();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
 
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
 // more stuff here...
 
+
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-  ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view);
+        ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view);
 
-        View header=navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-        navname=(TextView)header.findViewById(R.id.uname) ;
-        navemail=(TextView)header.findViewById(R.id.uemail) ;
-       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navname = (TextView) header.findViewById(R.id.uname);
+        navemail = (TextView) header.findViewById(R.id.uemail);
+
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Objects.equals(typeLogin, "EzyBuk_Login")) {
+                navigationView.getMenu().clear();
+                navemail.setText(Loginemail);
+                BackTask b1t = new BackTask();
+                b1t.execute();
+
+                navigationView.inflateMenu(R.menu.menu_logout);
+
+            } else if (Objects.equals(typeLogin, "EzyBuk_Registration")) {
+                navigationView.getMenu().clear();
+                navemail.setText(Ezemail);
+                navname.setText("Hello" + " " + Ezname);
+
+
+                navigationView.inflateMenu(R.menu.menu_logout);
+
+            } else if (Objects.equals(typeLogin, "Facebook")) {
+                navigationView.getMenu().clear();
+
+
+                navname.setText("Hello" + " " + Fbname);
+                navemail.setText(Fbemail);
+                navigationView.inflateMenu(R.menu.menu_logout);
+
+            } else {
+                navigationView.getMenu().clear();
+
+
+                navname.setText("Hello" + " " + Gpersonname);
+                navemail.setText(Gpersonemail);
+                navigationView.inflateMenu(R.menu.menu_logout);
+
+            }*/
+
+
         navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+      /* SharedPreferences sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_GMAIL, Context.MODE_PRIVATE);
+        gmail = sharedPreferences1.getBoolean(Config.LOGGEDIN_SHARED_GMAIL, false);
+Log.d("Gmail boolean", String.valueOf(gmail));
+*/
+
+        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+      Islogin = prefs.getBoolean("Islogin", false); // get value of last login status
+        Log.d("Gmail boolean", String.valueOf(Islogin));*/
         Profile profile = Profile.getCurrentProfile();
 
-        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        //    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
 
-        if(loggedIn)
-        {
+        if (loggedIn) {
             navigationView.getMenu().clear();
             sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, MODE_PRIVATE);
 
@@ -173,28 +297,29 @@ TabHost tabHost;
             //  Log.d("hieel", String.valueOf(loggedIn));
             navemail.setText(navigationusername);
 
-          BackTask b1t = new BackTask();
+            BackTask b1t = new BackTask();
             b1t.execute();
 
             navigationView.inflateMenu(R.menu.menu_logout);
-        }else if(profile != null )
-        {
+        } else if (profile != null) {
             navigationView.getMenu().clear();
-        /*   navemail.setText(profile.getId());
-            Log.d("shreyemail", profile.getId());*/
-         facebookname=profile.getName();
 
-            navname.setText("Hello" + " " +facebookname);
+            facebookname = profile.getName();
+
+            navname.setText("Hello" + " " + facebookname);
             navigationView.inflateMenu(R.menu.menu_logout);
 
-        }
-      else if(mGoogleApiClient != null && mGoogleApiClient.isConnected())
-        {
+        } else if (opr.isDone()) {
+
             navigationView.getMenu().clear();
-  //  navemail.setText(profile.getId());
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+
+            //  navemail.setText(profile.getId());
             //Log.d("shreyemail", profile.getId());
 
-            GoogleSignInAccount acct = result.getSignInAccount();
+           /* GoogleSignInAccount acct = result.getSignInAccount();
 
             String personName = acct.getDisplayName();
 
@@ -202,28 +327,31 @@ TabHost tabHost;
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            navname.setText("Hello" + " " +personName);
+            navname.setText("Hello" + " " + personName);*/
 
-            Log.d("hhhh khush",personName);
+            // sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_GMAIL, MODE_PRIVATE);
+
+           /* navigationusername1 = sharedPreferences1.getString("LoginEmailId1", "UNKNOWN");
+            Log.d("hhhh khush", navigationusername1);
+            navname.setText("Hello" + " " + navigationusername1);*/
             navigationView.inflateMenu(R.menu.menu_logout);
 
-        }
-        else
-        {
+        } else {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main2_drawer);
 
 
         }
 
-       ProfileTracker fbProfileTracker = new ProfileTracker() {
+        ProfileTracker fbProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 // User logged in or changed profile
             }
         };
 
-       // Profile profile = Profile.getCurrentProfile();
+
+        // Profile profile = Profile.getCurrentProfile();
       /*  if (profile != null) {
             Log.d(TAG, "Logged, user name=" + profile.getFirstName() + " " + profile.getLastName()+ " "+ profile.getName());
         }*/
@@ -321,9 +449,9 @@ TabHost tabHost;
         tabHost.addTab(spec);
 
 
-        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
-        {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#99FF99"));
+
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             tv.setTextColor(Color.parseColor("#ffffff"));
         }
@@ -332,6 +460,84 @@ TabHost tabHost;
         TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
         tv.setTextColor(Color.parseColor("#000000"));
     }
+
+
+
+   /* public void sendRequest() {
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest( request_url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        for(int i=0;i<response.length();i++)
+                        {
+                            SliderUtils sliderUtils=new SliderUtils();
+                            try {
+                                JSONObject jsonObject=response.getJSONObject(i);
+
+                                sliderUtils.setSliderImageUrl(Config.mainUrlAddress+jsonObject.getString("Posterurl"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            sliderImg.add(sliderUtils);
+                        }
+
+                        viewPagerAdapter=new ViewPagerAdapter(sliderImg,Main2Activity.this);
+                        viewPager.setAdapter(viewPagerAdapter);
+
+                        dotscount=viewPagerAdapter.getCount();
+                        dots=new ImageView[dotscount];
+
+                        for(int i=0;i<dotscount;i++)
+                        {
+                            dots[i]=new ImageView(Main2Activity.this);
+                            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.nonactivedot));
+
+                            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(8,0,8,0);
+                            sliderDotspanel.addView(dots[i],params);
+
+                        }
+                        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.activedot));
+
+                    }
+                },new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        rq.add(jsonArrayRequest);
+    }
+
+
+*/
+    public class MyTimerTask extends TimerTask
+
+    {
+        @Override
+        public void run() {
+            Main2Activity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (viewPager.getCurrentItem() == 0) {
+                        viewPager.setCurrentItem(1);
+                    } else if (viewPager.getCurrentItem() == 1) {
+                        viewPager.setCurrentItem(2);
+                    } else {
+                        viewPager.setCurrentItem(0);
+                    }
+                }
+            });
+
+
+        }
+
+
+    }
+
 
 
 
@@ -349,7 +555,7 @@ TabHost tabHost;
         TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
         tv.setTextColor(Color.parseColor("#000000"));
     }
-    class BackTask extends AsyncTask<Object, Object, String> {
+    private class BackTask extends AsyncTask<Object, Object, String> {
 
 
         //private MySQLDataBase mySQLDataBase4;
@@ -405,8 +611,8 @@ TabHost tabHost;
                     jo = ja.getJSONObject(i);
                     // add interviewee name to arraylist
 
-                    name1 = jo.getString("Name");
-                    mobile1=jo.getString("Mobile");
+                    name1 = jo.getString("name");
+                    mobile1=jo.getString("mobile");
 
                     mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setUserName(name1);
@@ -415,7 +621,7 @@ TabHost tabHost;
                     mySQLDataBases4.add(mySQLDataBase);
                     //     mysql = mySQLDataBases4.toString();
 
-                   // Log.d("Mysql",mySQLDataBases4);
+                    // Log.d("Mysql",mySQLDataBases4);
                     Log.d("Name", name1);
                     Log.d("MobileNoUse",mobile1);
 
@@ -425,7 +631,7 @@ TabHost tabHost;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return name1;
+            return result;
         }
         protected void onPostExecute(String result) {
 
@@ -433,10 +639,16 @@ TabHost tabHost;
             String lol1= result.get(0).toString();
         //    String lol2= result.get(1).toString();
 Log.d("lllllflkld", String.valueOf(result));*/
- navname.setText("Hello" + " " +result);
+            navname.setText("Hello" + " " +name1);
+
 
         }
     }
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -468,7 +680,7 @@ Log.d("lllllflkld", String.valueOf(result));*/
     }
 
 
-    private void init() {
+   /* private void init() {
 
 
         for(int i=0;i<IMAGES.length;i++)
@@ -534,6 +746,8 @@ Log.d("lllllflkld", String.valueOf(result));*/
         });
 
     }
+*/
+
 
 
     @Override
@@ -541,32 +755,39 @@ Log.d("lllllflkld", String.valueOf(result));*/
         int id = item.getItemId();
 
         if (id == R.id.fr1) {
-          Intent in=new Intent(Main2Activity.this,NowShowing_movies.class);
+            Intent in=new Intent(Main2Activity.this,NowShowing_movies.class);
             startActivity(in);
         } else if (id == R.id.fr2) {
             Intent in=new Intent(Main2Activity.this,UpComing_movies.class);
             startActivity(in);
 
-        }
+        }/*else if (id == R.id.fr3) {
+            Intent in=new Intent(Main2Activity.this,LatestVideos.class);
+            startActivity(in);
+
+        }*/
 
         else if(id == R.id.logout)
         {
-           logout();
+            logout();
 
         }
         else if(id == R.id.login)
         {
             Intent in=new Intent(Main2Activity.this,LoginMain.class);
+            in.putExtra("Type","Main_Login");
             startActivity(in);
 
 
         }
-     if (id == R.id.profile) {
+        if (id == R.id.profile) {
             Intent intent = new Intent(this, MyProfile.class);
-     intent.putExtra("UseName",  name1);
-         intent.putExtra("UseEmail", navigationusername);
-         intent.putExtra("UserMobileNo", mobile1);
-         intent.putExtra("Facebook_Name",facebookname);
+            intent.putExtra("UseName",  name1);
+            intent.putExtra("UseEmail", navigationusername);
+            intent.putExtra("UserMobileNo", mobile1);
+            intent.putExtra("Facebook_Name",facebookname);
+            intent.putExtra("Gmail_Name",GmailName);
+            intent.putExtra("Gmail_Email",GmailEmail);
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -586,18 +807,21 @@ Log.d("lllllflkld", String.valueOf(result));*/
 
     private void logout(){
         //Creating an alert dialog to confirm logout
+
+
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         // alertDialogBuilder.setMessage("Are you sure you want to logout?");
         alertDialogBuilder.setTitle(" Are you sure you want to logout?");
-       // alertDialogBuilder.setIcon(R.drawable.logoutt);
+        // alertDialogBuilder.setIcon(R.drawable.logoutt);
         alertDialogBuilder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         //Getting out sharedpreferences
-                     SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
@@ -613,7 +837,7 @@ Log.d("lllllflkld", String.valueOf(result));*/
                         //Starting login activity
 
                         Intent intent = new Intent(Main2Activity.this, Main2Activity.class);
-                        intent.putExtra("finish",true);
+                        intent.putExtra("finish", true);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -621,13 +845,16 @@ Log.d("lllllflkld", String.valueOf(result));*/
 
                         finish();
 
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        mGoogleApiClient.disconnect();
+                        mGoogleApiClient.connect();
+                        Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+                            /*Auth.GoogleSignInApi.signOut(mGoogleApiClient);
 
-                       if (mGoogleApiClient.isConnected()) {
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                           mGoogleApiClient.disconnect();
-                           mGoogleApiClient.connect();
                             Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
-                        }
+*/
+
+                        //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                       /* LoginManager.getInstance().logOut();
                          Intent intent1 = new Intent(Main2Activity.this, MainActivity.class);
                             startActivity(intent1);
@@ -658,32 +885,35 @@ Log.d("lllllflkld", String.valueOf(result));*/
         alertDialog.show();
 
     }
- @Override
+    @Override
     protected void onStart() {
-     super.onStart();
+        mGoogleApiClient.connect();
+        super.onStart();
 
-     OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-     if (opr.isDone()) {
-         // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-         // and the GoogleSignInResult will be available instantly.
-         Log.d(TAG, "Got cached sign-in");
-         GoogleSignInResult result = opr.get();
-         handleSignInResult(result);
-     } else {
-         // If the user has not previously signed in on this device or the sign-in has expired,
-         // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-         // single sign-on will occur in this branch.
-        // showProgressDialog();
-         opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-             @Override
-             public void onResult(GoogleSignInResult googleSignInResult) {
-            //     hideProgressDialog();
-                 handleSignInResult(googleSignInResult);
-             }
-         });
 
-     }
- }
+        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            // showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    //     hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+
+        }
+    }
+
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -694,6 +924,10 @@ Log.d("lllllflkld", String.valueOf(result));*/
             GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.d(TAG, "display name: " + acct.getDisplayName());
+            GmailName=acct.getDisplayName();
+            GmailEmail=acct.getEmail();
+            navname.setText("Hello" + " " + acct.getDisplayName());
+            navemail.setText(acct.getEmail());
 
 
         }
