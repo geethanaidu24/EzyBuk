@@ -8,14 +8,14 @@ import java.util.Date;
  */
 
 class MySQLDataBase implements Serializable {
-    public int MovieId,TheaterId,ScreenId,LayoutId,Rows,Columns;
+    public int MovieId,TheaterId,ScreenId,LayoutId,Rows,Columns,TrailerId;
     public String Title;
     public String PosterUrl,BigPosterUrl;
   //  public String MoviesDescription;
-    public String TheaterName;
+    public String TheaterName,TrailerName,TrailerImageUrl,TrailerVideo;
     public String Genre;
     public String MLanguage;
-    public String Releasing_Date,ShowDate,ShowTime;
+    public String Releasing_Date,ShowDate,ShowTime,Certification;
 public String Format,Synopsis,Duration_min,Videourl;
 public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
     public String CastName,CastRole,CastImgUrl;
@@ -205,5 +205,34 @@ public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
         return RowNames;
     }
     public void setRowNames(String rowNames) {this.RowNames = rowNames;}
+
+    public String getCertification() {
+        return Certification;
+    }
+    public void setCertification(String certification) {this.Certification = certification;}
+
+    public int getTrailerId() {
+        return TrailerId;
+    }
+
+    public void setTrailerId(int trailerId) {
+        this.TrailerId = trailerId;
+    }
+
+    public String getTrailerName() {
+        return TrailerName;
+    }
+    public void setTrailerName(String trailerName) {this.TrailerName = trailerName;}
+
+    public String getTrailerImageUrl() {
+        return TrailerImageUrl;
+    }
+    public void setTrailerImageUrl(String trailerImageUrl) {this.TrailerImageUrl = trailerImageUrl;}
+
+    public String getTrailerVideo() {
+        return TrailerVideo;
+    }
+    public void setTrailerVideo(String trailerVideo) {this.TrailerVideo = trailerVideo;}
+
 
 }

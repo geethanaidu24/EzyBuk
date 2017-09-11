@@ -55,8 +55,12 @@ public class Glide {
         } else {
             //Picasso.with(c).load(R.mipmap.ic_launcher).into(img);
             // Glide.with(c).load(R.drawable.cccc).override(100,100).into(img);
-            com.bumptech.glide.Glide.with(c).load(R.drawable.camaraposter).dontTransform().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).crossFade().fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            com.bumptech.glide.Glide.with(c).load(R.drawable.camaraposter).fitCenter()
+                 .centerCrop()
+                    .bitmapTransform(new RoundedCornersTransformation(c, 15, 1,
+                            RoundedCornersTransformation.CornerType.TOP))
+                    //.bitmapTransform(new RoundedCornersTransformation(c,10,0))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(img);
         }
     }
@@ -69,7 +73,7 @@ public class Glide {
                     .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
                     .diskCacheStrategy(DiskCacheStrategy.ALL).into(img);*/
             com.bumptech.glide.Glide.with(c).load(imageUrl).dontTransform()
-                    .thumbnail(com.bumptech.glide.Glide.with(c).load(R.drawable.camaraposter).crossFade().fitCenter())
+                    .thumbnail(com.bumptech.glide.Glide.with(c).load(R.drawable.pro).crossFade().fitCenter())
 
                     .crossFade().centerCrop()
                     .bitmapTransform( new CropCircleTransformation(c))
@@ -79,9 +83,17 @@ public class Glide {
         }else {
             //Picasso.with(c).load(R.mipmap.ic_launcher).into(img);
             // Glide.with(c).load(R.drawable.cccc).override(100,100).into(img);
-            com.bumptech.glide.Glide.with(c).load(R.drawable.camaraposter).dontTransform() .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL).crossFade().fitCenter()
+           /* com.bumptech.glide.Glide.with(c).load(R.drawable.camaraposter).dontTransform() .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL).crossFade().fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(img);
+                    .into(img);*/
+            com.bumptech.glide.Glide.with(c).load(imageUrl).dontTransform()
+                    .thumbnail(com.bumptech.glide.Glide.with(c).load(R.drawable.pro).crossFade().fitCenter())
+
+                    .crossFade().centerCrop()
+                    .bitmapTransform( new CropCircleTransformation(c))
+                    //.bitmapTransform(new RoundedCornersTransformation(c,10,0))
+
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(img);
         }
     }
 

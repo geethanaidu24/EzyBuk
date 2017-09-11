@@ -1,6 +1,7 @@
 package com.atwyn.sys3.ezybuk;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,9 +21,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -40,6 +43,7 @@ import com.bumptech.glide.*;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
+//import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -104,13 +108,13 @@ public class ScrollingActivity extends AppCompatActivity {
     /* BackTask1 bt1;
      BackTask2 bt2;*/
     String finalurl1;
-    String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter;
+    String movietitle, movieposter, movielanguage, movieformat, moviegenre, moviesynopsis, movieduration, movievideourl, moviebigposter,moviecertification;
     int movieid;
     String castname, castrole, castimgurl, time;
     String mreleasingdate;
     //String[] myList1;
 
-
+    private LinearLayoutManager mLayoutManager, mLayoutManager1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +137,7 @@ public class ScrollingActivity extends AppCompatActivity {
         moviesynopsis = i.getExtras().getString("Movie_Synopsis");
         movieduration = i.getExtras().getString("Movie_Duration");
         movievideourl = i.getExtras().getString("Movie_VideoUrl");
-
+        moviecertification=i.getExtras().getString("Movie_Certification");
         finalurl1 = Config.mainUrlAddress + moviebigposter;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -251,7 +255,9 @@ public class ScrollingActivity extends AppCompatActivity {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = movielanguage;
+
+
+             String s = movielanguage;
                 final String[] myList = s.split(",");
                 Log.d("LIstll", String.valueOf(myList));
 
@@ -262,8 +268,11 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
                 if (myList.length > 1) {
+
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
                     builder.setTitle("Make your selection");
+               //     builder.setIcon(R.drawable.raabta);
                     builder.setItems(myList, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             // Do something with the selection
@@ -272,8 +281,13 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
                             if (myList13.length > 1) {
+
+
+
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
-                                builder1.setTitle("Make your selection");
+                                builder1.setTitle("Make your selection ");
+                             // builder1.setIcon(R.drawable.raabta);
+                              //  builder1.setIcon(Integer.parseInt(movieposter));
                                 builder1.setItems(myList13, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int item) {
                                         // Do something with the selection
@@ -294,18 +308,28 @@ public class ScrollingActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                AlertDialog alert1 = builder1.create();
+
+
+                              AlertDialog alert1 = builder1.create();
+                                alert1.getWindow().setLayout(600, 400);
+
                                 alert1.show();
                             }
 
 
                         }
                     });
-                    AlertDialog alert = builder.create();
+
+                AlertDialog alert = builder.create();
                     alert.show();
+
+
                 }else if (myList13.length > 1) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                 //   builder1.setIcon(Integer.parseInt(movieposter));
+                 //   builder1.setIcon(R.drawable.raabta);
                     builder1.setTitle("Make your selection");
+
                     builder1.setItems(myList13, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             // Do something with the selection
@@ -321,7 +345,9 @@ in.putExtra("Selected_language",movielanguage);
 
                         }
                     });
+
                     AlertDialog alert1 = builder1.create();
+                    alert1.getWindow().setLayout(600, 400);
                     alert1.show();
                 } else {
                     Intent in = new Intent(ScrollingActivity.this, SeatSelection.class);
@@ -396,14 +422,14 @@ in.putExtra("Selected_language",movielanguage);
     private void initializeViews() {
 
 
-        spTheater = (Spinner) findViewById(R.id.spinner);
+      /*  spTheater = (Spinner) findViewById(R.id.spinner);
         spdate = (Spinner) findViewById(R.id.spinner2);
         // spdate.setPrompt("Select Date");
         spTime = (Spinner) findViewById(R.id.spinner3);
         //spdate.setPrompt("Select Time");
 
         book = (Button) findViewById(R.id.button);
-
+*/
 
     }
 
@@ -548,10 +574,22 @@ in.putExtra("Selected_language",movielanguage);
                     mySQLDataBase.setReleasing_Date(moviereleasingdate);*//*
 
                     // Setup and Handover data to recyclerview*/
+
+                    mLayoutManager = new LinearLayoutManager(ScrollingActivity.this);
+                    mLayoutManager.setReverseLayout(true);
+                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    mLayoutManager.setStackFromEnd(true);
                     recyclerView = (RecyclerView) findViewById(R.id.listcastview);
+
                     mAdapter = new MovieAdapter(ScrollingActivity.this, data);
                     recyclerView.setAdapter(mAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this, LinearLayoutManager.HORIZONTAL, true));
+                    recyclerView.setLayoutManager(mLayoutManager);
+
+
+                    /*recyclerView = (RecyclerView) findViewById(R.id.listcastview);
+                    mAdapter = new MovieAdapter(ScrollingActivity.this, data);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this, LinearLayoutManager.HORIZONTAL, true));*/
 
                 }
 
@@ -670,11 +708,22 @@ in.putExtra("Selected_language",movielanguage);
                     data1.add(mySQLDataBase);
 
 
+                    mLayoutManager1 = new LinearLayoutManager(ScrollingActivity.this);
+                    mLayoutManager1.setReverseLayout(true);
+                    mLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    mLayoutManager1.setStackFromEnd(true);
                     recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
+
+                    mAdapter1 = new MovieAdapter1(ScrollingActivity.this, data1);
+                    recyclerView1.setAdapter(mAdapter1);
+                    recyclerView1.setLayoutManager(mLayoutManager1);
+
+
+                /*    recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view1);
                     mAdapter1 = new MovieAdapter1(ScrollingActivity.this, data1);
                     recyclerView1.setAdapter(mAdapter1);
                     recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity.this, LinearLayoutManager.HORIZONTAL, true));
-
+*/
                 }
 
             } catch (JSONException e) {

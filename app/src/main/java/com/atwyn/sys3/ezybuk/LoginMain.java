@@ -1,8 +1,10 @@
 package com.atwyn.sys3.ezybuk;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -56,11 +58,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static android.R.attr.id;
-import static com.atwyn.sys3.ezybuk.R.id.imgProfilePic;
-import static com.atwyn.sys3.ezybuk.R.id.txtEmail;
-import static com.atwyn.sys3.ezybuk.R.id.txtName;
+
 
 public class LoginMain extends AppCompatActivity  implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
@@ -77,7 +78,7 @@ public class LoginMain extends AppCompatActivity  implements View.OnClickListene
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 String name,email,gender,birthday,mobile,pass,mobile1;
-    String gpersonname,gemail;
+    String gpersonname,gemail,type;
     private SignInButton btnSignIn;
     String id;
     String password=null;
@@ -92,6 +93,8 @@ String name,email,gender,birthday,mobile,pass,mobile1;
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login_main);
+        Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+        type = i.getExtras().getString("Type");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,24 +105,30 @@ String name,email,gender,birthday,mobile,pass,mobile1;
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        if(Objects.equals(type, "Payment_Login")) {
+                            new AlertDialog.Builder(LoginMain.this).setTitle(Html.fromHtml("<font color='#ff0000'>Exit</font>"))
 
-                    new AlertDialog.Builder(LoginMain.this).setTitle(Html.fromHtml("<font color='#ff0000'>Exit</font>"))
+                                    .setMessage(Html.fromHtml(" Are you sure you want to exit Payment?"))
+                                    .setIcon(R.drawable.logoezyb)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                                Intent in = new Intent(LoginMain.this, Main2Activity.class);
+                                                startActivity(in);
+                                                //finish();
+                                            }
 
-                            .setMessage(Html.fromHtml(" Are you sure you want to exit Payment?"))
-                            .setIcon(R.drawable.logoezyb)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        Intent in = new Intent(LoginMain.this, Main2Activity.class);
-                                        startActivity(in);
-                                        //finish();
-                                    }
+                                        }
+                                    }).setNegativeButton("No", null).show();
 
-                                }
-                            }).setNegativeButton("No", null).show();
+                                            }else{
 
-
+                                                 Intent intent = new Intent(LoginMain.this, Main2Activity.class);
+                                                    startActivity(intent);
+                                            }
+                    }
                 }
             });
             login = (Button) findViewById(R.id.button3);
@@ -130,7 +139,10 @@ String name,email,gender,birthday,mobile,pass,mobile1;
                 @Override
                 public void onClick(View v) {
                     Intent in = new Intent(LoginMain.this, RegistrationLogin.class);
+                    in.putExtra("Type",type);
+                    in.putExtra("TabNumber","one");
                     startActivity(in);
+
 
                 }
             });
@@ -138,6 +150,8 @@ String name,email,gender,birthday,mobile,pass,mobile1;
                 @Override
                 public void onClick(View v) {
                     Intent in = new Intent(LoginMain.this, RegistrationLogin.class);
+                    in.putExtra("Type",type);
+                    in.putExtra("TabNumber","two");
                     startActivity(in);
                 }
             });
@@ -280,18 +294,34 @@ Log.d("facebook name"+">", bname);
                                    //SHOW RESPONSE FROM SERVER
 
                                    String responseString = response.get(0).toString();
-                                    Toast.makeText(LoginMain.this, "Ss" + responseString, Toast.LENGTH_SHORT).show();
-                                   if (responseString.equalsIgnoreCase("Success")) {
-                                       Intent intent = new Intent(LoginMain.this, PaymentOptions.class);
-                                       intent.putExtra("FB_Name",name);
-                                       intent.putExtra("FB_Email",email);
-                                      /* intent.putExtra("FB_Gender",gender);
-                                       intent.putExtra("FB_birthday",birthday);*/
-                                       startActivity(intent);
+                                    //Toast.makeText(LoginMain.this, "Ss" + responseString, Toast.LENGTH_SHORT).show();
+                                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                       if (responseString.equalsIgnoreCase("Success")&& Objects.equals(type, "Payment_Login")) {
 
-                                   }else
-                                   {
-                                       Toast.makeText(LoginMain.this, " ", Toast.LENGTH_SHORT).show();
+
+
+                                           Intent intent = new Intent(LoginMain.this, PaymentOptions.class);
+                                      intent.putExtra("FB_Name",name);
+                                           intent.putExtra("FB_Email",email);
+                                           intent.putExtra("Type_Login","Facebook");
+                                          /* intent.putExtra("FB_Gender",gender);
+                                           intent.putExtra("FB_birthday",birthday);*/
+                                           startActivity(intent);
+
+                                       }
+                                       else if(responseString.equalsIgnoreCase("Success")&& Objects.equals(type, "Main_Login")) {
+
+                                           Intent intent = new Intent(LoginMain.this, Main2Activity.class);
+                                           //intent.putExtra("FB_Name",name);
+                                          // intent.putExtra("FB_Email",email);
+                                          // intent.putExtra("Type_Login","Facebook");
+                                           startActivity(intent);
+
+                                       }
+                                       else
+                                       {
+                                           Toast.makeText(LoginMain.this, " fgfg", Toast.LENGTH_SHORT).show();
+                                       }
                                    }
                                } catch (JSONException e) {
                                    e.printStackTrace();
@@ -459,15 +489,26 @@ Log.d("facebook name"+">", bname);
 
                                     String responseString = response.get(0).toString();
                                     Toast.makeText(LoginMain.this, "Ss" + responseString, Toast.LENGTH_SHORT).show();
-                                    if (responseString.equalsIgnoreCase("Success")) {
-                                        Intent mainIntent = new Intent(LoginMain.this, PaymentOptions.class);
-                                        mainIntent.putExtra("Gmail_Name",gpersonname);
-                                        mainIntent.putExtra("Gmail_Email",gemail);
-                                        startActivity(mainIntent);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        if (responseString.equalsIgnoreCase("Success") && Objects.equals(type, "Payment_Login")) {
+                                            Intent mainIntent = new Intent(LoginMain.this, PaymentOptions.class);
+                                            mainIntent.putExtra("Gmail_Name",gpersonname);
+                                            mainIntent.putExtra("Gmail_Email",gemail);
+                                            mainIntent.putExtra("Type_Login","Gmail");
+                                            startActivity(mainIntent);
 
-                                    }else
-                                    {
-                                        Toast.makeText(LoginMain.this, " ", Toast.LENGTH_SHORT).show();
+                                        }else if(responseString.equalsIgnoreCase("Success") && Objects.equals(type, "Main_Login"))
+                                        {
+                                            Intent mainIntent = new Intent(LoginMain.this, Main2Activity.class);
+                                           // mainIntent.putExtra("Gmail_Name",gpersonname);
+                                          //  mainIntent.putExtra("Gmail_Email",gemail);
+                                        //    mainIntent.putExtra("Type_Login","Gmail");
+                                            startActivity(mainIntent);
+
+                                        }else
+                                        {
+                                            Toast.makeText(LoginMain.this, " ", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -567,23 +608,30 @@ Log.d("facebook name"+">", bname);
     }
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(LoginMain.this).setTitle(Html.fromHtml("<font color='#ff0000'>Exit</font>"))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if(Objects.equals(type, "Payment_Login")) {
+                new AlertDialog.Builder(LoginMain.this).setTitle(Html.fromHtml("<font color='#ff0000'>Exit</font>"))
 
-                .setMessage(Html.fromHtml(" Are you sure you want to exit Payment?"))
-                .setIcon(R.drawable.logoezyb)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            Intent in = new Intent(LoginMain.this, Main2Activity.class);
-                            startActivity(in);
-                            //finish();
-                        }
+                        .setMessage(Html.fromHtml(" Are you sure you want to exit Payment?"))
+                        .setIcon(R.drawable.logoezyb)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    Intent in = new Intent(LoginMain.this, Main2Activity.class);
+                                    startActivity(in);
+                                    //finish();
+                                }
 
-                    }
-                }).setNegativeButton("No", null).show();
+                            }
+                        }).setNegativeButton("No", null).show();
 
+            }else{
 
+                Intent intent = new Intent(LoginMain.this, Main2Activity.class);
+                startActivity(intent);
+            }
+        }
     }
 
 }

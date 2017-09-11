@@ -35,7 +35,7 @@ public class SignInFinal extends AppCompatActivity implements View.OnClickListen
     private EditText editTextEmail;
     private EditText editTextConfirmPassword;
     private Button buttonRegister;
-String name,email;
+String name,email,type;
     String Type="app";
     String Role="3";
     private static final String REGISTER_URL = Config.EzyBuk_SignUp;
@@ -44,7 +44,8 @@ String name,email;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_final);
-
+      Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+        type = i.getExtras().getString("Type");
         editTextName = (EditText) findViewById(R.id.registration_edit_text_userNamename);
         editTextEmail = (EditText) findViewById(R.id.registration_edit_text_userName);
         editTextPassword = (EditText) findViewById(R.id.registration_text_password);
@@ -150,7 +151,7 @@ String name,email;
                 super.onPostExecute(s);
                 loading.dismiss();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if(s.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                    if(s.equalsIgnoreCase(Config.LOGIN_SUCCESS)&& Objects.equals(type, "Payment_Login")) {
                         SharedPreferences sharedPreferences = SignInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
                         //Creating editor to store values to shared preferences
@@ -177,9 +178,37 @@ String name,email;
                         in.putExtra("EzyBuk_name", name);
                         in.putExtra("EzyBuk_Email", email);
                         in.putExtra("EzyBuk_mobile", mobile);
+                       in.putExtra("Type_Login", "EzyBuk_Registration");
                         startActivity(in);
                         Toast.makeText(getApplicationContext(), "Successfully Registered..." + s, Toast.LENGTH_LONG).show();
-                    }else
+                    } else if(s.equalsIgnoreCase(Config.LOGIN_SUCCESS)&& Objects.equals(type, "Main_Login")) {
+
+                        SharedPreferences sharedPreferences = SignInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+                        //Creating editor to store values to shared preferences
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        //Adding values to editor
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                        editor.putString("LoginEmailId", email);
+                        Log.d("Login Email", " >" + email);
+
+                        editor.putString(Config.LOGIN_CHECK,"suc");
+
+
+                        //editor.putBoolean(loginExits,true);
+
+
+                        //Saving values to editor
+                        editor.commit();
+                        Intent intent = new Intent(SignInFinal.this, Main2Activity.class);
+                      //  intent.putExtra("EzyBuk_name", name);
+                       // intent.putExtra("EzyBuk_Email", email);
+                      //  intent.putExtra("EzyBuk_mobile", mobile);
+                      //  intent.putExtra("Type_Login", "EzyBuk_Registration");
+                        startActivity(intent);
+                    }
+                    else
                     {
                         Toast.makeText(getApplicationContext(), "Unsuccessfully.." + s, Toast.LENGTH_LONG).show();
                     }

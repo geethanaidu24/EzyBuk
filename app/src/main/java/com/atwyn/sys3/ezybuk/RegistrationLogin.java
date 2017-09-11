@@ -3,6 +3,7 @@ package com.atwyn.sys3.ezybuk;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -17,15 +18,21 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class RegistrationLogin extends Main2Activity{
     private TabLayout tabLayout;
     private String[] pageTitle = {" LOG IN", "SIGN UP "};
     private static ViewPager viewPager;
+    String login,tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_login);
+     Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+        login = i.getExtras().getString("Type");
+        tab = i.getExtras().getString("TabNumber");
        // viewPager = (ViewPager) findViewById(R.id.view_pager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -36,21 +43,26 @@ public class RegistrationLogin extends Main2Activity{
         TabHost.TabSpec spec; // Reusable TabSpec for each tab
         Intent intent; // Reusable Intent for each tab
 
-        spec = tabHost.newTabSpec("Sign In"); // Create a new TabSpec using tab host
-        spec.setIndicator("Sign In"); // set the “HOME” as an indicator
-        // Create an Intent to launch an Activity for the tab (to be reused)
-        intent = new Intent(this, LoginInFinal.class);
-        spec.setContent(intent);
-        tabHost.addTab(spec);
+                spec = tabHost.newTabSpec("Sign In"); // Create a new TabSpec using tab host
+                spec.setIndicator("Sign In"); // set the “HOME” as an indicator
+                // Create an Intent to launch an Activity for the tab (to be reused)
+                intent = new Intent(this, LoginInFinal.class);
+        intent.putExtra("Type",login);
+                spec.setContent(intent);
+                tabHost.setCurrentTab(0);
+                tabHost.addTab(spec);
 
-        // Do the same for the other tabs
+                // Do the same for the other tabs
 
-        spec = tabHost.newTabSpec("Sign Up"); // Create a new TabSpec using tab host
-        spec.setIndicator("Sign Up"); // set the “CONTACT” as an indicator
-        // Create an Intent to launch an Activity for the tab (to be reused)
-        intent = new Intent(this, SignInFinal.class);
-        spec.setContent(intent);
-        tabHost.addTab(spec);
+                spec = tabHost.newTabSpec("Sign Up"); // Create a new TabSpec using tab host
+                spec.setIndicator("Sign Up"); // set the “CONTACT” as an indicator
+                // Create an Intent to launch an Activity for the tab (to be reused)
+                intent = new Intent(this, SignInFinal.class);
+        intent.putExtra("Type",login);
+                spec.setContent(intent);
+                tabHost.setCurrentTab(1);
+                tabHost.addTab(spec);
+
 
      /*   spec = tabHost.newTabSpec("About"); // Create a new TabSpec using tab host
         spec.setIndicator("ABOUT"); // set the “ABOUT” as an indicator
@@ -59,7 +71,7 @@ public class RegistrationLogin extends Main2Activity{
         spec.setContent(intent);
         tabHost.addTab(spec);*/
         //set tab which one you want to open first time 0 or 1 or 2
-        tabHost.setCurrentTab(0);
+
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {

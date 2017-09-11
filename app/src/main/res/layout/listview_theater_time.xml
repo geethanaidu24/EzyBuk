@@ -29,22 +29,14 @@ android:layout_marginLeft="10dp"
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="fill_parent"
-android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+
 
 android:layout_marginLeft="10dp"
 android:layout_marginRight="10dp"
 android:splitMotionEvents="false">
-<RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginRight="8dp"
-
-    android:splitMotionEvents="false">
-
 
 
         <TextView
@@ -52,45 +44,80 @@ android:splitMotionEvents="false">
             android:layout_height="wrap_content"
             android:text="Theater Name"
             android:layout_marginTop="10dp"
+            android:textColor="@color/red"
             android:textSize="24sp"
-            android:id="@+id/theatername"/>
+            android:id="@+id/theatername12"/>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_viewtime"
+    <GridView
+        android:id="@+id/timegridview1"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:numColumns="4"
+        android:layout_below="@+id/theatername12"
+        android:verticalSpacing="2dp"
 
 
-        android:layout_width="match_parent"
+android:horizontalSpacing="5dp"
+        android:gravity="center"
+        android:stretchMode="columnWidth"
 
-        android:layout_below="@+id/theatername"
-        android:layout_gravity="left"
+         />
+
+    <!-- <android.support.v7.widget.RecyclerView
+         android:id="@+id/recycler_viewtime"
 
 
-        android:layout_height="wrap_content" />
+         android:layout_width="match_parent"
 
-  <!--  <RelativeLayout
-        android:layout_marginTop="0dp"
-        android:gravity="left"
+         android:layout_below="@+id/theatername12"
+         android:layout_gravity="left"
 
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_height="wrap_content"
+
+         android:layout_height="wrap_content" />-->
+   <!-- <Button
         android:layout_width="wrap_content"
-        android:layout_below="@+id/r1"
-        android:splitMotionEvents="false"
-      >
+        android:text="hello"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttontime"
 
-        <Button
-            android:layout_width="wrap_content"
-            android:text="hello"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttontime"
+        android:layout_below="@+id/theatername12"
+
+        />
+-->
+  <!--  <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/theatername12"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:srcCompat="@mipmap/click" />-->
+
+    <!--  <RelativeLayout
+          android:layout_marginTop="0dp"
+          android:gravity="left"
+
+          android:layout_marginLeft="2dp"
+          android:layout_marginRight="2dp"
+          android:layout_marginBottom="2dp"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:layout_below="@+id/r1"
+          android:splitMotionEvents="false"
+        >
+
+          <Button
+              android:layout_width="wrap_content"
+              android:text="hello"
+              android:layout_height="wrap_content"
+              android:id="@+id/buttontime"
 
 
 
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>-->
-</RelativeLayout>
+              android:layout_centerHorizontal="true" />
+      </RelativeLayout>-->
 
 </RelativeLayout>

@@ -25,6 +25,10 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.internal.ImageRequest;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,7 +43,7 @@ import java.util.List;
 public class FinalProfile extends AppCompatActivity {
     EditText ed1, ed2, ed3, ed4;
     //  JSONParser jsonParser = new JSONParser();
-    String finalprofilname, finalprofileemail, finalprofilemobileno,facebookname2;
+    String finalprofilname, finalprofileemail, finalprofilemobileno,facebookname2,gmailname2,gmailemail2;
     private DatePicker datePicker;
     private Calendar calendar;
     private boolean loggedIn = false;
@@ -54,6 +58,9 @@ public class FinalProfile extends AppCompatActivity {
     private static final String REGISTER_URL = Config.EzyBuk_SignUp;
     AccessToken accessToken;
     private static final String TAG_SUCCESS = "success";
+    GoogleApiClient mGoogleApiClient;
+    OptionalPendingResult<GoogleSignInResult> opr;
+
     /**
      * This integer will uniquely define the dialog to be used for displaying date picker.
      */
@@ -102,6 +109,9 @@ public class FinalProfile extends AppCompatActivity {
         finalprofileemail = i.getExtras().getString("UseEmail");
         finalprofilemobileno = i.getExtras().getString("UserMobileNo");
         facebookname2=i.getExtras().getString("Facebook_Name");
+        gmailname2=i.getExtras().getString("Gmail_Name");
+        gmailemail2=i.getExtras().getString("Gmail_Email");
+
         ed1 = (EditText) findViewById(R.id.editText_profilename);
         ed2 = (EditText) findViewById(R.id.editText_user2);
         ed3 = (EditText) findViewById(R.id.editText_user22);
@@ -112,9 +122,14 @@ public class FinalProfile extends AppCompatActivity {
         final RadioButton male = (RadioButton) findViewById(R.id.genderMale);
         final RadioButton female = (RadioButton) findViewById(R.id.genderFemale);
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
         profile = Profile.getCurrentProfile();
+        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if(loggedIn)
         {
             ed1.setText(finalprofilname);
@@ -125,6 +140,15 @@ public class FinalProfile extends AppCompatActivity {
 
 
            ed1.setText(facebookname2);
+        }else   if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+           /* // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);*/
+            ed1.setText(gmailname2);
+
+            ed4.setText(gmailemail2);
         }
 
 
@@ -161,7 +185,7 @@ public class FinalProfile extends AppCompatActivity {
                 if (name.contentEquals("") || email.contentEquals("") || mobileno.contentEquals("") || dob.contentEquals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(FinalProfile.this);
 
-                    builder.setMessage("Fill Data")
+                    builder.setMessage("Fill Data one ghgjghj  ykuh")
                             .setTitle(" Data");
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

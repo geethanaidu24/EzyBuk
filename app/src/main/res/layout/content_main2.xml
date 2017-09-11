@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
+        android:background="@color/white"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout
@@ -28,25 +29,44 @@
             android:layout_below= "@+id/toolbar" >
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/pager1"
+                android:id="@+id/viewPager"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
 
-                android:layout_alignParentTop="true" />
-
-            <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/indicator1"
-                android:layout_width="fill_parent"
+               />
+            <LinearLayout
+                android:id="@+id/sliderdots"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_centerHorizontal="true"
-                android:gravity="bottom"
-                android:padding="10dip"
-                app:centered="true"
                 android:layout_alignParentBottom="true"
-                app:fillColor="#FFFFFF"
-                app:pageColor="@color/green"
-                app:snap="false" />
+                android:gravity="center"
+
+                android:orientation="horizontal">
+            </LinearLayout>
+
+
+
+            <!--    <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:padding="10dip"
+                    app:centered="true"
+                    android:layout_alignParentBottom="true"
+                    app:fillColor="#FFFFFF"
+                    app:pageColor="@color/green"
+                    app:snap="false" />&ndash;&gt;-->
+
+
+            <!--<WebView
+                android:id="@+id/webView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />-->
         </RelativeLayout>
        <!-- <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
@@ -75,14 +95,16 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:background="@color/white"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
                 <TabWidget
                     android:id="@android:id/tabs"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:orientation="horizontal"
 
-
+android:layout_gravity="center"
                     android:tabStripLeft="@color/white"
                     android:tabStripRight="@color/cred"
 

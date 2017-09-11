@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 public class LoginInFinal extends AppCompatActivity /*implements View.OnClickListener */ {
@@ -65,7 +66,7 @@ TextView forgotpwd;
     private EditText editTextPassword;
 
     public static final String USER_NAME = "USERNAME";
-    String password;
+    String password,type;
     String username;
     String loginType="app";
     //String Role="3";
@@ -74,7 +75,8 @@ TextView forgotpwd;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_in_final);
-
+    Intent i = this.getIntent(); // get Intent which we set from Previous Activity
+        type = i.getExtras().getString("Type");
         //  sign_in_button = (Button) findViewById(R.id.signin);
     /*    sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +151,7 @@ TextView forgotpwd;
             //We will start the Main Activity
             Intent intent = new Intent(LoginInFinal.this, PaymentOptions.class);
             intent.putExtra("Login_Email", useremail);
+            intent.putExtra("Type_Login", "EzyBuk_Login");
           //  intent.putExtra("Login_Email",useremail);
             Log.d("emailadd", " >" + useremail);
 
@@ -174,45 +177,72 @@ TextView forgotpwd;
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)){
-                            //Creating a shared preference
-                            SharedPreferences sharedPreferences = LoginInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)&& Objects.equals(type, "Payment_Login")) {
+                                //Creating a shared preference
+                                SharedPreferences sharedPreferences = LoginInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                            //Creating editor to store values to shared preferences
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                //Creating editor to store values to shared preferences
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                            //Adding values to editor
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                            editor.putString("LoginEmailId", useremail);
-                            Log.d("Login Email", " >" + useremail);
+                                //Adding values to editor
+                                editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                                editor.putString("LoginEmailId", useremail);
+                                Log.d("Login Email", " >" + useremail);
 
-                            editor.putString(Config.LOGIN_CHECK,"suc");
-
-
-                            //editor.putBoolean(loginExits,true);
+                                editor.putString(Config.LOGIN_CHECK, "suc");
 
 
-                            //Saving values to editor
-                            editor.commit();
-                            //Log.d("Login SharedEmaoil", " >" + geetha);
-
-                            //Starting profile activity
-                            Intent intent = new Intent(LoginInFinal.this, PaymentOptions.class);
-                            // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                            //intent.putExtra("loggedIn", "true");
-                            intent.putExtra("Login_Email",useremail);
-                            Log.d("emailadd", " >" + useremail);
-
-                            startActivity(intent);
+                                //editor.putBoolean(loginExits,true);
 
 
-                        }else{
-                            //If the server response is not success
-                            //Displaying an error message on toast
-                          //  Toast toast = Toast.makeText(LoginInFinal.this, "Invalid username or password", Toast.LENGTH_LONG);
+                                //Saving values to editor
+                                editor.commit();
+                                //Log.d("Login SharedEmaoil", " >" + geetha);
+
+                                //Starting profile activity
+                                Intent intent = new Intent(LoginInFinal.this, PaymentOptions.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                //intent.putExtra("loggedIn", "true");
+                                intent.putExtra("Login_Email", useremail);
+                             intent.putExtra("Type_Login", "EzyBuk_Login");
+                                Log.d("emailadd", " >" + useremail);
+
+                                startActivity(intent);
+                            }  else if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)&& Objects.equals(type, "Main_Login")) {
+                                SharedPreferences sharedPreferences = LoginInFinal.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+                                //Creating editor to store values to shared preferences
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                //Adding values to editor
+                                editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                                editor.putString("LoginEmailId", useremail);
+                                Log.d("Login Email", " >" + useremail);
+
+                                editor.putString(Config.LOGIN_CHECK, "suc");
 
 
-                         Toast.makeText(LoginInFinal.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+                                //editor.putBoolean(loginExits,true);
+
+
+                                //Saving values to editor
+                                editor.commit();
+                                Intent intent = new Intent(LoginInFinal.this, Main2Activity.class);
+                              //  intent.putExtra("Login_Email", useremail);
+                               // intent.putExtra("Type_Login", "EzyBuk_Login");
+                                startActivity(intent);
+
+
+
+                            }else{
+                                //If the server response is not success
+                                //Displaying an error message on toast
+                              //  Toast toast = Toast.makeText(LoginInFinal.this, "Invalid username or password", Toast.LENGTH_LONG);
+
+
+                             Toast.makeText(LoginInFinal.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 },

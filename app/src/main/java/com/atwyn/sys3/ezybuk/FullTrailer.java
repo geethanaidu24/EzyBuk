@@ -38,7 +38,8 @@ import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class FullTrailer extends YouTubeBaseActivity {
+public class FullTrailer extends  YouTubeBaseActivity implements
+        YouTubePlayer.OnInitializedListener {
     VideoView simpleVideoView;
     MediaController mediaControls;
     String movievideourl;
@@ -46,6 +47,11 @@ public class FullTrailer extends YouTubeBaseActivity {
     YouTubePlayerView youTubePlayerView;
     ImageButton button;
     YouTubePlayer.OnInitializedListener onInitializedListener;
+    String finalvideourl;
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
+
+    // YouTube player view
+    private YouTubePlayerView youTubeView;
 
     VideoView videoView;
     String videoUrl;
@@ -61,14 +67,14 @@ public class FullTrailer extends YouTubeBaseActivity {
         Intent i = this.getIntent(); // get Intent which we set from Previous Activity
         movievideourl = i.getExtras().getString("Movie_VideoUrl");
     String movievideourl1[]=movievideourl.split("=");
-        final String finalvideourl=movievideourl1[movievideourl1.length-1];
+        finalvideourl=movievideourl1[movievideourl1.length-1];
 
 
-        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-        button = (ImageButton) findViewById(R.id.button);
+      //  youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+       // button = (ImageButton) findViewById(R.id.button);
 
 
-        onInitializedListener = new YouTubePlayer.OnInitializedListener(){
+      /*  onInitializedListener = new YouTubePlayer.OnInitializedListener(){
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
@@ -89,16 +95,16 @@ public class FullTrailer extends YouTubeBaseActivity {
             public void onClick(View v) {
 
                 youTubePlayerView.initialize(Config.API_KEY,onInitializedListener);
-              /*  button.setAlpha(.95f);
+              *//*  button.setAlpha(.95f);
                 button.setClickable(false);
-                button.setEnabled(false);*/
+                button.setEnabled(false);*//*
                button.setVisibility(View.GONE);
 
 
             }
         });
     }
-}
+}*/
 
        /* Intent i = this.getIntent(); // get Intent which we set from Previous Activity
         movievideourl = i.getExtras().getString("Movie_VideoUrl");
@@ -133,3 +139,48 @@ public class FullTrailer extends YouTubeBaseActivity {
         });*/
 
 
+        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+
+        // Initializing video player with developer key
+        youTubeView.initialize(Config.API_KEY, this);
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                        YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            String errorMessage = String.format(
+                   "error_player", errorReason.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                        YouTubePlayer player, boolean wasRestored) {
+        if (!wasRestored) {
+
+            // loadVideo() will auto play video
+            // Use cueVideo() method, if you don't want to play it automatically
+            player.loadVideo(finalvideourl);
+
+            // Hiding player controls
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize(Config.API_KEY, this);
+        }
+    }
+
+    private YouTubePlayer.Provider getYouTubePlayerProvider() {
+        return (YouTubePlayerView) findViewById(R.id.youtube_player);
+    }
+
+}

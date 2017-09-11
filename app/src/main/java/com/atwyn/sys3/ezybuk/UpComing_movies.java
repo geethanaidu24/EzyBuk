@@ -186,6 +186,7 @@ public class UpComing_movies extends AppCompatActivity {
                     String moviessynopsis=moviesObject.getString("Synopsis");
                     String moviesduration=moviesObject.getString("Duration_min");
                     String moviesvideourl=moviesObject.getString("Videourl");
+                    String moviecertification=moviesObject.getString("Certification");
                     String moviereleasingdate= moviesObject.getString("Releasing_Date");
 
                     DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy ");
@@ -216,6 +217,7 @@ public class UpComing_movies extends AppCompatActivity {
                     mySQLDataBase.setSynopsis(moviessynopsis);
                     mySQLDataBase.setDuration_min(moviesduration);
                     mySQLDataBase.setVideourl(moviesvideourl);
+                    mySQLDataBase.setCertification(moviecertification);
                     mySQLDataBase.setReleasing_Date(moviereleasingdate);
                     mySQLDataBases.add(mySQLDataBase);
 
@@ -264,7 +266,7 @@ public class UpComing_movies extends AppCompatActivity {
             movietitle.setSelected(true);
             ImageView movieposter = (ImageView) convertView.findViewById(R.id.imageDownloaded);
             final TextView movieslanguage=(TextView)convertView.findViewById(R.id.textgenre);
-
+            final TextView moviescertification=(TextView)convertView.findViewById(R.id.textView);
             //BIND DATA
             MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
             final String url = mySQLDataBase.getPosterUrl();
@@ -277,6 +279,7 @@ public class UpComing_movies extends AppCompatActivity {
             final String moviesynopsis=mySQLDataBase.getSynopsis();
             final String movieduration=mySQLDataBase.getDuration_min();
             final String movievideourl=mySQLDataBase.getVideourl();
+            final String moviecertification=mySQLDataBase.getCertification();
             final String moviereleasingdate=mySQLDataBase.getReleasing_Date();
             final String moviebiposterurl=mySQLDataBase.getBigPosterUrl();
             //IMG
@@ -287,10 +290,10 @@ public class UpComing_movies extends AppCompatActivity {
             convertView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    openDetailNewsActivity(movieId,finalUrl,movieTitle,movielanguage,movieformat,moviegenre,moviesynopsis,movieduration,movievideourl,moviereleasingdate,moviebiposterurl);
+                    openDetailNewsActivity(movieId,finalUrl,movieTitle,movielanguage,movieformat,moviegenre,moviesynopsis,movieduration,movievideourl,moviereleasingdate,moviebiposterurl,moviecertification);
                 }
             });
-
+            moviescertification.setText(moviecertification);
             return convertView;
         }
         private void openDetailNewsActivity(int movieId, String...details ){
@@ -307,6 +310,7 @@ public class UpComing_movies extends AppCompatActivity {
             i.putExtra("Movie_VideoUrl", details[7]);
             i.putExtra("Movie_ReleasingDate",details[8]);
             i.putExtra("Movie_BigPosterurl",details[9]);
+            i.putExtra("Movie_Certification",details[10]);
             c.startActivity(i);
         }
     }

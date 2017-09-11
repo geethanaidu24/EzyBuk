@@ -27,19 +27,27 @@ import com.facebook.Profile;
 import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class MyProfile extends AppCompatActivity {
     Button b1, b2, b3, b4, b5;
     Profile profile;
     private boolean loggedIn = false;
 TextView tx,pLogin;
-    GoogleApiClient googleApiClient;
-    String profilename,profileemail,profilemobileno,facebookname1;
+    GoogleApiClient mGoogleApiClient;
+   // GoogleApiClient googleApiClient;
+    OptionalPendingResult<GoogleSignInResult> opr;
+    String profilename,profileemail,profilemobileno,facebookname1,gmailname,gamilemail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +58,14 @@ profilename = i.getExtras().getString("UseName");
         profileemail=i.getExtras().getString("UseEmail");
         profilemobileno=i.getExtras().getString("UserMobileNo");
         facebookname1=i.getExtras().getString("Facebook_Name");
+
+        gmailname = i.getExtras().getString("Gmail_Name");
+        gamilemail=i.getExtras().getString("Gmail_Email");
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
         //Log.d("PProfilemobileno",profilemobileno);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -71,6 +87,8 @@ tx=(TextView)findViewById(R.id.profilename) ;
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
        profile = Profile.getCurrentProfile();
+
+      opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if(loggedIn ) {
             tx.setText(profilename);
         }
@@ -78,6 +96,13 @@ tx=(TextView)findViewById(R.id.profilename) ;
         {
 
        tx.setText(facebookname1);
+        }else   if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+           /* // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);*/
+            tx.setText(gmailname);
         }
         else
         {
@@ -119,6 +144,16 @@ tx=(TextView)findViewById(R.id.profilename) ;
                     startActivity(in);
 
 
+                }
+                else   if (opr.isDone()) {
+                    // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+                    // and the GoogleSignInResult will be available instantly.
+                    Intent in = new Intent(MyProfile.this, FinalProfile.class);
+                    in.putExtra("Gmail_Name",  gmailname);
+                    in.putExtra("Gmail_Email", gamilemail);
+
+
+                    startActivity(in);
                 }else
                 {
                     Intent in = new Intent(MyProfile.this, LoginMain.class);
@@ -230,6 +265,9 @@ tx=(TextView)findViewById(R.id.profilename) ;
 
 
 
+                }else   if (opr.isDone()) {
+                    logout();
+
                 }
                 else
                 {
@@ -247,6 +285,7 @@ tx=(TextView)findViewById(R.id.profilename) ;
     }
     private void logout(){
         //Creating an alert dialog to confirm logout
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         // alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -272,14 +311,9 @@ tx=(TextView)findViewById(R.id.profilename) ;
                         editor.apply();
 
                         //Starting login activity
-                        if (googleApiClient.isConnected()) {
-                            Auth.GoogleSignInApi.signOut(googleApiClient);
-                            googleApiClient.disconnect();
-                            googleApiClient.connect();
-                            Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
-                        }
+
                         Intent intent = new Intent(MyProfile.this, Main2Activity.class);
-                        intent.putExtra("finish",true);
+                        intent.putExtra("finish", true);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -287,11 +321,14 @@ tx=(TextView)findViewById(R.id.profilename) ;
 
                         finish();
 
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        mGoogleApiClient.disconnect();
+                        mGoogleApiClient.connect();
+                        Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+
                         LoginManager.getInstance().logOut();
                         AccessToken.setCurrentAccessToken(null);
                         Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
-
-
 
                     }
                 });
@@ -309,7 +346,49 @@ tx=(TextView)findViewById(R.id.profilename) ;
         alertDialog.show();
 
     }
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
 
+        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            // showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    //     hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+
+
+        }
+    }
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+
+
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.d(TAG, "display name: " + acct.getDisplayName());
+            tx.setText(acct.getDisplayName());
+
+
+        }
+
+    }
 
 
 }

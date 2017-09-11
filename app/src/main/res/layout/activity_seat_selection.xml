@@ -18,12 +18,24 @@
         app:layout_collapseMode="pin">
 
         <TextView android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:text="Movie name"
             android:id="@+id/tooltext1"
+android:textSize="20sp"
 
             android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
+
+            />
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Format"
+            android:id="@+id/tooltext2"
+            android:textSize="10sp"
+android:gravity="right"
+            android:layout_marginRight="5dp"
+
+            android:textColor="@color/white"
 
             />
 
@@ -50,20 +62,42 @@
 
 
             android:layout_height="wrap_content" />
+    <View
+        android:id="@+id/h2"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_below="@+id/recycler_viewdate"
+        android:background="#ffdddddd" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+
+        android:layout_below="@+id/h2"
+
+        android:layout_marginRight="2dp"
+        android:layout_marginLeft="2dp"
+
+        android:elevation="2dp"
+        android:fillViewport="true"
+        android:layout_marginBottom="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/recycler_viewdate"
+        android:layout_marginTop="10dp"
+
         >
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:id="@+id/dateListview"
-            ></ListView>
+            android:id="@+id/dateListview" />
 
 </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

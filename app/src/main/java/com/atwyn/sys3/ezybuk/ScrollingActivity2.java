@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +78,7 @@ public class ScrollingActivity2 extends AppCompatActivity {
     private RecyclerView recyclerView, recyclerView1;
     private MovieAdapter mAdapter;
     private MovieAdapter1 mAdapter1;
+    private LinearLayoutManager mLayoutManager, mLayoutManager1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +142,11 @@ public class ScrollingActivity2 extends AppCompatActivity {
         mgenre2.setText(moviegenre);
         mlanguage2.setText(movielanguage);
         mformat2.setText(movieformat);
-        msynopsis2.setText(moviesynopsis);
+       // msynopsis2.setText(moviesynopsis);
         mdurationdate2.setText(movieduration + "  |  " + mreleasingdate);
 
-
+        Spanned sp = Html.fromHtml(moviesynopsis.replace("&lt;", "<").replace("&gt;", ">"));
+        msynopsis2.setText(sp);
         com.bumptech.glide.Glide.with(this)
                 .load(movieposter)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
@@ -410,10 +414,22 @@ public class ScrollingActivity2 extends AppCompatActivity {
                     mySQLDataBase.setReleasing_Date(moviereleasingdate);*//*
 
                     // Setup and Handover data to recyclerview*/
+
+                    mLayoutManager = new LinearLayoutManager(ScrollingActivity2.this);
+                    mLayoutManager.setReverseLayout(true);
+                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    mLayoutManager.setStackFromEnd(true);
                     recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
                     mAdapter = new MovieAdapter(ScrollingActivity2.this, data);
                     recyclerView.setAdapter(mAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));
+                    recyclerView.setLayoutManager(mLayoutManager);
+
+
+                  /*  recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+                    mAdapter = new MovieAdapter(ScrollingActivity2.this, data);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));*/
 
                 }
 
@@ -531,11 +547,21 @@ public class ScrollingActivity2 extends AppCompatActivity {
                     mySQLDataBase.CrewImgUrl = moviesObject.getString("CrewImgUrl");
                     data1.add(mySQLDataBase);
 
-
+                    mLayoutManager1 = new LinearLayoutManager(ScrollingActivity2.this);
+                    mLayoutManager1.setReverseLayout(true);
+                    mLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    mLayoutManager1.setStackFromEnd(true);
                     recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view12);
+
                     mAdapter1 = new MovieAdapter1(ScrollingActivity2.this, data1);
                     recyclerView1.setAdapter(mAdapter1);
-                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));
+                    recyclerView1.setLayoutManager(mLayoutManager1);
+
+
+                    /*recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view12);
+                    mAdapter1 = new MovieAdapter1(ScrollingActivity2.this, data1);
+                    recyclerView1.setAdapter(mAdapter1);
+                    recyclerView1.setLayoutManager(new LinearLayoutManager(ScrollingActivity2.this, LinearLayoutManager.HORIZONTAL, true));*/
 
                 }
 

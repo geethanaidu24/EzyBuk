@@ -13,7 +13,7 @@ public class Config {
     public static final String API_KEY =
             "AIzaSyBltkcv28mWW6PnlpNMZyzOab4dOhNRKAU";
 
-    public final static String mainUrlAddress = "http://192.168.0.10/ezybuk/";
+    public final static String mainUrlAddress = "http://192.168.0.35/ezybuk/";
 
 
     // For admin login
@@ -22,6 +22,7 @@ public class Config {
 
     public final static String moviesUrlAddress = mainUrlAddress+"home/get_nowshowingmovies";
     public final static String moviesUpcomingUrlAddress = mainUrlAddress+"home/get_upcomingmovies";
+    public final static String videosUrlAddress = mainUrlAddress+"home/get_latestTrailers";
 
     public final static String loginUrlAddress = mainUrlAddress+"login/loginApp";
 
@@ -41,14 +42,18 @@ public class Config {
 
     public final static String SeatLayout = mainUrlAddress+"home/generateLayout/";
 
+    public final static String ScrollingImages = mainUrlAddress+"home/showScrollingMovies";
+
     public final static String MovieTimeUrlAddress = mainUrlAddress+"home/showMovieTheatre/";
 
     public final static String KEY_USER = "username";
     public final static String KEY_PASS = "password";
     public final static String LOGIN_SUCCESS = "success";
     public final static String SHARED_PREF_NAME = "loginapp";
+    public final static String SHARED_PREF_GMAIL = "logingmail";
     public final static String USER_SHARED_PREF = "";
     public final static String LOGGEDIN_SHARED_PREF = "loggedIn";
+    public final static String LOGGEDIN_SHARED_GMAIL = "gmail";
     public final static String LOGIN_CHECK ="fail";
     public final static String MovieID_PARAM = "MovieId";
 

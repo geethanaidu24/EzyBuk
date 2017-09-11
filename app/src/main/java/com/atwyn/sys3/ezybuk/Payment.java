@@ -85,6 +85,7 @@ public class Payment extends AppCompatActivity {
                     } else {
 
                         Intent in = new Intent(Payment.this, LoginMain.class);
+                        in.putExtra("Type","Payment_Login");
                         startActivity(in);
                     }
 
@@ -184,7 +185,7 @@ Intent in = new Intent(Payment.this, PaymentOptions.class);
         in.putExtra("Login_Email", username);
 in.putExtra("Login_Name", name1);
 in.putExtra("Login_MobileNo", mobileno1);
-            Log.d("Mobile11111", mobileno1);
+         //   Log.d("Mobile11111", mobileno1);
         startActivity(in);
 
         }

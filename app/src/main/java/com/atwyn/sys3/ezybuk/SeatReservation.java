@@ -48,7 +48,7 @@ public class SeatReservation extends AppCompatActivity /*implements AdapterView.
     public Bitmap seatIcon;
     public Bitmap seatSelect, seatEmpty;
     WebView WebViewWithCSS;
-    String showdate, showtime, selecetedlanguage, selectedformat, movietitle;
+    String showdate, showtime, selecetedlanguage, selectedformat, movietitle,theatername;
     Integer movieid, screenid;
     Spinner mspin;
     int numcount, norows, nocolumns;
@@ -70,16 +70,19 @@ public class SeatReservation extends AppCompatActivity /*implements AdapterView.
         setContentView(R.layout.activity_seat_reservation);
         Intent i = this.getIntent(); //
         movieid = i.getExtras().getInt("Movie_Id");
-        movietitle = i.getExtras().getString("Show_Date");
-        showdate = i.getExtras().getString("Movie_Title");
+        movietitle = i.getExtras().getString("Title");
+        showdate = i.getExtras().getString("Show_Date");
         showtime = i.getExtras().getString("Show_Time");
         selecetedlanguage = i.getExtras().getString("Selected_language");
         selectedformat = i.getExtras().getString("Selected_format");
+            theatername = i.getExtras().getString("Theater_Name");
         screenid = i.getExtras().getInt("Screen_Id");
         Log.d("SCREEn_id", String.valueOf(screenid));
 
+          //  Log.d("theater nameee",movietitle);
+
         toolbartext = (TextView) findViewById(R.id.tooltext1);
-        toolbartext.setText(movietitle);
+        toolbartext.setText(theatername);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (null != toolbar) {
@@ -114,7 +117,7 @@ public class SeatReservation extends AppCompatActivity /*implements AdapterView.
 
             webview=(WebView)findViewById(R.id.webView1);
         webview.setWebViewClient(new MyWebViewClient());
-            webview.getSettings().setBuiltInZoomControls(true);
+           // webview.getSettings().setBuiltInZoomControls(true);
           /*  webview.setInitialScale(1);
 
             webview.getSettings().setLoadWithOverviewMode(true);

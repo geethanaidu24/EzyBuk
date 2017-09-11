@@ -70,13 +70,15 @@ public class Search extends AppCompatActivity {
     ListView lv;
     ImageView noDataImg, noNetworkImg;
     String movietitle;
-
+    ArrayList<MySQLDataBase> mySQLDataBases1 = new ArrayList<>();
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
     private RecyclerView mRVFish;
     private AdapterFish mAdapter;
-
+    public static ArrayList<MySQLDataBase> array_sort;
     SearchView searchView = null;
+    public static ArrayList<MySQLDataBase> movieNamesArrayList;
+    int textlength = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,6 @@ public class Search extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView);
         new MoviesDownloader(Search.this, urlAddress, listView).execute();
-
 
 
         filterText.addTextChangedListener(new TextWatcher() {
@@ -152,7 +153,7 @@ public class Search extends AppCompatActivity {
             }
         });*/
 
-   public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
             mMemoryCache.put(key, bitmap);
         }
@@ -167,203 +168,288 @@ public class Search extends AppCompatActivity {
     // See https://g.co/AppIndexing/AndroidStudio for more information.
 
 
+    private class MoviesDownloader extends AsyncTask<Void, Void, String> {
+
+        Context c;
+        String moviesUrlAddress;
+        ListView listView1;
 
 
-
-
-private class MoviesDownloader extends AsyncTask<Void, Void, String> {
-
-    Context c;
-    String moviesUrlAddress;
-    ListView listView1;
-
-
-    private MoviesDownloader(Search c, String urlAddress, ListView listView) {
-        this.c=c;
-        this.moviesUrlAddress = urlAddress;
-        this.listView1 = listView;
-        Log.d("movies url: ", "> " + moviesUrlAddress);
-    }
-
-
-
-
-
-
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected String doInBackground(Void... params) {
-        return downloadMoviesData();
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        if (s == null) {
-            Toast.makeText(c, "Unsuccessful,Null returned", Toast.LENGTH_SHORT).show();
-        } else {
-            //CALL DATA PARSER TO PARSE
-           MoviesDataParser parser = new MoviesDataParser(c, listView1, s);
-            parser.execute();
+        private MoviesDownloader(Search c, String urlAddress, ListView listView) {
+            this.c = c;
+            this.moviesUrlAddress = urlAddress;
+            this.listView1 = listView;
+            Log.d("movies url: ", "> " + moviesUrlAddress);
         }
-    }
 
-    private String downloadMoviesData() {
-        HttpURLConnection con = Connector.connect(urlAddress);
-        if (con == null) {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return downloadMoviesData();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s == null) {
+                Toast.makeText(c, "Unsuccessful,Null returned", Toast.LENGTH_SHORT).show();
+            } else {
+                //CALL DATA PARSER TO PARSE
+                MoviesDataParser parser = new MoviesDataParser(c, listView1, s);
+                parser.execute();
+            }
+        }
+
+        private String downloadMoviesData() {
+            HttpURLConnection con = Connector.connect(urlAddress);
+            if (con == null) {
+                return null;
+            }
+            try {
+                InputStream is = new BufferedInputStream(con.getInputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String line;
+                StringBuilder jsonData = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    jsonData.append(line).append("n");
+                }
+                br.close();
+                is.close();
+                return jsonData.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         }
-        try {
-            InputStream is = new BufferedInputStream(con.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuilder jsonData = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                jsonData.append(line).append("n");
+
+        private class MoviesDataParser extends AsyncTask<Void, Void, Integer> {
+            private final ListView listView1;
+            Context c;
+
+            String jsonData;
+
+            ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
+
+            private MoviesDataParser(Context c, ListView listView, String jsonData) {
+                this.c = c;
+                this.listView1 = listView;
+                this.jsonData = jsonData;
             }
-            br.close();
-            is.close();
-            return jsonData.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-private class MoviesDataParser extends AsyncTask<Void, Void, Integer> {
-    private final ListView listView1;
-    Context c;
-
-    String jsonData;
-
-    ArrayList<MySQLDataBase> mySQLDataBases = new ArrayList<>();
-
-    private MoviesDataParser(Context c, ListView listView, String jsonData) {
-        this.c = c;
-        this.listView1 = listView;
-        this.jsonData = jsonData;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected Integer doInBackground(Void... params) {
-        return this.parseData();
-    }
-
-    @Override
-    protected void onPostExecute(Integer result) {
-        super.onPostExecute(result);
-        if (result == 0) {
-            Toast.makeText(c, "No Data, Add New", Toast.LENGTH_SHORT).show();
-        } else {
-
-            final MoviesListAdapter adapter = new MoviesListAdapter(c, mySQLDataBases);
-            listView1.setAdapter(adapter);
-        }
-    }
-
-    private int parseData() {
-        try {
-            JSONArray moviesArray = new JSONArray(jsonData);
-            JSONObject moviesObject = null;
-            mySQLDataBases.clear();
-            MySQLDataBase mySQLDataBase;
-            for (int i = 0; i < moviesArray.length(); i++) {
-                moviesObject = moviesArray.getJSONObject(i);
-                //   Log.d("result movies response: ", "> " + moviesObject);
-
-              movietitle = moviesObject.getString("Title");
-
-
-
-
-
-
-                mySQLDataBase = new MySQLDataBase();
-
-                mySQLDataBase.setTitle(movietitle);
-
-                mySQLDataBases.add(mySQLDataBase);
-
-                Log.d("result movies response: ", movietitle);
-
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
             }
-            return 1;
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+            @Override
+            protected Integer doInBackground(Void... params) {
+                return this.parseData();
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                super.onPostExecute(result);
+                if (result == 0) {
+                    Toast.makeText(c, "No Data, Add New", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    final MoviesListAdapter adapter = new MoviesListAdapter(c, mySQLDataBases);
+                    listView1.setAdapter(adapter);
+                }
+            }
+
+            private int parseData() {
+                try {
+                    JSONArray moviesArray = new JSONArray(jsonData);
+                    JSONObject moviesObject = null;
+                    mySQLDataBases.clear();
+                    MySQLDataBase mySQLDataBase;
+                    for (int i = 0; i < moviesArray.length(); i++) {
+                        moviesObject = moviesArray.getJSONObject(i);
+                        //   Log.d("result movies response: ", "> " + moviesObject);
+                        moviesObject = moviesArray.getJSONObject(i);
+                        //   Log.d("result movies response: ", "> " + moviesObject);
+                        int movieId = moviesObject.getInt("MovieId");
+                        String movietitle = moviesObject.getString("Title");
+
+                        String moviesposterUrl = moviesObject.getString("SmallPoster");
+                        String moviesbigposterUrl=moviesObject.getString("Posterurl");
+                        String moviesgenre=moviesObject.getString("Genre");
+                        String movieslanguage=moviesObject.getString("MLanguage");
+                        String moviesformat=moviesObject.getString("Format");
+                        String moviessynopsis=moviesObject.getString("Synopsis");
+                        String moviesduration=moviesObject.getString("Duration_min");
+                        String moviecertification=moviesObject.getString("Certification");
+                        String moviesvideourl=moviesObject.getString("Videourl");
+                        String moviereleasingdate= moviesObject.getString("Releasing_Date");
+
+
+                        DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy ");
+                        Date date = null;
+                        try {
+                            date = iso8601Format.parse(moviereleasingdate);
+                        } catch (ParseException e) {
+                            //Log.d("Parsing ISO8601 datetime failed", "" + e);
+                        }
+
+
+                        int flags = 0;
+                        //  flags |= android.text.format.DateUtils.FORMAT_SHOW_TIME;
+                        flags |= android.text.format.DateUtils.FORMAT_SHOW_DATE;
+                        flags |= android.text.format.DateUtils.FORMAT_ABBREV_MONTH;
+                        //  flags |= android.text.format.DateUtils.FORMAT_SHOW_YEAR;
+
+
+
+                        mySQLDataBase = new MySQLDataBase();
+                        mySQLDataBase.setMovieId(movieId);
+                        mySQLDataBase.setTitle(movietitle);
+                        mySQLDataBase.setPosterUrl(moviesposterUrl);
+                        mySQLDataBase.setBigPosterUrl(moviesbigposterUrl);
+                        mySQLDataBase.setGenre(moviesgenre);
+                        mySQLDataBase.setMLanguage(movieslanguage);
+                        mySQLDataBase.setFormat(moviesformat);
+                        mySQLDataBase.setSynopsis(moviessynopsis);
+                        mySQLDataBase.setDuration_min(moviesduration);
+                        mySQLDataBase.setVideourl(moviesvideourl);
+                        mySQLDataBase.setCertification(moviecertification);
+                        mySQLDataBase.setReleasing_Date(moviereleasingdate);
+                        mySQLDataBases.add(mySQLDataBase);
+
+                    }
+                    return 1;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
         }
-        return 0;
+
+        private class MoviesListAdapter extends BaseAdapter {
+
+            Context c;
+            ArrayList<MySQLDataBase> mySQLDataBases;
+            LayoutInflater inflater;
+
+            private MoviesListAdapter(Context c, ArrayList<MySQLDataBase> mySQLDataBases) {
+                this.c = c;
+                this.mySQLDataBases = mySQLDataBases;
+                inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            }
+
+            @Override
+            public int getCount() {
+               // return mySQLDataBases.size();
+
+                return (mySQLDataBases == null) ? 0 : mySQLDataBases.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return mySQLDataBases.get(position);
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.search_listview, parent, false);
+                }
+
+
+                final TextView movietitle1 = (TextView) convertView.findViewById(R.id.searchtext);
+
+
+                // Log.d("result movies ", movietitle);
+
+                //BIND DATA
+                MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
+                final String url = mySQLDataBase.getPosterUrl();
+                final String finalUrl = Config.mainUrlAddress + url;
+                final int movieId = mySQLDataBase.getMovieId();
+                final String movieTitle = mySQLDataBase.getTitle();
+                final String movielanguage=mySQLDataBase.getMLanguage();
+                final String movieformat=mySQLDataBase.getFormat();
+                final String moviegenre=mySQLDataBase.getGenre();
+                final String moviesynopsis=mySQLDataBase.getSynopsis();
+                final String movieduration=mySQLDataBase.getDuration_min();
+                final String movievideourl=mySQLDataBase.getVideourl();
+                final String moviecertification=mySQLDataBase.getCertification();
+                final String moviereleasingdate=mySQLDataBase.getReleasing_Date();
+                final String moviebiposterurl=mySQLDataBase.getBigPosterUrl();
+                movietitle1.setText(movieTitle);
+                Log.d("result movies ", movieTitle);
+                listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(Search.this, mySQLDataBases.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                filterText.addTextChangedListener(new TextWatcher() {
+
+
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                       textlength = filterText.getText().length();
+                       // array_sort.clear();
+                        for (int i = 0; i < mySQLDataBases.size(); i++) {
+                            if (textlength <= mySQLDataBases.get(i).getTitle().length()) {
+                                Log.d("ertyyy", mySQLDataBases.get(i).getTitle().toLowerCase().trim());
+                                if (mySQLDataBases.get(i).getTitle().toLowerCase().trim().contains(
+                                        filterText.getText().toString().toLowerCase().trim())) {
+                       //   mySQLDataBases.add(mySQLDataBases.get(i));
+                                    Log.d("hhhh", filterText.getText().toString());
+                                   // Toast.makeText(Search.this,filterText.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    mySQLDataBases.add(mySQLDataBases.get(i));
+                            /* Intent in =new Intent(Search.this,ScrollingActivity.class);
+                                    in.putExtra("MOVIE_ID", movieId);
+                                    in.putExtra("Movie_poster",finalUrl );
+
+                                    in.putExtra("Movie_Language",movielanguage);
+                                    in.putExtra("Movie_Format", movieformat);
+                                    in.putExtra("Movie_Genre",moviegenre);
+                                    in.putExtra("Movie_Synopsis", moviesynopsis);
+                                    in.putExtra("Movie_Duration",movieduration);
+                                    in.putExtra("Movie_VideoUrl", movievideourl);
+                                    in.putExtra("Movie_ReleasingDate",moviereleasingdate);
+                                    in.putExtra("Movie_BigPosterurl",moviebiposterurl);
+                                    in.putExtra("Movie_Certification",moviecertification);
+
+                                    in.putExtra("Movie_Title", filterText.getText().toString());
+                                    startActivity(in);*/
+
+                                }
+                            }
+                        }
+                        MoviesListAdapter adapter = new MoviesListAdapter(Search.this, mySQLDataBases);
+                        listView1.setAdapter(adapter);
+
+                    }
+                });
+
+
+                return convertView;
+            }
+
+
+        }
     }
 }
-private class MoviesListAdapter extends BaseAdapter {
-
-    Context c;
-    ArrayList<MySQLDataBase> mySQLDataBases;
-    LayoutInflater inflater;
-
-    private MoviesListAdapter(Context c, ArrayList<MySQLDataBase> mySQLDataBases) {
-        this.c = c;
-        this.mySQLDataBases = mySQLDataBases;
-        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        return mySQLDataBases.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mySQLDataBases.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.search_listview, parent, false);
-        }
-
-
-        final TextView movietitle1 =(TextView) convertView.findViewById(R.id.searchtext);
-
-
-       // Log.d("result movies ", movietitle);
-
-        //BIND DATA
-        MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
-        final String url = mySQLDataBase.getPosterUrl();
-        final String finalUrl = Config.Movies_Search + url;
-        final int movieId = mySQLDataBase.getMovieId();
-        final String movieTitle = mySQLDataBase.getTitle();
-        movietitle1.setText(movieTitle);
-        Log.d("result movies ", movieTitle);
-
-        return convertView;
-    }
-    private void openDetailNewsActivity(int movieId, String...details ){
-
-    }
-}
-}
-
-
-
-
-        }
 
 
 
