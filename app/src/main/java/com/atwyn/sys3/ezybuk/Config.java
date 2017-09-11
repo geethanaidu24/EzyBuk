@@ -33,7 +33,7 @@ public class Config {
     public final static String crewUrlAddress = mainUrlAddress+"home/getCrew/";
 
     public final static String Movies_Search = mainUrlAddress+"home/searchMovies";
-    public final static String TheaterNameUrlAddress = mainUrlAddress+"home/getTheatre/";
+    //public final static String TheaterNameUrlAddress = mainUrlAddress+"home/getTheatre/";
     public final static String DateNameUrlAddress = mainUrlAddress+"home/getCinemaDate/";
     public final static String TimeNameUrlAddress = mainUrlAddress+"home/showTheatreTime/";
 

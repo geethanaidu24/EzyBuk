@@ -105,6 +105,7 @@ public class Search extends AppCompatActivity {
         new MoviesDownloader(Search.this, urlAddress, listView).execute();
 
 
+
         filterText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
@@ -415,7 +416,7 @@ public class Search extends AppCompatActivity {
                        //   mySQLDataBases.add(mySQLDataBases.get(i));
                                     Log.d("hhhh", filterText.getText().toString());
                                    // Toast.makeText(Search.this,filterText.getText().toString(), Toast.LENGTH_SHORT).show();
-                                    mySQLDataBases.add(mySQLDataBases.get(i));
+                                    mySQLDataBases1.add(mySQLDataBases.get(i));
                             /* Intent in =new Intent(Search.this,ScrollingActivity.class);
                                     in.putExtra("MOVIE_ID", movieId);
                                     in.putExtra("Movie_poster",finalUrl );
@@ -436,7 +437,7 @@ public class Search extends AppCompatActivity {
                                 }
                             }
                         }
-                        MoviesListAdapter adapter = new MoviesListAdapter(Search.this, mySQLDataBases);
+                        MoviesListAdapter adapter = new MoviesListAdapter(Search.this, mySQLDataBases1);
                         listView1.setAdapter(adapter);
 
                     }

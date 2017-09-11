@@ -91,7 +91,6 @@ import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class Main2Activity extends TabActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabHost.OnTabChangeListener {
-
     // private ViewPager viewPager;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
@@ -269,7 +268,7 @@ public class Main2Activity extends TabActivity
             }*/
 
 
-        navigationView.setNavigationItemSelectedListener(this);
+    navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
@@ -278,13 +277,13 @@ public class Main2Activity extends TabActivity
 Log.d("Gmail boolean", String.valueOf(gmail));
 */
 
-        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+      opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
       Islogin = prefs.getBoolean("Islogin", false); // get value of last login status
         Log.d("Gmail boolean", String.valueOf(Islogin));*/
         Profile profile = Profile.getCurrentProfile();
 
-        //    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+    //    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
 
         if (loggedIn) {
@@ -330,7 +329,7 @@ Log.d("Gmail boolean", String.valueOf(gmail));
 
             navname.setText("Hello" + " " + personName);*/
 
-            // sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_GMAIL, MODE_PRIVATE);
+           // sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_GMAIL, MODE_PRIVATE);
 
            /* navigationusername1 = sharedPreferences1.getString("LoginEmailId1", "UNKNOWN");
             Log.d("hhhh khush", navigationusername1);
@@ -352,12 +351,12 @@ Log.d("Gmail boolean", String.valueOf(gmail));
         };
 
 
-        // Profile profile = Profile.getCurrentProfile();
+            // Profile profile = Profile.getCurrentProfile();
       /*  if (profile != null) {
             Log.d(TAG, "Logged, user name=" + profile.getFirstName() + " " + profile.getLastName()+ " "+ profile.getName());
         }*/
 
-        //setting Tab layout (number of Tabs = number of ViewPager pages)
+            //setting Tab layout (number of Tabs = number of ViewPager pages)
        /* tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         for (int i = 0; i < 2; i++) {
             tabLayout.addTab(tabLayout.newTab().setText(pageTitle[i]));
@@ -432,78 +431,78 @@ Log.d("Gmail boolean", String.valueOf(gmail));
             }
         });
 */
-        tabHost = getTabHost();
-        tabHost.setOnTabChangedListener(this);
+            tabHost = getTabHost();
+            tabHost.setOnTabChangedListener(this);
 
-        TabHost.TabSpec spec;
-        Intent intent;
+            TabHost.TabSpec spec;
+            Intent intent;
 
-        // Create an Intent to launch an Activity for the tab (to be reused)
-        intent = new Intent().setClass(this, NowShowing_movies.class);
-        spec = tabHost.newTabSpec("Now Showing").setIndicator("Now Showing")
-                .setContent(intent);
-        tabHost.addTab(spec);
+            // Create an Intent to launch an Activity for the tab (to be reused)
+            intent = new Intent().setClass(this, NowShowing_movies.class);
+            spec = tabHost.newTabSpec("Now Showing").setIndicator("Now Showing")
+                    .setContent(intent);
+            tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, UpComing_movies.class);
-        spec = tabHost.newTabSpec("Upcoming Movies").setIndicator("Upcoming Movies")
-                .setContent(intent);
-        tabHost.addTab(spec);
+            intent = new Intent().setClass(this, UpComing_movies.class);
+            spec = tabHost.newTabSpec("Upcoming Movies").setIndicator("Upcoming Movies")
+                    .setContent(intent);
+            tabHost.addTab(spec);
 
 
-        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#99FF99"));
+            for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#99FF99"));
 
-            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
-            tv.setTextColor(Color.parseColor("#ffffff"));
+                TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+                tv.setTextColor(Color.parseColor("#ffffff"));
+            }
+            tabHost.getTabWidget().setCurrentTab(1);
+            tabHost.getTabWidget().getChildAt(1).setBackgroundColor(Color.parseColor("#CCFFCC"));
+            TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
+            tv.setTextColor(Color.parseColor("#000000"));
         }
-        tabHost.getTabWidget().setCurrentTab(1);
-        tabHost.getTabWidget().getChildAt(1).setBackgroundColor(Color.parseColor("#CCFFCC"));
-        TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
-        tv.setTextColor(Color.parseColor("#000000"));
-    }
 
 
 
     public void sendRequest() {
         JsonArrayRequest jsonArrayRequest=new JsonArrayRequest( request_url,
                 new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
+            @Override
+            public void onResponse(JSONArray response) {
 
-                        for(int i=0;i<response.length();i++)
-                        {
-                            SliderUtils sliderUtils=new SliderUtils();
-                            try {
-                                JSONObject jsonObject=response.getJSONObject(i);
+                for(int i=0;i<response.length();i++)
+                {
+                    SliderUtils sliderUtils=new SliderUtils();
+                    try {
+                        JSONObject jsonObject=response.getJSONObject(i);
 
-                                sliderUtils.setSliderImageUrl(Config.mainUrlAddress+jsonObject.getString("Posterurl"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            sliderImg.add(sliderUtils);
-                        }
-
-                        viewPagerAdapter=new ViewPagerAdapter(sliderImg,Main2Activity.this);
-                        viewPager.setAdapter(viewPagerAdapter);
-
-                        dotscount=viewPagerAdapter.getCount();
-                        dots=new ImageView[dotscount];
-
-                        for(int i=0;i<dotscount;i++)
-                        {
-                            dots[i]=new ImageView(Main2Activity.this);
-                            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.nonactivedot));
-
-                            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                            params.setMargins(8,0,8,0);
-                            sliderDotspanel.addView(dots[i],params);
-
-                        }
-                        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.activedot));
-
+                        sliderUtils.setSliderImageUrl(Config.mainUrlAddress+jsonObject.getString("Posterurl"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                },new Response.ErrorListener(){
+
+                    sliderImg.add(sliderUtils);
+                }
+
+                viewPagerAdapter=new ViewPagerAdapter(sliderImg,Main2Activity.this);
+                viewPager.setAdapter(viewPagerAdapter);
+
+                dotscount=viewPagerAdapter.getCount();
+                dots=new ImageView[dotscount];
+
+                for(int i=0;i<dotscount;i++)
+                {
+                    dots[i]=new ImageView(Main2Activity.this);
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.nonactivedot));
+
+                    LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(8,0,8,0);
+                    sliderDotspanel.addView(dots[i],params);
+
+                }
+                dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.activedot));
+
+            }
+        },new Response.ErrorListener(){
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -622,7 +621,7 @@ Log.d("Gmail boolean", String.valueOf(gmail));
                     mySQLDataBases4.add(mySQLDataBase);
                     //     mysql = mySQLDataBases4.toString();
 
-                    // Log.d("Mysql",mySQLDataBases4);
+                   // Log.d("Mysql",mySQLDataBases4);
                     Log.d("Name", name1);
                     Log.d("MobileNoUse",mobile1);
 
@@ -640,7 +639,7 @@ Log.d("Gmail boolean", String.valueOf(gmail));
             String lol1= result.get(0).toString();
         //    String lol2= result.get(1).toString();
 Log.d("lllllflkld", String.valueOf(result));*/
-            navname.setText("Hello" + " " +name1);
+ navname.setText("Hello" + " " +name1);
 
 
         }
@@ -756,7 +755,7 @@ Log.d("lllllflkld", String.valueOf(result));*/
         int id = item.getItemId();
 
         if (id == R.id.fr1) {
-            Intent in=new Intent(Main2Activity.this,NowShowing_movies.class);
+          Intent in=new Intent(Main2Activity.this,NowShowing_movies.class);
             startActivity(in);
         } else if (id == R.id.fr2) {
             Intent in=new Intent(Main2Activity.this,UpComing_movies.class);
@@ -770,7 +769,7 @@ Log.d("lllllflkld", String.valueOf(result));*/
 
         else if(id == R.id.logout)
         {
-            logout();
+           logout();
 
         }
         else if(id == R.id.login)
@@ -781,14 +780,14 @@ Log.d("lllllflkld", String.valueOf(result));*/
 
 
         }
-        if (id == R.id.profile) {
+     if (id == R.id.profile) {
             Intent intent = new Intent(this, MyProfile.class);
-            intent.putExtra("UseName",  name1);
-            intent.putExtra("UseEmail", navigationusername);
-            intent.putExtra("UserMobileNo", mobile1);
-            intent.putExtra("Facebook_Name",facebookname);
-            intent.putExtra("Gmail_Name",GmailName);
-            intent.putExtra("Gmail_Email",GmailEmail);
+     intent.putExtra("UseName",  name1);
+         intent.putExtra("UseEmail", navigationusername);
+         intent.putExtra("UserMobileNo", mobile1);
+         intent.putExtra("Facebook_Name",facebookname);
+         intent.putExtra("Gmail_Name",GmailName);
+         intent.putExtra("Gmail_Email",GmailEmail);
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -815,36 +814,36 @@ Log.d("lllllflkld", String.valueOf(result));*/
 
         // alertDialogBuilder.setMessage("Are you sure you want to logout?");
         alertDialogBuilder.setTitle(" Are you sure you want to logout?");
-        // alertDialogBuilder.setIcon(R.drawable.logoutt);
+       // alertDialogBuilder.setIcon(R.drawable.logoutt);
         alertDialogBuilder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                        //Getting editor
-                        SharedPreferences.Editor editor = preferences.edit();
+    //Getting out sharedpreferences
+    SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    //Getting editor
+    SharedPreferences.Editor editor = preferences.edit();
 
-                        //Puting the value false for loggedin
-                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+    //Puting the value false for loggedin
+    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
-                        //Putting blank value to email
-                        editor.putString(Config.KEY_USER, "");
+    //Putting blank value to email
+    editor.putString(Config.KEY_USER, "");
 
-                        //Saving the sharedpreferences
-                        editor.apply();
+    //Saving the sharedpreferences
+    editor.apply();
 
-                        //Starting login activity
+    //Starting login activity
 
-                        Intent intent = new Intent(Main2Activity.this, Main2Activity.class);
-                        intent.putExtra("finish", true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+    Intent intent = new Intent(Main2Activity.this, Main2Activity.class);
+    intent.putExtra("finish", true);
+    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+            Intent.FLAG_ACTIVITY_CLEAR_TASK |
+            Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
 
-                        finish();
+    finish();
 
                         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         mGoogleApiClient.disconnect();
@@ -855,7 +854,7 @@ Log.d("lllllflkld", String.valueOf(result));*/
                             Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
 */
 
-                        //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                      //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                       /* LoginManager.getInstance().logOut();
                          Intent intent1 = new Intent(Main2Activity.this, MainActivity.class);
                             startActivity(intent1);
@@ -866,9 +865,9 @@ Log.d("lllllflkld", String.valueOf(result));*/
                         AccessToken.setCurrentAccessToken(null);
                         Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();*/
 
-                        LoginManager.getInstance().logOut();
-                        AccessToken.setCurrentAccessToken(null);
-                        Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+    LoginManager.getInstance().logOut();
+    AccessToken.setCurrentAccessToken(null);
+    Toast.makeText(getApplicationContext(), "Successfully Logout", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -886,34 +885,34 @@ Log.d("lllllflkld", String.valueOf(result));*/
         alertDialog.show();
 
     }
-    @Override
+ @Override
     protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
+     mGoogleApiClient.connect();
+     super.onStart();
 
 
-        opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            // showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    //     hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
-                }
-            });
+  opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+     if (opr.isDone()) {
+         // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+         // and the GoogleSignInResult will be available instantly.
+         Log.d(TAG, "Got cached sign-in");
+         GoogleSignInResult result = opr.get();
+         handleSignInResult(result);
+     } else {
+         // If the user has not previously signed in on this device or the sign-in has expired,
+         // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+         // single sign-on will occur in this branch.
+        // showProgressDialog();
+         opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+             @Override
+             public void onResult(GoogleSignInResult googleSignInResult) {
+            //     hideProgressDialog();
+                 handleSignInResult(googleSignInResult);
+             }
+         });
 
-        }
-    }
+     }
+ }
 
 
     private void handleSignInResult(GoogleSignInResult result) {

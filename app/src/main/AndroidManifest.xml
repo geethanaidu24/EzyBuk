@@ -21,7 +21,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|adjustPan">
 
         <!--
@@ -66,9 +66,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".SelectCity" />
-        <activity android:name=".NowShowing" />
-        <activity android:name=".ComingSoon" />
-        <activity android:name=".MovieBooking" />
+
         <activity
             android:name=".FullTrailer"
             android:screenOrientation="landscape" />
@@ -86,39 +84,30 @@
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".LogIn"
-            tools:ignore="DuplicateActivity" />
+
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme" />
         <activity android:name=".PaymentOptions" />
         <activity android:name=".Card" />
-        <activity android:name=".First" />
-        <activity android:name=".Second" />
-        <activity android:name=".LogInScreen" />
-        <activity android:name=".Third" />
         <activity android:name=".UserProfile" />
-        <activity android:name=".facebook" />
-        <activity android:name=".Faceb" />
         <activity android:name=".LoginInFinal" />
         <activity android:name=".SignInFinal" />
-        <activity android:name=".Ns_grid" />
         <activity android:name=".NowShowing_movies" />
         <activity android:name=".UpComing_movies" />
         <activity
             android:name=".Rating"
             android:theme="@style/Theme.Transparent" />
         <activity android:name=".ScrollingActivity2" />
-        <activity android:name=".FacebookLogin" />
-        <activity android:name=".ConfirmDetails" />
         <activity android:name=".MyProfile" />
         <activity android:name=".FinalProfile" />
         <activity android:name=".TicketsBookingHistory" />
         <activity android:name=".SavedCardsDetails" />
         <activity android:name=".Changepassword" />
-        <activity android:name=".SeatSelection"></activity>
+        <activity android:name=".SeatSelection" />
+        <activity android:name=".LatestVideos" />
+        <activity android:name=".First"></activity>
     </application>
 
 </manifest>
