@@ -91,6 +91,7 @@ import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class Main2Activity extends TabActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabHost.OnTabChangeListener {
+
     // private ViewPager viewPager;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
