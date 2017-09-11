@@ -11,20 +11,25 @@
         android:id="@+id/fr2"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Events and Plays" />
+    <item
+        android:id="@+id/fr3"
+        android:icon="@drawable/ic_menu_slideshow"
+        android:title="Latest Videos" />
+
 
     <item
         android:id="@+id/login"
         android:icon="@drawable/ic_menu_manage"
         android:title="Login" />
 
-  <item
-         android:id="@+id/profile"
-         android:icon="@drawable/ic_menu_share"
-         android:title="My Profile" />
-     <!--<item
-         android:id="@+id/nav_send"
-         android:icon="@drawable/ic_menu_send"
-         android:title="Send" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_menu_share"
+        android:title="My Profile" />
+    <!--<item
+        android:id="@+id/nav_send"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Send" />
 
 &ndash;&gt;-->
 
