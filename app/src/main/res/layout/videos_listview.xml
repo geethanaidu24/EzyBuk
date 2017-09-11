@@ -1,0 +1,129 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="18dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginRight="18dp">
+    <RelativeLayout
+        android:id="@+id/rmain"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/moviebutton">
+
+        <RelativeLayout
+            android:id="@+id/r1"
+
+            android:layout_width="fill_parent"
+            android:layout_height="180dp"
+
+            android:layout_gravity="center_horizontal"
+
+            android:gravity="center_vertical">
+
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+                android:adjustViewBounds="true"
+
+
+
+                android:scaleType="fitXY"
+
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/r2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/r1"
+            android:layout_marginLeft="2dp"
+android:layout_marginBottom="10dp"
+            android:layout_marginRight="2dp"
+
+            android:layout_marginTop="5dp"
+
+            android:background="@color/white"
+            android:gravity="left">
+
+            <!-- <TextView
+                 android:id="@+id/textViewURL"
+
+
+                 android:layout_height="wrap_content"
+                 android:text="RAABTA"
+                 android:gravity="center"
+android:maxLines="2"
+                 android:textColor="@color/colorblack"
+                 android:background="@color/white"
+                 android:layout_gravity="center"
+                 android:textSize="18sp"
+                 android:layout_marginLeft="5dp"
+                 android:layout_centerHorizontal="true"
+                 android:fontFamily="sans-serif"
+                 android:typeface="normal"
+                 android:layout_width="wrap_content"   />-->
+
+
+            <TextView
+                android:id="@+id/postername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="sans-serif"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="WONDER WOMEN"
+                android:textColor="@color/colorblack"
+                android:textSize="18sp"
+                android:typeface="normal"
+
+
+
+                />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageButton
+
+        android:id="@+id/button7"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="18dp"
+       android:src="@drawable/play"
+
+        android:layout_marginRight="18dp"
+        android:layout_marginBottom="28dp"
+        android:layout_alignBottom="@+id/rmain"
+        android:layout_alignRight="@+id/rmain"
+        android:layout_alignEnd="@+id/rmain" />
+</RelativeLayout>
