@@ -66,7 +66,6 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".SelectCity" />
-
         <activity
             android:name=".FullTrailer"
             android:screenOrientation="landscape" />
@@ -84,7 +83,6 @@
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/Theme.Transparent" />
-
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
@@ -107,7 +105,8 @@
         <activity android:name=".Changepassword" />
         <activity android:name=".SeatSelection" />
         <activity android:name=".LatestVideos" />
-        <activity android:name=".First"></activity>
+        <activity android:name=".First" />
+        <activity android:name=".Filter"></activity>
     </application>
 
 </manifest>

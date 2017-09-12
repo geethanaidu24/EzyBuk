@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#80000000"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_collapseMode="pin">
+
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Filter By"
+            android:id="@+id/tooltext1"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:layout_gravity="left"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/clear"
+            android:layout_gravity="right"
+
+            android:text="CLear"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/apply"
+            android:layout_gravity="right"
+            android:text="Apply"/>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:layout_below="@+id/toolbar"
+       >
+
+        <LinearLayout
+            android:id="@+id/firstLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="70"
+            android:layout_toLeftOf="@+id/secondView"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SORT"
+                android:layout_marginTop="10dp"
+                android:id="@+id/sort"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/language"
+                android:text="Language"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/h2"
+
+
+            android:background="#ffdddddd"
+            android:layout_width="0.15dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/thirdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="30"
+            android:orientation="vertical"></LinearLayout>
+    </LinearLayout >
+
+
+
+
+    </RelativeLayout>
