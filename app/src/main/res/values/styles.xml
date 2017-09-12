@@ -9,6 +9,7 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggleStyle</item>
         <item name="android:theme">@style/MyToolbarTheme</item>
+
     </style>
 
     <style name="MyToolbarTheme">
@@ -55,4 +56,12 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="colorPrimaryDark">@android:color/transparent</item></style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#546E7A</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/red</item>
+
+        <item name="android:textColorPrimary">@color/red</item>
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

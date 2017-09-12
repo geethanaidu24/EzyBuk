@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,14 +15,18 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
-import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,6 +74,7 @@ import java.util.List;
 
 import static android.text.Html.fromHtml;
 import static com.atwyn.sys3.ezybuk.R.id.share;
+import static com.atwyn.sys3.ezybuk.R.id.wrap_content;
 
 public class ScrollingActivity extends AppCompatActivity {
     Button book;
@@ -87,7 +94,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private ArrayAdapter<MySQLDataBase> adapter;
     private ArrayAdapter<MySQLDataBase> adapter1;
     private ArrayAdapter<MySQLDataBase> adapter2;
-    private static final String Spinnertheater = Config.TheaterNameUrlAddress;
+   // private static final String Spinnertheater = Config.TheaterNameUrlAddress;
     private static final String SpinnerDate = Config.DateNameUrlAddress;
     private static final String SpinnerTime = Config.TimeNameUrlAddress;
 
@@ -269,9 +276,24 @@ public class ScrollingActivity extends AppCompatActivity {
 
                 if (myList.length > 1) {
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this,R.style.AppCompatAlertDialogStyle);
+                    TextView textView = new TextView(ScrollingActivity.this);
+                    textView.setTextColor(Color.GREEN);
+                    textView.setText(movietitle+"\n");
+                    textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                    builder.setCustomTitle(textView);
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
-                    builder.setTitle("Make your selection");
+                    TextView textView1 = new TextView(ScrollingActivity.this);
+                    textView1.setTextColor(Color.BLACK);
+                    textView1.setText("\n Make Your selection");
+                    textView1.setGravity(Gravity.CENTER_HORIZONTAL);
+                    textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                    builder.setCustomTitle(textView1);
+
+
+
+                    // builder.setTitle("Make Your selection");
                //     builder.setIcon(R.drawable.raabta);
                     builder.setItems(myList, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
@@ -284,9 +306,17 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
 
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
-                                builder1.setTitle("Make your selection ");
-                             // builder1.setIcon(R.drawable.raabta);
+
+
+
+                               // dialoglayout.setMinimumWidth(200);
+                                //dialoglayout.setMinimumHeight(400);
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this,R.style.AppCompatAlertDialogStyle);
+                                //builder1.setTitle(movietitle);
+                                builder1.setTitle(Html.fromHtml("<font color='#ff0000'>Make your selection</font>"));
+
+
+                             builder1.setIcon(R.drawable.raabta);
                               //  builder1.setIcon(Integer.parseInt(movieposter));
                                 builder1.setItems(myList13, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int item) {
@@ -308,27 +338,37 @@ public class ScrollingActivity extends AppCompatActivity {
 
                                     }
                                 });
+                         /*    LayoutInflater inflater = getLayoutInflater();
+                                View dialoglayout = inflater.inflate(R.layout.custom_dialog, null);
+                                builder1.setView(dialoglayout);*/
+                                builder1.show();
+
+                             /* AlertDialog alert1 = builder1.create();
 
 
-                              AlertDialog alert1 = builder1.create();
-                                alert1.getWindow().setLayout(600, 400);
-
-                                alert1.show();
+                                alert1.show();*/
+                               // alert1.getWindow().setLayout(600, wrap_content);
                             }
 
 
                         }
                     });
 
-                AlertDialog alert = builder.create();
-                    alert.show();
+                   /* LayoutInflater inflater = getLayoutInflater();
+                    View dialoglayout = inflater.inflate(R.layout.custom_dialog, null);
+                    builder.setView(dialoglayout);*/
+                    builder.show();
 
+                   // alert.getWindow().setLayout(600, wrap_content);
 
-                }else if (myList13.length > 1) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this);
+                }
+
+               else if (myList13.length > 1) {
+                  //  ContextThemeWrapper ctw = new ContextThemeWrapper( this, R.style.AppTheme );
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ScrollingActivity.this,R.style.AppCompatAlertDialogStyle);
                  //   builder1.setIcon(Integer.parseInt(movieposter));
                  //   builder1.setIcon(R.drawable.raabta);
-                    builder1.setTitle("Make your selection");
+                    builder1.setTitle(Html.fromHtml("<font color='#ff0000'>Make your selection</font>"));
 
                     builder1.setItems(myList13, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
@@ -347,8 +387,9 @@ in.putExtra("Selected_language",movielanguage);
                     });
 
                     AlertDialog alert1 = builder1.create();
-                    alert1.getWindow().setLayout(600, 400);
+
                     alert1.show();
+                    //alert1.getWindow().setLayout(600, 400);
                 } else {
                     Intent in = new Intent(ScrollingActivity.this, SeatSelection.class);
                     in.putExtra("Movie_Id", movieid);

@@ -210,7 +210,7 @@ String name,email,type;
                     }
                     else
                     {
-                        Toast.makeText(getApplicationContext(), "Unsuccessfully.." + s, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "" + s, Toast.LENGTH_LONG).show();
                     }
                 }
             }

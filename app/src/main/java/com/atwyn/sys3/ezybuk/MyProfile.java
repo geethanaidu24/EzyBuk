@@ -205,6 +205,11 @@ tx=(TextView)findViewById(R.id.profilename) ;
                     startActivity(in);
 
 
+                }else   if (opr.isDone()) {
+                    Intent in = new Intent(MyProfile.this, SavedCardsDetails.class);
+                    startActivity(in);
+
+
                 }
                 else
                 {
