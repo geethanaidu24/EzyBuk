@@ -92,7 +92,8 @@
         <activity android:name=".UserProfile" />
         <activity android:name=".LoginInFinal" />
         <activity android:name=".SignInFinal" />
-        <activity android:name=".NowShowing_movies" />
+        <activity android:name=".NowShowing_movies"
+            android:launchMode="singleTop"/>
         <activity android:name=".UpComing_movies" />
         <activity
             android:name=".Rating"

@@ -48,12 +48,23 @@ public class NowShowing_movies extends AppCompatActivity {
     ImageView im1;
     TextView tx1,tx2;
     Button b1;
-
+String langarray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_now_showing_movies);
+        Intent i = this.getIntent();
+        if(i.getExtras() == null) {
+            //Do first time stuff here
+        } else {
+            langarray = i.getExtras().getString("Array_languages");
+            Log.d("llllasd",langarray);
+        }
+        /*Intent i = this.getIntent();
+        langarray = i.getExtras().getString("Array_languages");
+        Log.d("llllasd",langarray);*/
+
         final GridView gridView = (GridView)findViewById(R.id.moviesgridview);
         new MoviesDownloader(NowShowing_movies.this, moviesUrlAddress, gridView).execute();
 
