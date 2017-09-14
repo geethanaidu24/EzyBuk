@@ -1,12 +1,17 @@
 package com.atwyn.sys3.ezybuk;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +36,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -46,26 +55,36 @@ public class NowShowing_movies extends AppCompatActivity {
     private boolean loggedIn = false;
     final static String moviesUrlAddress = Config.moviesUrlAddress;
     ImageView im1;
-    TextView tx1,tx2;
+    TextView tx1, tx2;
+    GridView gridView;
     Button b1;
-String langarray;
+    String langarray;
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
+    RecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private AsyncFetch.MovieDetailsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_now_showing_movies);
+
         Intent i = this.getIntent();
-        if(i.getExtras() == null) {
+        if (i.getExtras() == null) {
             //Do first time stuff here
         } else {
             langarray = i.getExtras().getString("Array_languages");
-            Log.d("llllasd",langarray);
+            Log.d("llllasd", langarray);
         }
+        new AsyncFetch().execute();
+    }
+
         /*Intent i = this.getIntent();
         langarray = i.getExtras().getString("Array_languages");
         Log.d("llllasd",langarray);*/
 
-        final GridView gridView = (GridView)findViewById(R.id.moviesgridview);
+      /* gridView = (GridView)findViewById(R.id.moviesgridview);
         new MoviesDownloader(NowShowing_movies.this, moviesUrlAddress, gridView).execute();
 
     }
@@ -102,11 +121,11 @@ String langarray;
         }
 
 
-        /*private MoviesDownloader(Ns_grid ns_grid, String moviesUrlAddress, GridView gridView) {
+        *//*private MoviesDownloader(Ns_grid ns_grid, String moviesUrlAddress, GridView gridView) {
                     this.moviesUrlAddress = moviesUrlAddress;
                     this.gridview1 = gridview1;
                 }
-        */
+        *//*
 
         @Override
         protected void onPreExecute() {
@@ -342,3 +361,254 @@ String langarray;
 
 
 
+*/
+
+    private class AsyncFetch extends AsyncTask<String, String, String> {
+        ProgressDialog pdLoading = new ProgressDialog(NowShowing_movies.this);
+        HttpURLConnection conn;
+        URL url = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // Enter URL address where your json file resides
+            // Even you can make call to php file which returns json data
+            try {
+                url = new URL(Config.moviesUrlAddress);
+                Log.d("second 22url", " >" + url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("GET");
+
+                // setDoOutput to true as we recieve data from json file
+                conn.setDoOutput(true);
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return e1.toString();
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return e.toString();
+            } finally {
+                conn.disconnect();
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            //this method will be running on UI thread
+            ArrayList<MySQLDataBase> mySQLDataBases = null;
+            pdLoading.dismiss();
+            List<MySQLDataBase> data = new ArrayList<>();
+
+            pdLoading.dismiss();
+            try {
+
+
+                JSONArray moviesArray = new JSONArray(result);
+
+
+                for (int i = 0; i < moviesArray.length(); i++) {
+                    JSONObject moviesObject = moviesArray.getJSONObject(i);
+
+                    Log.d("result movies response: ", "> " + moviesObject);
+
+                    // castobject=moviesObject.getJSONObject("moviecast");
+                    MySQLDataBase mySQLDataBase = new MySQLDataBase();
+
+                    mySQLDataBase.MovieId = moviesObject.getInt("MovieId");
+                    mySQLDataBase.Title = moviesObject.getString("Title");
+
+                    mySQLDataBase.SmallPosterUrl = moviesObject.getString("SmallPoster");
+                    mySQLDataBase.BigPosterUrl = moviesObject.getString("Posterurl");
+                    mySQLDataBase.Genre = moviesObject.getString("Genre");
+                    mySQLDataBase.MLanguage = moviesObject.getString("MLanguage");
+                    mySQLDataBase.Format = moviesObject.getString("Format");
+                    mySQLDataBase.Synopsis = moviesObject.getString("Synopsis");
+                    mySQLDataBase.Duration_min = moviesObject.getString("Duration_min");
+                    mySQLDataBase.Certification = moviesObject.getString("Certification");
+                    mySQLDataBase.Videourl = moviesObject.getString("Videourl");
+                    mySQLDataBase.Releasing_Date = moviesObject.getString("Releasing_Date");
+
+
+                    data.add(mySQLDataBase);
+
+
+                    mLayoutManager = new GridLayoutManager(NowShowing_movies.this, 2);
+                   // mLayoutManager.setReverseLayout(true);
+                    //mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                   // mLayoutManager.setStackFromEnd(true);
+                    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+                    mAdapter = new MovieDetailsAdapter(NowShowing_movies.this, data);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(mLayoutManager);
+
+                      /*  RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.setAdapter(adapter);*/
+
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        public class MovieDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+            final static String moviesUrlAddress = Config.moviesUrlAddress;
+            String u;
+            private Context context;
+            private LayoutInflater inflater;
+            List<MySQLDataBase> data = Collections.emptyList();
+            MySQLDataBase current;
+            int currentPos = 0;
+
+            // create constructor to innitilize context and data sent from MainActivity
+            public MovieDetailsAdapter(Context context, List<MySQLDataBase> data) {
+                this.context = context;
+                inflater = LayoutInflater.from(context);
+                this.data = data;
+            }
+
+
+            // Inflate the layout when viewholder created
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = inflater.inflate(R.layout.nowshowing_gridview, parent, false);
+                MyHolder holder = new MyHolder(view);
+                return holder;
+            }
+
+            // Bind data
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+                // Get current position of item in recyclerview to bind data and assign values from list
+                MyHolder myHolder = (MyHolder) holder;
+                final MySQLDataBase current = data.get(position);
+                myHolder.mtitle.setText(current.Title);
+                myHolder.mlang.setText(current.MLanguage);
+                myHolder.mcertification.setText(current.Certification);
+                u = Config.mainUrlAddress + current.SmallPosterUrl;
+                Log.d("result image ", "> " + u);
+                Glide.downloadImage1(context, u, myHolder.im);
+
+                final int movieId = current.MovieId;
+                final String movieTitle =current.Title;
+                final String movieposter =u;
+                final String movielanguage=current.MLanguage;
+                final String movieformat=current.Format;
+                final String moviegenre=current.Genre;
+                final String moviesynopsis=current.Synopsis;
+                final String movieduration=current.Duration_min;
+                final String movievideourl=current.Videourl;
+                final String moviecertification=current.Certification;
+                final String moviereleasingdate=current.Releasing_Date;
+                final String moviebiposterurl=current.BigPosterUrl;
+                myHolder.im.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(NowShowing_movies.this, ScrollingActivity.class);
+                        i.putExtra("MOVIE_ID", movieId);
+
+                        i.putExtra("Movie_poster", movieposter);
+                        i.putExtra("Movie_Title", movieTitle);
+                        i.putExtra("Movie_Language",movielanguage);
+                        i.putExtra("Movie_Format", movieformat);
+                        i.putExtra("Movie_Genre",moviegenre);
+                        i.putExtra("Movie_Synopsis", moviesynopsis);
+                        i.putExtra("Movie_Duration",movieduration);
+                        i.putExtra("Movie_VideoUrl", movievideourl);
+                        i.putExtra("Movie_ReleasingDate",moviereleasingdate);
+                        i.putExtra("Movie_BigPosterurl",moviebiposterurl);
+                        i.putExtra("Movie_Certification",moviecertification);
+                         startActivity(i);
+                     // openDetailNewsActivity(movieId,movieTitle,movielanguage,movieformat,moviegenre,moviesynopsis,movieduration,movievideourl,moviereleasingdate,moviebiposterurl,moviecertification);
+                    }
+                });
+            }
+
+            // return total item from List
+            @Override
+            public int getItemCount() {
+                return data.size();
+            }
+
+
+            class MyHolder extends RecyclerView.ViewHolder {
+
+                TextView mtitle;
+                TextView mlang,mcertification;
+                ImageView im;
+
+
+                // create constructor to get widget reference
+                public MyHolder(View itemView) {
+                    super(itemView);
+                    mtitle = (TextView) itemView.findViewById(R.id.textViewURL);
+                    mlang = (TextView) itemView.findViewById(R.id.textgenre);
+                    mcertification = (TextView) itemView.findViewById(R.id.textView);
+                    im = (ImageView) itemView.findViewById(R.id.imageDownloaded);
+
+                }
+
+            }
+
+
+        }
+    }
+}

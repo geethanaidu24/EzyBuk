@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -136,6 +137,7 @@ public class Main2Activity extends TabActivity
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_main2);
+
       /*  Intent intent11 = this.getIntent(); // get Intent which we set from Previous Activity
 
         Gpersonname = intent11.getExtras().getString("Gmail_Name");

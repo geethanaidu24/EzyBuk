@@ -209,7 +209,7 @@ public class UpComing_movies extends AppCompatActivity {
                     mySQLDataBase = new MySQLDataBase();
                     mySQLDataBase.setMovieId(movieId);
                     mySQLDataBase.setTitle(movietitle);
-                    mySQLDataBase.setPosterUrl(moviesposterUrl);
+                    mySQLDataBase.setSmallPosterUrl(moviesposterUrl);
                     mySQLDataBase.setBigPosterUrl(moviesbigposterUrl);
                     mySQLDataBase.setGenre(moviesgenre);
                     mySQLDataBase.setMLanguage(movieslanguage);
@@ -269,7 +269,7 @@ public class UpComing_movies extends AppCompatActivity {
             final TextView moviescertification=(TextView)convertView.findViewById(R.id.textView);
             //BIND DATA
             MySQLDataBase mySQLDataBase = (MySQLDataBase) this.getItem(position);
-            final String url = mySQLDataBase.getPosterUrl();
+            final String url = mySQLDataBase.getSmallPosterUrl();
             final String finalUrl = Config.mainUrlAddress + url;
             final int movieId = mySQLDataBase.getMovieId();
             final String movieTitle = mySQLDataBase.getTitle();

@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="5dp"
     android:layout_marginLeft="2dp"
@@ -18,6 +18,7 @@ android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/moviebutton">
+
 
         <RelativeLayout
             android:id="@+id/r1"

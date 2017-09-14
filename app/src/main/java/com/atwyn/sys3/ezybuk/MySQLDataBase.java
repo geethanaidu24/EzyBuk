@@ -10,7 +10,7 @@ import java.util.Date;
 class MySQLDataBase implements Serializable {
     public int MovieId,TheaterId,ScreenId,LayoutId,Rows,Columns,TrailerId;
     public String Title;
-    public String PosterUrl,BigPosterUrl;
+    public String SmallPosterUrl,BigPosterUrl;
   //  public String MoviesDescription;
     public String TheaterName,TrailerName,TrailerImageUrl,TrailerVideo;
     public String Genre;
@@ -42,12 +42,12 @@ public String EmailId,UserName,UserMobileNo,UserDOB,UserGender;
         this.Title = title;
     }
 
-    public String getPosterUrl() {
-        return PosterUrl;
+    public String getSmallPosterUrl() {
+        return SmallPosterUrl;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.PosterUrl = posterUrl;
+    public void setSmallPosterUrl(String smallPosterUrl) {
+        this.SmallPosterUrl = smallPosterUrl;
     }
 
     public String getGenre() {

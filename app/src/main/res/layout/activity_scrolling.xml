@@ -47,7 +47,7 @@ android:adjustViewBounds="true"
 
 <TextView android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:text="hhjjkjbck"
+    android:text="EzyBuk"
     android:id="@+id/tooltext"
     android:textSize="24sp"
     android:textColor="@color/white"

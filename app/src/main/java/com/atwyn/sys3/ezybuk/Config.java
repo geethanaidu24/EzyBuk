@@ -13,7 +13,7 @@ public class Config {
     public static final String API_KEY =
             "AIzaSyBltkcv28mWW6PnlpNMZyzOab4dOhNRKAU";
 
-    public final static String mainUrlAddress = "http://192.168.0.24/ezybuk/";
+    public final static String mainUrlAddress = "http://192.168.0.28/ezybuk/";
 
 
     // For admin login
